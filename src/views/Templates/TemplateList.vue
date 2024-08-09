@@ -103,7 +103,7 @@ export default {
         handleSaveSettings(settings) {
             if (this.selectedTemplateId === 0) {
                 console.log(this.selectedTemplateId);
-                axios.post('http://127.0.0.1:8000/api/template', settings)
+                axios.post('https://panel.dinelim.ai/api/template', settings)
                     .then(response => {
                         console.log(response);
                         toast.success('Template Saved Successfully!');
@@ -113,7 +113,7 @@ export default {
                     });
             } else {
                 console.log(this.selectedTemplateId);
-                axios.put(`http://127.0.0.1:8000/api/template/${this.selectedTemplateId}`, settings)
+                axios.put(`https://panel.dinelim.ai/api/template/${this.selectedTemplateId}`, settings)
                     .then(response => {
                         console.log(response);
                         toast.success('Template Updated Successfully!');

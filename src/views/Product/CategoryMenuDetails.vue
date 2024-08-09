@@ -265,14 +265,14 @@ export default {
             });
         },
         getAllergens() {
-            axios.get(`http://127.0.0.1:8000/api/allergen`)
+            axios.get(`https://panel.dinelim.ai/api/allergen`)
                 .then(response => {
                     this.allergens = response.data
                 })
         },
         viewProducts(categoryId) {
             this.mode = 'list';
-            axios.get(`http://127.0.0.1:8000/api/product/${categoryId}`)
+            axios.get(`https://panel.dinelim.ai/api/product/${categoryId}`)
                 .then(response => {
                     this.products = response.data;
                 })
@@ -289,7 +289,7 @@ export default {
 
             this.sendCategory.push(category);
 
-            axios.put('http://127.0.0.1:8000/api/product-category/update', this.sendCategory)
+            axios.put('https://panel.dinelim.ai/api/product-category/update', this.sendCategory)
                 .then(response => {
                     console.log(response)
                     toast.success('This is a success message!');
@@ -313,7 +313,7 @@ export default {
         addCategory(category) {
             console.log(this.parentId)
             category.parent_id = this.parentId;
-            axios.post('http://127.0.0.1:8000/api/product-category', category)
+            axios.post('https://panel.dinelim.ai/api/product-category', category)
                 .then(response => {
                     this.categories = response.data.map(category => ({
                         ...category,
@@ -331,7 +331,7 @@ export default {
         addProductToCategory(product) {
             console.log(product)
 
-            axios.post('http://127.0.0.1:8000/api/product', product)
+            axios.post('https://panel.dinelim.ai/api/product', product)
                 .then(response => {
                     console.log(response.data)
                 })
@@ -343,7 +343,7 @@ export default {
             return [...childCategories].sort((a, b) => a.sort_order - b.sort_order);
         },
         fetchData() {
-            axios.get('http://127.0.0.1:8000/api/template')
+            axios.get('https://panel.dinelim.ai/api/template')
                 .then(response => {
                     this.previewData = response.data;
                     this.selectedTemplateId = response.data[0].id
@@ -392,7 +392,7 @@ export default {
             this.categories.forEach((cat, index) => {
                 cat.sort_order = index + 1; // Set sort_order starting from 1
             });
-            axios.put(`http://127.0.0.1:8000/api/product-category/update`, this.categories)
+            axios.put(`https://panel.dinelim.ai/api/product-category/update`, this.categories)
                 .then(response => {
                     console.log(response)
                 })
@@ -429,7 +429,7 @@ export default {
             });
 
             // Update the backend with the new order
-            axios.put(`http://127.0.0.1:8000/api/product-category/update`, parentCategory.child)
+            axios.put(`https://panel.dinelim.ai/api/product-category/update`, parentCategory.child)
                 .then(response => {
                     console.log(response)
                 })
@@ -442,7 +442,7 @@ export default {
             this.dragOverChildCategory = null;
         },
         deleteCategory(categoryId) {
-            axios.delete(`http://127.0.0.1:8000/api/product-category/${categoryId}`)
+            axios.delete(`https://panel.dinelim.ai/api/product-category/${categoryId}`)
                 .then(() => {
                     this.categories = this.categories.filter(category => category.category_id !== categoryId);
                 })
@@ -455,7 +455,7 @@ export default {
 
         const id = this.$route.params.id;
         this.getAllergens();
-        axios.get(`http://127.0.0.1:8000/api/product-category/${id}`)
+        axios.get(`https://panel.dinelim.ai/api/product-category/${id}`)
             .then(response => {
                 this.categories = response.data.map(category => ({
                     ...category,

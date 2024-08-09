@@ -11,7 +11,7 @@ export const useCategoryStore = defineStore('category', {
   actions: {
     async getAllergens() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/allergen');
+        const response = await axios.get('https://panel.dinelim.ai/api/allergen');
         this.allergens = response.data;
       } catch (error) {
         console.error('Error fetching allergens:', error);
@@ -19,7 +19,7 @@ export const useCategoryStore = defineStore('category', {
     },
     async getCategories(id) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/product-category/${id}`);
+        const response = await axios.get(`https://panel.dinelim.ai/api/product-category/${id}`);
         this.categories = response.data.map(category => ({
           ...category,
           showChildren: false,
@@ -30,7 +30,7 @@ export const useCategoryStore = defineStore('category', {
     },
     async viewProducts(categoryId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/product/${categoryId}`);
+        const response = await axios.get(`https://panel.dinelim.ai/api/product/${categoryId}`);
         this.products = response.data;
       } catch (error) {
         console.error('Error fetching products:', error);

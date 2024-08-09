@@ -125,7 +125,7 @@ export default {
 
             try {
                 this.uploadStatus = 'Uploading...';
-                const response = await axios.post('http://127.0.0.1:8000/api/import', formData, {
+                const response = await axios.post('https://panel.dinelim.ai/api/import', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -142,7 +142,7 @@ export default {
                 'Accept': 'application/json',
             };
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/group-branch', { headers });
+                const response = await axios.get('https://panel.dinelim.ai/api/group-branch', { headers });
                 this.groupBranches = response.data;
             } catch (error) {
                 console.error(error);
@@ -177,9 +177,9 @@ export default {
             };
             try {
                 if (this.editMode) {
-                    await axios.put(`http://127.0.0.1:8000/api/group-branch/${this.form.branch_id}`, this.form, { headers });
+                    await axios.put(`https://panel.dinelim.ai/api/group-branch/${this.form.branch_id}`, this.form, { headers });
                 } else {
-                    await axios.post('http://127.0.0.1:8000/api/group-branch', this.form, { headers });
+                    await axios.post('https://panel.dinelim.ai/api/group-branch', this.form, { headers });
                 }
                 this.GroupBranchLoad();
                 const modal = new Modal(document.getElementById('branchModal'));
@@ -190,7 +190,7 @@ export default {
         },
         async deleteBranch(id) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/group-branch/${id}`);
+                await axios.delete(`https://panel.dinelim.ai/api/group-branch/${id}`);
                 this.GroupBranchLoad();
             } catch (error) {
                 console.error(error);

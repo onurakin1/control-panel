@@ -298,7 +298,7 @@ export default {
     getProductDesc(id) {
       this.mode = 'desc'
       console.log(this.selectedBranchId)
-      axios.get(`http://127.0.0.1:8000/api/product-description/${id}`)
+      axios.get(`https://panel.dinelim.ai/api/product-description/${id}`)
         .then(response => {
 
           this.productDesc = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
@@ -321,7 +321,7 @@ export default {
     },
     setMenuActiveTab(tab) {
       this.activeMenuTab = tab;
-      axios.get(`http://127.0.0.1:8000/api/product-category/${tab}`)
+      axios.get(`https://panel.dinelim.ai/api/product-category/${tab}`)
         .then(response => {
           const categories = response.data.map(category => ({
             ...category,
@@ -352,7 +352,7 @@ export default {
     },
     setProduct(tab) {
       this.activeProduct = tab;
-      axios.get(`http://127.0.0.1:8000/api/product/${tab}`)
+      axios.get(`https://panel.dinelim.ai/api/product/${tab}`)
         .then(response => {
           this.productItems = response.data;
           console.log(this.productItems)

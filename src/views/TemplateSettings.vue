@@ -146,7 +146,7 @@ export default {
     methods: {
         fetchTemplateData() {
             if (this.selectedTemplateId !== 0) {
-                axios.get(`http://127.0.0.1:8000/api/template/${this.selectedTemplateId}`)
+                axios.get(`https://panel.dinelim.ai/api/template/${this.selectedTemplateId}`)
                     .then(response => {
                         const templateData = response.data[0]; // Assuming the response is an array with one object
                         if (templateData) {

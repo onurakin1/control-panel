@@ -56,7 +56,7 @@ export default {
   methods: {
     fetchData() {
       const id = this.$route.params.id;
-      axios.get(`http://127.0.0.1:8000/api/category/${id}`)
+      axios.get(`https://panel.dinelim.ai/api/category/${id}`)
         .then(response => {
           const categoryStore = useCategoryStore(); // Store'u kullanın
           categoryStore.setCategories(response.data); // Verileri store'a ekleyin
@@ -69,7 +69,7 @@ export default {
       console.log(category)
       const categoryStore = useCategoryStore(); // Store'u kullanın
       category.branch_id = this.$route.params.id;
-      axios.post('http://127.0.0.1:8000/api/category', category)
+      axios.post('https://panel.dinelim.ai/api/category', category)
         .then(response => {
           categoryStore.addCategory(response.data);
 
