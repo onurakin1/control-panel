@@ -234,7 +234,9 @@ export default {
         sortedCategories() {
             return [...this.categories].sort((a, b) => a.sort_order - b.sort_order);
         },
-
+        selectedBranchId() {
+      return this.branchStore.selectedBranchId;
+    },
     },
     methods: {
         closeModal() {
@@ -274,7 +276,7 @@ export default {
             this.mode = 'list';
             axios.get(`https://panel.dinelim.ai/api/product/${categoryId}`)
                 .then(response => {
-                    this.products = response.data;
+                    this.products = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
                 })
                 .catch(error => {
                     console.error('There was an error fetching the data!', error);

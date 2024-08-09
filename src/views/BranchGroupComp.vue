@@ -166,7 +166,7 @@ export default {
             // Use the Pinia store to save the selected branch ID
             console.log(branch)
             const branchStore = useBranchStore();
-            branchStore.setSelectedBranchId(branch.branch_group_id);
+            branchStore.setSelectedBranchId(branch.branch_id);
 
             this.$router.push({ name: 'ProductManagement', params: { id: branch.branch_id } });
         },

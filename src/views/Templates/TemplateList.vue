@@ -4,36 +4,40 @@
             <div class="template-rows">
                 <div class="template-item" :class="{ selected: selectedTemplate === 'Template1' }"
                     @click="selectTemplate('Template1')">
-                    <Template1 :mainBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                        :textColor="textColor" :logoSize="'70px'" :iconSize="IconSize" :layout="layout"
-                        :logoUrl="logoUrl" :mediaUrl="mediaUrl" :fontSize="fontSize" />
+                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
+                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
+                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
+                        :fontSize="fontSizeDefault" />
                     <div class="checkbox" v-if="selectedTemplate === 'Template1'">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                 </div>
                 <div class="template-item" :class="{ selected: selectedTemplate === 'Template2' }"
                     @click="selectTemplate('Template2')">
-                    <Template1 :mainBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                        :textColor="textColor" :logoSize="'70px'" :iconSize="IconSize" :layout="layout"
-                        :logoUrl="logoUrl" :mediaUrl="mediaUrl" :fontSize="fontSize" />
+                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
+                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
+                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
+                        :fontSize="fontSizeDefault" />
                     <div class="checkbox" v-if="selectedTemplate === 'Template2'">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                 </div>
                 <div class="template-item" :class="{ selected: selectedTemplate === 'Template3' }"
                     @click="selectTemplate('Template3')">
-                    <Template1 :mainBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                        :textColor="textColor" :logoSize="'70px'" :iconSize="IconSize" :layout="layout"
-                        :logoUrl="logoUrl" :mediaUrl="mediaUrl" :fontSize="fontSize" />
+                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
+                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
+                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
+                        :fontSize="fontSizeDefault" />
                     <div class="checkbox" v-if="selectedTemplate === 'Template3'">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                 </div>
                 <div class="template-item" :class="{ selected: selectedTemplate === 'Template4' }"
                     @click="selectTemplate('Template4')">
-                    <Template1 :mainBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                        :textColor="textColor" :logoSize="'70px'" :iconSize="IconSize" :layout="layout"
-                        :logoUrl="logoUrl" :mediaUrl="mediaUrl" :fontSize="fontSize" />
+                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
+                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
+                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
+                        :fontSize="fontSizeDefault" />
                     <div class="checkbox" v-if="selectedTemplate === 'Template4'">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
@@ -44,7 +48,8 @@
         <div v-if="selectedTemplate" class="mt-5">
 
             <TemplateSettings @save-settings="handleSaveSettings" :selectedTemplateId="selectedTemplateId"
-                :template="selectedTemplate" />
+                :template="selectedTemplate" :selectedBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
+                :textColor="textColor" :layout="layout" :mediaUrl="mediaUrl" :logoUrl="logoUrl" :IconSize="IconSize" :selectedLanguages="selectedLanguages"/>
             <div class="d-flex justify-content-end">
                 <!-- HTML !-->
                 <router-link to="/home" class="ai-btn" role="button"><span class="text">Continue <i
@@ -83,14 +88,25 @@ export default {
         return {
             selectedTemplateId: 0,
             editMode: false,
+            selectedBgColorDefault: "#505095",
+            secondaryBgColorDefault: "#fff",
+            textColorDefault: "#fff",
+            layoutDefault: "three", // Default layout
+            mediaUrlDefault: "home_bg.jpg", // Store URL for uploaded image or video
+            logoUrlDefault: "logo_1000.png",
+            IconSizeDefault: "70px",
+            fontSizeDefault: "14px",
+
+
             selectedBgColor: "#505095",
+            selectedLanguages: [],
             secondaryBgColor: "#fff",
             textColor: "#fff",
             layout: "three", // Default layout
-            mediaUrl: "home_bg.jpg", // Store URL for uploaded image or video
-            logoUrl: "logo_1000.png",
-            IconSize: "70px",
-            fontSize: "14px",
+            mediaUrl: 'home_bg.jpg', // Store URL for uploaded image or video
+            logoUrl: 'logo_1000.png',
+            IconSize: '120px',
+            fontSize: '14px',
             templateStore, // Add the store instance to the data
         };
     },
@@ -98,6 +114,41 @@ export default {
         ...mapState(useTemplateStore, ['selectedTemplate']), // Map the selectedTemplate state
     },
     methods: {
+        fetchTemplateData() {
+            if (this.selectedTemplateId !== 0) {
+                console.log(this.selectedTemplateId);
+                axios.get(`https://panel.dinelim.ai/api/template/${this.selectedTemplateId}`)
+                    .then(response => {
+                        const templateData = response.data[0]; // Assuming the response is an array with one object
+                        if (templateData) {
+                            const colors = JSON.parse(templateData.color);
+                            const colorsMap = colors.reduce((acc, color) => {
+                                acc[color.name] = color.value;
+                                return acc;
+                            }, {});
+
+                            const languages = JSON.parse(templateData.languages);
+                            // Use the action to set the selected template
+                            this.selectTemplate(templateData.name);
+
+                            // Update properties for TemplateSettings
+                            this.selectedBgColor = colorsMap.selectedBgColor || this.selectedBgColor;
+                            this.secondaryBgColor = colorsMap.secondaryBgColor || this.secondaryBgColor;
+                            this.textColor = colorsMap.textColor || this.textColor;
+                            this.layout = templateData.layout || this.layout;
+                            this.mediaUrl = templateData.banner || this.mediaUrl;
+                            this.logoUrl = templateData.logo || this.logoUrl;
+                            this.IconSize = templateData.size || this.IconSize;
+                            this.selectedLanguages = languages || this.selectedLanguages;
+
+                            // Any other data processing as needed
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was an error fetching the template data!', error);
+                    });
+            }
+        },
         ...mapActions(useTemplateStore, ['selectTemplate']),
 
         handleSaveSettings(settings) {
@@ -113,6 +164,7 @@ export default {
                     });
             } else {
                 console.log(this.selectedTemplateId);
+
                 axios.put(`https://panel.dinelim.ai/api/template/${this.selectedTemplateId}`, settings)
                     .then(response => {
                         console.log(response);
@@ -128,7 +180,9 @@ export default {
     },
     created() {
         console.log(this.$route.query.id);
+
         this.selectedTemplateId = this.$route.query.id || 0;
+        this.fetchTemplateData();
         // this.fetchTemplateData(); // Fetch the template data only if selectedTemplateId is not 0
     },
 };

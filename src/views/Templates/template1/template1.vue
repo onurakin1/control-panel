@@ -2,7 +2,7 @@
   <div v-if="mode == 'home'" style="height: 100%;width: 100%;background-size: cover;">
     <div class="homepage">
       <!-- Image Background -->
-      {{ selectedBranchId }}
+  
       <div v-if="isImage(mediaUrl)"
         :style="{ backgroundImage: `url(${require(`@/assets/img/templates/templates1/${mediaUrl}`)})` }" class="banner">
         <div class="top-actions">
@@ -185,7 +185,7 @@
       </div>
       <div v-for="descItem in productDesc" :key="descItem.id">
         <div class="desc-img">
-          <img :src="descItem.image" />
+          <img src='@/assets/img/templates/menu_images/lotus.jpg'/>
         </div>
         <div class="desc-name">
           <h4>{{ descItem.name }}</h4>
@@ -311,7 +311,7 @@ export default {
     },
     getImageUrl(image) {
       // Return the image if it's not null, otherwise return the default image
-      return image || this.defaultImage;
+      return image || this.image;
     },
     formatLanguage(language) {
       return language.toUpperCase();
@@ -365,7 +365,7 @@ export default {
       this.isShareMenuVisible = !this.isShareMenuVisible;
     },
     view(mode) {
-      console.log('Selected Branch ID:', this.selectedBranchId);
+   
       this.mode = mode;
     },
     isImage(url) {
