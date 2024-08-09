@@ -1,0 +1,24 @@
+.card {
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .control-panel .card-text {
+    font-size: 12px;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(57, 81, 95, 0.7);
+    /* Opsiyonel: Yuvarlak arkaplan rengi */
+    margin-bottom: 15px;
+  }
