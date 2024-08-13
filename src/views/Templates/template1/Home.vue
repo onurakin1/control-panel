@@ -84,21 +84,21 @@
             <div class="menu-body" :style="{ backgroundColor: secondaryBgColor }">
 
                 <div class="menu-container">
-                    <div class="menu-icon-item" @click="view('menu')">
+                    <div class="menu-icon-item" @click="view('menu')" :class="{ 'disabled': disabled }" >
                         <div class="icon-circle"
                             :style="{ backgroundColor: mainBgColor, height: iconSize, width: iconSize }">
                             <img src="~@/assets/img/icons/cat_2.png" alt="Food Icon" class="icon-image" />
                         </div>
                         <div class="icon-label" :style="{ color: mainBgColor }">FOOD</div>
                     </div>
-                    <div class="menu-icon-item">
+                    <div class="menu-icon-item" :class="{ 'disabled': disabled }">
                         <div class="icon-circle"
                             :style="{ backgroundColor: mainBgColor, height: iconSize, width: iconSize }">
                             <img src="~@/assets/img/icons/cat_17 (1).png" alt="Beverage Icon" class="icon-image" />
                         </div>
                         <div class="icon-label" :style="{ color: mainBgColor }">BEVERAGE</div>
                     </div>
-                    <div class="menu-icon-item">
+                    <div class="menu-icon-item" :class="{ 'disabled': disabled }">
                         <div class="icon-circle"
                             :style="{ backgroundColor: mainBgColor, height: iconSize, width: iconSize }">
                             <img src="~@/assets/img/icons/cat_25.png" alt="Shisha Icon" class="icon-image" />
@@ -298,8 +298,10 @@ export default {
             default: '#fff'
         },
         mediaUrl: String,
+        selectedLanguages: Array,
         logoUrl: String,
-        fontSize: String
+        fontSize: String,
+        disabled:Boolean
 
     },
     data() {

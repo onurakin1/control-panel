@@ -22,7 +22,7 @@
             <swiper-slide v-for="template in templates" :key="template.id">
                 <div class="template-item" :class="{ selected: selectedTemplate === template.name }"
                     @click="selectTemplate(template.name)">
-                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
+                    <Template1 :disabled="true" :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
                         :textColor="textColorDefault" :logoSize="'40px'" :iconSize="IconSizeDefault"
                         :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
                         :fontSize="fontSizeDefault" />

@@ -12,7 +12,12 @@
                                 <div>Upload</div>
                                 <span>The file type can only be .jpg, .jpeg, and .png.</span>
                             </label>
-                            <input type="file" id="file-template-upload" @change="handleFileUpload" accept="image/*,video/*" />
+                            <form @submit.prevent="submitFile">
+                                <input type="file" id="file-template-upload" @change="onFileChange" />
+                                <button type="submit">Upload</button>
+                            </form>
+
+
                         </div>
                     </div>
                     <div class="template-setting-main">
@@ -24,7 +29,8 @@
                                 <div>Upload</div>
                                 <span>The file type can only be .jpg, .jpeg, and .png.</span>
                             </label>
-                            <input type="file" id="file-upload" @change="handleLogoFileUpload" accept="image/*,video/*" />
+                            <input type="file" id="file-upload" @change="handleLogoFileUpload"
+                                accept="image/*,video/*" />
                         </div>
                         <div class="color-select">
                             <span><b>Select Template Color</b></span>
@@ -57,7 +63,8 @@
                     </div>
                     <div class="layout-items">
                         <span><b>Select Font Size:</b></span>
-                        <select v-model="fontSize" class="form-select" style="width: 100px;" aria-label="Default select example">
+                        <select v-model="fontSize" class="form-select" style="width: 100px;"
+                            aria-label="Default select example">
                             <option value="14px" selected>14px</option>
                             <option value="16px">16px</option>
                             <option value="18px">18px</option>
@@ -65,7 +72,8 @@
                     </div>
                     <div class="layout-items">
                         <span><b>Select Icon Size:</b></span>
-                        <select v-model="iconSizeInternal" class="form-select" style="width: 100px;" aria-label="Default select example">
+                        <select v-model="iconSizeInternal" class="form-select" style="width: 100px;"
+                            aria-label="Default select example">
 
                             <option value="60px">60px</option>
                             <option value="70px">70px</option>
@@ -76,7 +84,8 @@
                     </div>
                     <div class="layout-items">
                         <span><b>Select Languages:</b></span>
-                        <select v-model="selectedLanguagesInternal" class="form-select" multiple style="width: 200px;" aria-label="Select languages">
+                        <select v-model="selectedLanguagesInternal" class="form-select" multiple style="width: 200px;"
+                            aria-label="Select languages">
                             <option value="ar">Arabic</option>
                             <option value="en">English</option>
                             <option value="fr">French</option>
@@ -87,7 +96,8 @@
                         </select>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button class="save-button" @click="saveSettings"> {{ selectedTemplateId == 0 ? 'Save' : 'Update' }}</button>
+                        <button class="save-button" @click="saveSettings"> {{ selectedTemplateId == 0 ? 'Save' :
+                            'Update' }}</button>
                     </div>
                 </div>
 
@@ -95,9 +105,10 @@
             <div class="template-preview">
                 <div class="template-border">
 
-                    <component :is="template" :mainBgColor="selectedBgColorInternal" :secondaryBgColor="secondaryBgColorInternal"
-                        :textColor="textColorInternal" :logoSize="'120px'" :iconSize="iconSizeInternal" :layout="layoutInternal"
-                        :logoUrl="logoUrlInternal" :mediaUrl="mediaUrlInternal" :fontSize="fontSize" />
+                    <component :is="template" :mainBgColor="selectedBgColorInternal"
+                        :secondaryBgColor="secondaryBgColorInternal" :textColor="textColorInternal" :logoSize="'120px'"
+                        :iconSize="iconSizeInternal" :layout="layoutInternal" :logoUrl="logoUrlInternal"
+                        :mediaUrl="mediaUrlInternal" :fontSize="fontSize" />
 
                 </div>
             </div>
@@ -107,6 +118,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Template1 from "./Templates/template1/Home.vue";
 import ColorPicker from "../components/ColorPickerComp.vue";
 import "../assets/css/views/templates/templateSettings.css";
@@ -156,6 +168,8 @@ export default {
     data() {
         return {
             // Internal states mirroring props
+            file: null,
+            filePath: '',
             selectedBgColorInternal: this.selectedBgColor,
             secondaryBgColorInternal: this.secondaryBgColor,
             textColorInternal: this.textColor,
@@ -165,6 +179,7 @@ export default {
             iconSizeInternal: this.IconSize,
             selectedLanguagesInternal: this.selectedLanguages, // Initialized in created hook
             fontSize: "14px", // Default font size
+   
         };
     },
     watch: {
@@ -195,6 +210,25 @@ export default {
     },
 
     methods: {
+        onFileChange(e) {
+            this.file = e.target.files[0];
+            console.log(this.file)
+        },
+        async submitFile() {
+            const formData = new FormData();
+            formData.append('file', this.file);
+
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                this.filePath = response.data.filePath;
+            } catch (error) {
+                console.error('File upload error:', error);
+            }
+        },
         handleBgColorChange(newColor) {
             this.selectedBgColorInternal = newColor;
             this.$emit('update:selectedBgColor', newColor); // Emit to parent
@@ -211,15 +245,8 @@ export default {
             this.layoutInternal = newLayout;
             this.$emit('update:layout', newLayout); // Emit to parent
         },
-        handleFileUpload(event) {
-            const file = event.target.files[0];
-            console.log(file);
-            if (file) {
-                this.mediaUrlInternal = file.name; // Create a URL for the uploaded file
-                this.$emit('update:mediaUrl', file.name); // Emit to parent
-                console.log(this.mediaUrlInternal);
-            }
-        },
+
+   
         handleLogoFileUpload(event) {
             const file = event.target.files[0];
             console.log(file);
@@ -247,5 +274,3 @@ export default {
     },
 };
 </script>
-
-

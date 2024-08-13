@@ -80,7 +80,8 @@
 .border-gray {
     border-right: 5px solid rgb(124, 126, 124) !important
 }
-.box-sub-menu{
+
+.box-sub-menu {
     padding: 6px;
     font-size: 12px;
     display: flex;
@@ -94,15 +95,18 @@
     border: none;
     color: black;
 }
-.collapsed{
+
+.collapsed {
     width: auto !important;
 }
-.filtered-image{
+
+.filtered-image {
     filter: brightness(0.2) sepia(1) hue-rotate(180deg) saturate(5);
 }
 
-.pre-button{
-    background-color: #008CBA; /* Green */
+.pre-button {
+    background-color: #008CBA;
+    /* Green */
     border: none;
     color: white;
     padding: 12px 32px;
@@ -123,7 +127,7 @@
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;
@@ -136,30 +140,30 @@
     touch-action: manipulation;
     vertical-align: middle;
     white-space: nowrap;
-  }
-  
-  .update-btn:focus:not(:focus-visible):not(.focus-visible) {
+}
+
+.update-btn:focus:not(:focus-visible):not(.focus-visible) {
     box-shadow: none;
     outline: none;
-  }
-  
-  .update-btn:hover {
+}
+
+.update-btn:hover {
     background-color: #2c974b;
-  }
-  
-  .update-btn:focus {
+}
+
+.update-btn:focus {
     box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
     outline: none;
-  }
-  
-  .update-btn:disabled {
+}
+
+.update-btn:disabled {
     background-color: #94d3a2;
     border-color: rgba(27, 31, 35, .1);
     color: rgba(255, 255, 255, .8);
     cursor: default;
-  }
-  
-  .update-btn:active {
+}
+
+.update-btn:active {
     background-color: #298e46;
     box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
-  }
+}
