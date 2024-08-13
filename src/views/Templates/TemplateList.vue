@@ -1,55 +1,45 @@
 <template>
     <div id="app">
-        <div class="template">
-            <div class="template-rows">
-                <div class="template-item" :class="{ selected: selectedTemplate === 'Template1' }"
-                    @click="selectTemplate('Template1')">
+
+        <swiper class="swiper-width" :slides-per-view="3" :space-between="10" :loop="true" :breakpoints="{
+            '640': {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            '768': {
+                slidesPerView: 2,
+                spaceBetween: 40,
+            },
+            '1024': {
+                slidesPerView: 3,
+                spaceBetween: 10,
+            },
+            '1440': {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+        }">
+            <swiper-slide v-for="template in templates" :key="template.id">
+                <div class="template-item" :class="{ selected: selectedTemplate === template.name }"
+                    @click="selectTemplate(template.name)">
                     <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
-                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
+                        :textColor="textColorDefault" :logoSize="'40px'" :iconSize="IconSizeDefault"
                         :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
                         :fontSize="fontSizeDefault" />
-                    <div class="checkbox" v-if="selectedTemplate === 'Template1'">
+                    <div class="checkbox" v-if="selectedTemplate === template.name">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                 </div>
-                <div class="template-item" :class="{ selected: selectedTemplate === 'Template2' }"
-                    @click="selectTemplate('Template2')">
-                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
-                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
-                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
-                        :fontSize="fontSizeDefault" />
-                    <div class="checkbox" v-if="selectedTemplate === 'Template2'">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </div>
-                </div>
-                <div class="template-item" :class="{ selected: selectedTemplate === 'Template3' }"
-                    @click="selectTemplate('Template3')">
-                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
-                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
-                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
-                        :fontSize="fontSizeDefault" />
-                    <div class="checkbox" v-if="selectedTemplate === 'Template3'">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </div>
-                </div>
-                <div class="template-item" :class="{ selected: selectedTemplate === 'Template4' }"
-                    @click="selectTemplate('Template4')">
-                    <Template1 :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
-                        :textColor="textColorDefault" :logoSize="'70px'" :iconSize="IconSizeDefault"
-                        :layout="layoutDefault" :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault"
-                        :fontSize="fontSizeDefault" />
-                    <div class="checkbox" v-if="selectedTemplate === 'Template4'">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </swiper-slide>
+        </swiper>
+
 
         <div v-if="selectedTemplate" class="mt-5">
 
             <TemplateSettings @save-settings="handleSaveSettings" :selectedTemplateId="selectedTemplateId"
                 :template="selectedTemplate" :selectedBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                :textColor="textColor" :layout="layout" :mediaUrl="mediaUrl" :logoUrl="logoUrl" :IconSize="IconSize" :selectedLanguages="selectedLanguages"/>
+                :textColor="textColor" :layout="layout" :mediaUrl="mediaUrl" :logoUrl="logoUrl" :IconSize="IconSize"
+                :selectedLanguages="selectedLanguages" />
             <div class="d-flex justify-content-end">
                 <!-- HTML !-->
                 <router-link to="/home" class="ai-btn" role="button"><span class="text">Continue <i
@@ -70,18 +60,21 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import { mapState, mapActions } from 'pinia';
 import { useTemplateStore } from '@/stores/templateStore'; // Adjust the path if necessary
-
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import Template1 from "@/views/Templates/template1/Home.vue";
 import TemplateSettings from '@/views/TemplateSettings.vue';
 
 import "@/assets/css/views/templates/templateList.css";
+import 'swiper/css';
 
 export default {
     name: "TemplateListComp",
 
     components: {
         Template1,
-        TemplateSettings
+        TemplateSettings,
+        Swiper,
+        SwiperSlide
     },
     data() {
         const templateStore = useTemplateStore();
@@ -94,9 +87,14 @@ export default {
             layoutDefault: "three", // Default layout
             mediaUrlDefault: "home_bg.jpg", // Store URL for uploaded image or video
             logoUrlDefault: "logo_1000.png",
-            IconSizeDefault: "70px",
+            IconSizeDefault: "40px",
             fontSizeDefault: "14px",
-
+            templates: [
+                { id: 1, name: 'Template1' },
+                { id: 2, name: 'Template2' },
+                { id: 3, name: 'Template3' },
+                { id: 4, name: 'Template4' }
+            ],
 
             selectedBgColor: "#505095",
             selectedLanguages: [],
@@ -187,3 +185,7 @@ export default {
     },
 };
 </script>
+
+<style>
+
+</style>

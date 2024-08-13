@@ -1,13 +1,4 @@
-.template-item {
-    position: relative;
-    width: 350px;
-    height: 500px;
-    overflow: hidden;
-    border: 1px solid #000;
-    border-radius: 23px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
+
 
 .template-item:hover {
     transform: scale(1.05);
@@ -37,6 +28,26 @@
 .template-rows {
     display: flex;
     gap: 20px;
+}
+
+
+.template-item {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+  height: 350px;
+
+  overflow: hidden;
+  border: 1px solid #000;
+  border-radius: 23px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+
+.swiper-width{
+  max-width: 1440px;
+  width: 100%;
 }
 
 
@@ -82,9 +93,44 @@
   background: none;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1024px) {
+
+  .swiper-width{
+    max-width: 755px;
+    width: 100%;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .template-rows {
+      justify-content: space-between;
+  }
+
+  .template-item {
+      flex: 0 1 calc(50% - 20px);
+      /* Two items per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .template-item {
+      flex: 0 1 calc(100% - 20px);
+      /* One item per row on small screens */
+  }
   .ai-btn {
     font-size: 24px;
     min-width: 196px;
+  }
+  .swiper-width{
+    max-width: 768px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .template-item {
+      height: 400px;
+      font-size: 0.9em;
   }
 }

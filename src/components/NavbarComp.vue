@@ -4,7 +4,7 @@
       <img src="~@/assets/img/limonist.png" alt="Home" height="30" class="me-2"> <!-- Replace with your image path -->
 
       <div @click="$emit('toggleSidebar')" class=" me-2">
-        <i class="text-white bi" :class="isCollapsed ? 'bi-arrow-right-square ' : 'bi-arrow-left-square'"></i>
+        <i class="text-secondary bi" :class="isCollapsed ? 'bi-arrow-right-square ' : 'bi-arrow-left-square'"></i>
       </div>
 
       <!-- Search form -->
@@ -22,7 +22,7 @@
 
       <!-- Dropdown -->
       <div class="dropdown">
-        <button class="btn btn-primary-outline dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: none; color: white;">
+        <button class="btn btn-primary-outline dropdown-toggle text-secondary" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: none; color: white;">
           Colony Menu
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -47,7 +47,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* İhtiyaç halinde stillemeler buraya eklenebilir */
-</style>

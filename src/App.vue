@@ -3,10 +3,10 @@
     <NavbarComp :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
     <div class="container-fluid">
       <div class="row flex-nowrap">
-        <div class="col-auto px-0 bg-dark" :class="{'collapsed': isSidebarCollapsed}">
+        <div class="col-auto px-0" :class="{'collapsed': isSidebarCollapsed}">
           <SidebarComp :isCollapsed="isSidebarCollapsed" />
         </div>
-        <div class="col py-3" :class="{'expand': isSidebarCollapsed}">
+        <div class="col py-3" style="background: whitesmoke;" :class="{'expand': isSidebarCollapsed}">
           <BreadCrumb />
           <router-view></router-view>
           <ToastComp ref="toast" />

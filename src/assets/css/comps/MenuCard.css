@@ -24,6 +24,7 @@
   padding: 10px;
   display: flex;
   cursor: pointer;
+  background: white;
 }
 
 .card {

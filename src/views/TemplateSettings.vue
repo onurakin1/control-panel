@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="template">
+        <div class="template row">
             <div class="template-setting-area">
 
                 <div class="template-setting-form">
@@ -247,3 +247,5 @@ export default {
     },
 };
 </script>
+
+
