@@ -45,11 +45,11 @@
                 <span><b>Select Template Color</b></span>
                 <div class="color-select-item">
                   <span>Background Color</span>
-                  <ColorPicker @color-changed="handleSecondaryBgColorChange" />
+                  <ColorPicker :selectedColor="secondaryBgColor " @color-changed="handleSecondaryBgColorChange" />
                 </div>
                 <div class="color-select-item">
                   <span>Accent Color</span>
-                  <ColorPicker @color-changed="handleBgColorChange" />
+                  <ColorPicker :selectedColor="selectedBgColor" @color-changed="handleBgColorChange" />
                 </div>
                 <div class="color-select-item">
                   <span>Text Color</span>

@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark menu-bg">
     <div class="container-fluid">
-      <img src="~@/assets/img/limonist.png" alt="Home" height="30" class="me-2"> <!-- Replace with your image path -->
+      <img src="~@/assets/img/limonist.png" alt="Home" height="30" class="me-2">
 
-      <div @click="$emit('toggleSidebar')" class=" me-2">
+      <div @click="$emit('toggleSidebar')" class="me-2">
         <i class="text-secondary bi" :class="isCollapsed ? 'bi-arrow-right-square ' : 'bi-arrow-left-square'"></i>
       </div>
 
@@ -27,8 +27,7 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="#">Update Profile</a></li>
-          <li><a class="dropdown-item" href="#">Log out</a></li>
-        
+          <li><a class="dropdown-item" href="#" @click="logout">Log out</a></li>
         </ul>
       </div>
     </div>
@@ -36,7 +35,10 @@
 </template>
 
 <script>
-import '../assets/css/Navbar.css'
+import axios from 'axios';
+import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
+
 export default {
   name: 'NavbarComp',
   props: {
@@ -44,6 +46,36 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const logout = async () => {
+      try {
+        // API'ye POST isteği gönder
+        await axios.post('http://127.0.0.1:8000/api/logout', {}, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`,
+          },
+        });
+
+        // Redirect to login page
+        router.push({ name: 'Login' });
+
+        // Clear auth data
+        authStore.clearAuthData();
+
+        console.log('Logout successful');
+      } catch (err) {
+        console.error('Logout failed:', err);
+      }
+    };
+
+    return {
+      logout,
+      authStore,
+    };
   },
 };
 </script>

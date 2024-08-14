@@ -1,24 +1,30 @@
 <template>
-    <div class="color-picker">
-      <input type="color" v-model="color" @input="updateColor" />
-      <span class="ms-2">{{ color }}</span>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        color: '#000000',
-      };
+  <div class="color-picker">
+    <input type="color" v-model="color" @input="updateColor" />
+    <span class="ms-2">{{ color }}</span>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    selectedColor: {
+      type: String,
+      default: '#000000' // Varsayılan renk kodu
+    }
+  },
+  data() {
+    return {
+      color: this.selectedColor // selectedColor'u color ile eşleştiriyoruz
+    };
+  },
+  methods: {
+    updateColor() {
+      this.$emit('color-changed', this.color);
     },
-    methods: {
-      updateColor() {
-        this.$emit('color-changed', this.color);
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
   
   <style scoped>
   .color-picker {

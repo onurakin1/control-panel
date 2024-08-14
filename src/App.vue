@@ -1,26 +1,36 @@
 <template>
   <div id="app">
-    <NavbarComp :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
-    <div class="container-fluid">
-      <div class="row flex-nowrap">
-        <div class="col-auto px-0" :class="{'collapsed': isSidebarCollapsed}">
-          <SidebarComp :isCollapsed="isSidebarCollapsed" />
-        </div>
-        <div class="col py-3" style="background: whitesmoke;" :class="{'expand': isSidebarCollapsed}">
-          <BreadCrumb />
-          <router-view></router-view>
-          <ToastComp ref="toast" />
+    <!-- Kullanıcı Giriş Yapmışsa -->
+    <div v-if="authStore.isAuthenticated">
+      <NavbarComp :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
+      <div class="container-fluid">
+        <div class="row flex-nowrap">
+          <div class="col-auto px-0" :class="{'collapsed': isSidebarCollapsed}">
+            <SidebarComp :isCollapsed="isSidebarCollapsed" />
+          </div>
+          <div class="col py-3" style="background: whitesmoke;" :class="{'expand': isSidebarCollapsed}">
+            <BreadCrumb />
+            <p>Welcome, {{ authStore.getUser.name }}!</p>
+            <router-view></router-view>
+            <ToastComp ref="toast" />
+          </div>
         </div>
       </div>
+    </div>
+    <!-- Kullanıcı Giriş Yapmamışsa -->
+    <div v-else>
+      <!-- router-view içinde gösterilecek -->
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/authStore';
 import NavbarComp from './components/NavbarComp.vue';
 import SidebarComp from './components/SidebarComp.vue';
 import BreadCrumb from './components/BreadCrumb.vue';
-import ToastComp from './components/ToastComp.vue'
+import ToastComp from './components/ToastComp.vue';
 
 export default {
   name: 'App',
@@ -28,7 +38,11 @@ export default {
     NavbarComp,
     SidebarComp,
     BreadCrumb,
-    ToastComp
+    ToastComp,
+  },
+  setup() {
+    const authStore = useAuthStore();
+    return { authStore };
   },
   data() {
     return {
