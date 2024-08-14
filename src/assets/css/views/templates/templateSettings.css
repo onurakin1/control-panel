@@ -5,7 +5,7 @@
 
 .template-setting-area {
     width: 100%;
-    max-width: 900px;
+    max-width: 550px;
 }
 
 .template-setting-form {
@@ -139,3 +139,31 @@ input[type="file"] {
     font-size: 16px;
     border-radius: 6px;
 }
+.preview-offcanvas{
+    width: 32% !important;
+}
+@media (max-width: 1440px) {
+    .preview-offcanvas{
+        width: 55% !important;
+    }
+}
+@media (max-width: 1024px) {
+    .preview-offcanvas{
+        width: 80% !important;
+    }
+}
+@media screen and (max-width: 992px) {
+    .template-setting-form{
+        max-width: 500px;
+    }
+    .template-border {
+        width: 568px;
+        height: 768px;
+      
+    }
+  }
+  
+  /* On screens that are 600px wide or less, the background color is olive */
+  @media screen and (max-width: 600px) {
+
+  }

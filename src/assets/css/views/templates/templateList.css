@@ -93,14 +93,6 @@
   background: none;
 }
 
-@media (max-width: 1024px) {
-
-  .swiper-width {
-    max-width: 755px;
-    width: 100%;
-  }
-}
-
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .template-rows {
@@ -112,6 +104,15 @@
     /* Two items per row on medium screens */
   }
 }
+@media (max-width: 1024px) {
+
+  .swiper-width {
+    max-width: 755px;
+    width: 100%;
+  }
+}
+
+
 
 @media (max-width: 768px) {
   .template-item {
