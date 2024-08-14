@@ -23,7 +23,7 @@
       <!-- Dropdown -->
       <div class="dropdown">
         <button class="btn btn-primary-outline dropdown-toggle text-secondary" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: none; color: white;">
-          Colony Menu
+          {{ authStore.getUser.name }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="#">Update Profile</a></li>
@@ -53,8 +53,8 @@ export default {
 
     const logout = async () => {
       try {
-        // API'ye POST isteği gönder
-        await axios.post('http://127.0.0.1:8000/api/logout', {}, {
+
+        await axios.post('https://panel.dinelim.ai/api/logout', {}, {
           headers: {
             Authorization: `Bearer ${authStore.token}`,
           },

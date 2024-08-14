@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- Kullanıcı Giriş Yapmışsa -->
+ 
     <div v-if="authStore.isAuthenticated">
       <NavbarComp :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
       <div class="container-fluid">
@@ -10,16 +10,16 @@
           </div>
           <div class="col py-3" style="background: whitesmoke;" :class="{'expand': isSidebarCollapsed}">
             <BreadCrumb />
-            <p>Welcome, {{ authStore.getUser.name }}!</p>
+      
             <router-view></router-view>
             <ToastComp ref="toast" />
           </div>
         </div>
       </div>
     </div>
-    <!-- Kullanıcı Giriş Yapmamışsa -->
+
     <div v-else>
-      <!-- router-view içinde gösterilecek -->
+
       <router-view></router-view>
     </div>
   </div>

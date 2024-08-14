@@ -3,7 +3,7 @@
         <div class="auth-form">
             <h2>Create an account</h2>
             <form @submit.prevent="register">
-                
+
                 <div class="form-group">
 
                     <input v-model="name" class="auth-form-input mt-3" type="text" id="name" placeholder="Name"
@@ -59,7 +59,7 @@ export default {
     methods: {
         async register() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/register', {
+                const response = await axios.post('https://panel.dinelim.ai/api/register', {
                     name: this.name,
                     email: this.email,
                     password: this.password,
