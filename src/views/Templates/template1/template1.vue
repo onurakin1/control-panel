@@ -2,9 +2,9 @@
   <div v-if="mode == 'home'" style="height: 100%;width: 100%;background-size: cover;">
     <div class="homepage">
       <!-- Image Background -->
-  
-      <div v-if="isImage(mediaUrl)"
-        :style="{ backgroundImage: `url(${require(`@/assets/img/templates/templates1/${mediaUrl}`)})` }" class="banner">
+
+      <div v-if="isImage(mediaUrl)" :style="{ backgroundImage: `url(http://127.0.0.1:8000/uploads/${mediaUrl})` }"
+        class="banner">
         <div class="top-actions">
           <div class="share">
             <div class="share-button" @click="toggleShareMenu" :style="{ backgroundColor: mainBgColor }">
@@ -185,7 +185,7 @@
       </div>
       <div v-for="descItem in productDesc" :key="descItem.id">
         <div class="desc-img">
-          <img src='@/assets/img/templates/menu_images/lotus.jpg'/>
+          <img src='@/assets/img/templates/menu_images/lotus.jpg' />
         </div>
         <div class="desc-name">
           <h4>{{ descItem.name }}</h4>
@@ -297,7 +297,7 @@ export default {
   methods: {
     getProductDesc(id) {
       this.mode = 'desc'
-      console.log(this.selectedBranchId)
+
       axios.get(`https://panel.dinelim.ai/api/product-description/${id}`)
         .then(response => {
 
@@ -354,7 +354,7 @@ export default {
       this.activeProduct = tab;
       axios.get(`https://panel.dinelim.ai/api/product/${tab}`)
         .then(response => {
-          this.productItems = response.data;
+          this.productItems = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
           console.log(this.productItems)
         })
         .catch(error => {
@@ -365,7 +365,7 @@ export default {
       this.isShareMenuVisible = !this.isShareMenuVisible;
     },
     view(mode) {
-   
+
       this.mode = mode;
     },
     isImage(url) {

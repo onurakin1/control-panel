@@ -130,6 +130,7 @@
     color: #5ad67d;
     display: inline-block;
     position: relative;
+    width: 100px;
 }
 
 .blog-card .description .read-more a:after {

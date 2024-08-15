@@ -47,11 +47,13 @@
                                     <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li @click="createCategory(category.category_id)" data-bs-toggle="offcanvas"
+                                    <li @click="createProduct(category.category_id)" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> <i
                                             class="bi bi-plus-lg me-2 ms-2"></i>New
                                         Product</li>
-
+                                        <li @click="createCategory(category.category_id)" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> <i
+                                            class="bi bi-plus-lg me-2 ms-2"></i>New Sub Category</li>
                                     <li @click="viewProducts(category.category_id, category.category_name)"
                                         data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                                         aria-controls="offcanvasRight">
@@ -153,7 +155,7 @@
             :title="mode == 'edit' ? 'Edit' : mode == 'createCategory' ? 'Create Category' : mode == 'createProduct' ? 'Create Product' : 'Product List'"
             :products="products" :mode="mode" :category="editableCategory" :newCategory="newCategory"
             :allergens="allergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
-            @createdCategory="addCategory" @createdProduct="addProductToCategory" />
+            @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId"/>
 
     </div>
 </template>
@@ -309,6 +311,8 @@ export default {
         },
         createProduct(categoryId) {
             this.mode = 'createProduct';
+            this.newProduct.category_id = categoryId;
+            console.log(this.newProduct)
             this.categoryId = categoryId;
 
         },

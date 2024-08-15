@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark menu-bg">
     <div class="container-fluid">
-      <img src="~@/assets/img/limonist.png" alt="Home" height="30" class="me-2">
+      <img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png" alt="Home" height="50" class="me-2">
 
       <div @click="$emit('toggleSidebar')" class="me-2">
         <i class="text-secondary bi" :class="isCollapsed ? 'bi-arrow-right-square ' : 'bi-arrow-left-square'"></i>

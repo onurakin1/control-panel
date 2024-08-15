@@ -5,9 +5,7 @@
 
         <div class="homepage">
             <!-- Image Background -->
-            <div v-if="isImage(mediaUrl)"
-                :style="{ backgroundImage: `url(${require(`@/assets/img/templates/templates1/${mediaUrl}`)})` }"
-                class="banner">
+            <div v-if="isImage(mediaUrl)" :style="{ backgroundImage: `url(${computedMediaUrl})` }" class="banner">
                 <div class="top-actions">
                     <div class="share">
                         <div class="share-button" @click="toggleShareMenu" :style="{ backgroundColor: mainBgColor }">
@@ -84,7 +82,7 @@
             <div class="menu-body" :style="{ backgroundColor: secondaryBgColor }">
 
                 <div class="menu-container">
-                    <div class="menu-icon-item" @click="view('menu')" :class="{ 'disabled': disabled }" >
+                    <div class="menu-icon-item" @click="view('menu')" :class="{ 'disabled': disabled }">
                         <div class="icon-circle"
                             :style="{ backgroundColor: mainBgColor, height: iconSize, width: iconSize }">
                             <img src="~@/assets/img/icons/cat_2.png" alt="Food Icon" class="icon-image" />
@@ -257,7 +255,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -297,11 +295,18 @@ export default {
             type: String,
             default: '#fff'
         },
-        mediaUrl: String,
-        selectedLanguages: Array,
-        logoUrl: String,
+        mediaUrl: {
+            type: String,
+            default: ""
+        },
+        logoUrl: {
+            type: String,
+            default: require(`@/assets/img/templates/templates1/logo_1000.png`)
+        },
+        selectedLanguages:Array,
+    
         fontSize: String,
-        disabled:Boolean
+        disabled: Boolean
 
     },
     data() {
@@ -409,8 +414,17 @@ export default {
         };
     },
     computed: {
+        computedMediaUrl() {
+            // Check if mediaUrl is valid, otherwise return the default image
+            return this.mediaUrl && this.mediaUrl.startsWith('images/')
+                ? `http://127.0.0.1:8000/uploads/${this.mediaUrl}`
+                : require('@/assets/img/templates/templates1/home_bg.jpg');
+        },
         computedLogoUrl() {
-            return require(`@/assets/img/templates/templates1/${this.logoUrl}`);
+            return this.logoUrl && this.logoUrl.startsWith('images/')
+                ? `http://127.0.0.1:8000/uploads/${this.logoUrl}`
+                : require('@/assets/img/templates/templates1/logo_1000.png');
+
         },
         activeMenuTabStyle() {
             return {
@@ -431,7 +445,7 @@ export default {
         },
         videoSource() {
             try {
-                return require(`@/assets/img/templates/templates1/${this.mediaUrl}`);
+                return `http://127.0.0.1:8000/uploads/${this.mediaUrl}`;
             } catch (error) {
                 console.error('Video not found:', error);
                 return null;

@@ -6,7 +6,8 @@
         </div>
         <div class="offcanvas-body">
             <slot>
-                <div v-if="mode === 'edit'">
+
+                <div v-if="this.localMode === 'edit'">
                     <form @submit.prevent="handleEditFormSubmit">
                         <div class="mb-3">
                             <label for="category_name" class="form-label">Category Name</label>
@@ -68,7 +69,7 @@
                         </div>
                     </form>
                 </div>
-                <div v-else-if="mode === 'createMenu'">
+                <div v-else-if="this.localMode === 'createMenu'">
                     <form @submit.prevent="handleCreateMenuFormSubmit">
                         <div class="mb-3">
                             <label for="descriptions" class="form-label">Name</label>
@@ -135,7 +136,7 @@
                         </div>
                     </form>
                 </div>
-                <div v-else-if="mode === 'editMenu'">
+                <div v-else-if="this.localMode === 'editMenu'">
                     <form @submit.prevent="handleEditMenuFormSubmit">
 
                         <div class="mb-3">
@@ -180,7 +181,67 @@
                         </div>
                     </form>
                 </div>
-                <div v-else-if="mode === 'createCategory'">
+                <div v-else-if="this.localMode === 'editProduct'">
+                    <form @submit.prevent="handleEditProductFormSubmit">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" v-model="editProductForm.name" class="form-control" id="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="desc" class="form-label">Description</label>
+                            <ckeditor :editor="editor" v-model="editProductForm.desc" :config="editorConfig"></ckeditor>
+                        </div>
+                        <div class="mb-3 d-flex w-100 gap-20">
+
+                            <div v-if="editProductForm.image">
+                                <div class="photo-area">
+                                    <div class="polaroid">
+                                        <div class="img-container" @click="toggler = !toggler">
+                                            <img :src="`https://panel.dinelim.ai/uploads/${editProductForm.image}`"
+                                                class="image" style="width:100%">
+                                            <div class="middle">
+                                                <div class="text"><i class="bi bi-eye me-2"></i>Preview</div>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <i class="bi bi-trash3"></i>
+                                        </div>
+                                    </div>
+                                    <FsLightbox :toggler="toggler"
+                                        :sources="[`https://panel.dinelim.ai/uploads/${editProductForm.image}`]" />
+                                </div>
+                            </div>
+                            <div>
+                                <label for="image" class="form-label">Image</label>
+                                <div class="file-upload">
+
+                                    <label for="file-upload" class="custom-file-upload">
+                                        <i class="bi bi-upload"></i>
+                                        <div>Upload</div>
+                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                    </label>
+                                    <input type="file" id="file-upload" @change="onFileChange"
+                                        accept="image/*,video/*" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="allergen" class="form-label">Content Warnings</label>
+                            <select multiple class="form-select" id="allergenSelect"
+                                v-model="editProductForm.allergens">
+                                <option v-show="allergen.language_id == 1" v-for="allergen in allergens"
+                                    :key="allergen.allergen_id" :value="allergen.allergen_id">
+                                    {{ allergen.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div v-else-if="this.localMode === 'createCategory'">
                     <form @submit.prevent="handleCreateCategoryFormSubmit">
                         <div class="mb-3">
                             <label for="descriptions" class="form-label">Name</label>
@@ -256,7 +317,7 @@
                         </div>
                     </form>
                 </div>
-                <div v-else-if="mode === 'createProduct'">
+                <div v-else-if="this.localMode === 'createProduct'">
                     <form @submit.prevent="handleCreateProductFormSubmit">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -272,32 +333,12 @@
                             </ckeditor>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="form-label">Image</label>
-                            <div class="d-flex justify-content-between">
-                                <div class="dropdown">
-                                    <button class="upload-image" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <img src="~@/assets/img/icons/cat_1.png" width="32px"> <i
-                                            class="bi bi-upload"></i>
-                                        <p>Upload</p>
-                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
-                                    </button>
-                                    <div class="dropdown-menu icon-menu">
-                                        <div class="image-list" v-if="icons.length">
-                                            <div v-for="(icon, index) in icons" :key="index" class="icon-item">
-                                                <img :src="icon" alt="Icon" @click="selectProductImage(icon)" />
-                                            </div>
-                                        </div>
-                                        <div v-else>
-                                            <p>No icons found.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="photo-area" v-if="createProductForm.image">
+                            <div v-if="createProductForm.image">
+                                <div class="photo-area">
                                     <div class="polaroid">
                                         <div class="img-container" @click="toggler = !toggler">
-                                            <img :src="createProductForm.image" class="image filtered-image"
-                                                style="width:100%">
+                                            <img :src="`https://panel.dinelim.ai/uploads/${createProductForm.image}`"
+                                                class="image" style="width:100%">
                                             <div class="middle">
                                                 <div class="text"><i class="bi bi-eye me-2"></i>Preview</div>
                                             </div>
@@ -306,13 +347,23 @@
                                             <i class="bi bi-trash3"></i>
                                         </div>
                                     </div>
-                                    <FsLightbox :toggler="toggler" :sources="[createProductForm.image]" />
+                                    <FsLightbox :toggler="toggler"
+                                        :sources="[`https://panel.dinelim.ai/uploads/${createProductForm.image}`]" />
                                 </div>
-                                <div v-else>
-                                    <div>
+                            </div>
+                            <div>
+                                <label for="image" class="form-label">Image</label>
+                                <div class="file-upload">
 
-                                    </div>
+                                    <label for="file-upload" class="custom-file-upload">
+                                        <i class="bi bi-upload"></i>
+                                        <div>Upload</div>
+                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                    </label>
+                                    <input type="file" id="file-upload" @change="onFileChange"
+                                        accept="image/*,video/*" />
                                 </div>
+
                             </div>
                         </div>
                         <div class="mb-3">
@@ -344,34 +395,40 @@
                         </div>
                     </form>
                 </div>
-                <div v-else>
+                <div v-else-if="this.localMode === 'list'">
                     <div v-if="products.length > 0">
                         <div v-for="product in products" :key="product.id" class="blog-card">
                             <div class="meta">
-                                <div class="photo" :style="{ backgroundImage: 'url(' + product.image + ')' }"></div>
+                                <div class="photo"
+                                    :style="{ backgroundImage: `url(https://panel.dinelim.ai/uploads/${product.image})` }">
+                                </div>
                                 <ul class="details">
-                                    <li class="author"><a href="#"><i class="bi bi-eye ms-2"></i>Preview</a></li>
-                                    <li class="date">Aug. 24, 2015</li>
-                                    <li class="tags">
+
+                                    <li class="date">{{ product.price }}$</li>
+                                    <li class="tags" v-if="product.allergens.length > 0">
                                         <ul>
-                                            <li><a href="#">Milk</a></li>
-                                            <li><a href="#">Eggs</a></li>
-                                            <li><a href="#">Peanut</a></li>
-                                            <li><a href="#">Soybean</a></li>
+                                            <li v-for="alergen in product.allergens" v-show="alergen.language_id == 1"
+                                                :key="alergen.allergen_id"><a href="#">{{ alergen.name }}</a></li>
+
                                         </ul>
                                     </li>
                                 </ul>
                             </div>
                             <div class="description">
+                                <div class="d-flex justify-content-end" @click="editProduct(product)"><i
+                                        class="bi bi-pencil-square text-secondary"></i></div>
                                 <h2>{{ product.name }}</h2>
 
                                 <p class="read-more">
-                                    <a href="#">Read More</a>
+                                    <a href="#">Go To Details</a>
                                 </p>
                             </div>
                         </div>
                     </div>
                     <p v-else>No products found.</p>
+                </div>
+                <div v-else>
+
                 </div>
             </slot>
         </div>
@@ -379,8 +436,10 @@
 </template>
 
 <script>
+import axios from "axios";
 import FsLightbox from "fslightbox-vue/v3";
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, Underline, Heading } from 'ckeditor5';
+import { toast } from 'vue3-toastify';
 import icons from '../utils/importIcons';
 import "../assets/css/comps/OffCanvas.css";
 
@@ -389,6 +448,7 @@ export default {
     props: {
         id: String,
         title: String,
+        selectedBranchId: String,
         mode: {
             type: String,
             default: 'edit'
@@ -432,9 +492,13 @@ export default {
             editor: ClassicEditor,
             editForm: { ...this.category },
             editMenuForm: { ...this.editMenu },
+            filePath: "",
+            branchId: this.selectedBranchId,
+            editProductForm: {},
             createCategoryForm: { ...this.newCategory },
             createProductForm: { ...this.newProduct },
             createMenuForm: { ...this.newMenu },
+            localMode: this.mode,
             toggler: false,
             selectedCategory: '',
             editorConfig: {
@@ -445,6 +509,20 @@ export default {
         };
     },
     watch: {
+        selectedBranchId(value) {
+            this.branchId = value
+        },
+        mode(newValue) {
+            this.localMode = newValue;
+
+        },
+        newProduct: {
+            handler(newValue) {
+                this.createProductForm = { ...newValue };
+            },
+            deep: true,
+            immediate: true
+        },
         editMenu: {
             immediate: true,
             handler(newValue) {
@@ -461,10 +539,47 @@ export default {
         }
     },
     methods: {
+        async onFileChange(e) {
+            this.file = e.target.files[0];
+            console.log(this.file);
+            const formData = new FormData();
+            formData.append("file", this.file);
+
+            try {
+                const response = await axios.post(
+                    "https://panel.dinelim.ai/api/upload",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+                this.filePath = response.data.filePath;
+
+            } catch (error) {
+                console.error("File upload error:", error);
+            }
+        },
+        handleEditProductFormSubmit() {
+            console.log(this.filePath)
+
+            this.editProductForm.image = this.filePath;
+            this.editProductForm.branch_id = this.branchId;
+            console.log(this.editProductForm)
+            axios.put(`https://panel.dinelim.ai/api/product/${this.editProductForm.product_id}`, this.editProductForm)
+                .then(response => {
+                    console.log(response)
+                    toast.success('Product updated successfully!');
+
+
+                })
+        },
         handleEditFormSubmit() {
             this.$emit('updatedCategory', this.editForm);
         },
         handleEditMenuFormSubmit() {
+
             this.$emit('updatedMenu', this.editMenuForm);
         },
         handleCreateCategoryFormSubmit() {
@@ -475,6 +590,14 @@ export default {
         },
         handleCreateProductFormSubmit() {
             this.$emit('createdProduct', this.createProductForm);
+        },
+        editProduct(product) {
+            this.localMode = 'editProduct';
+            this.editProductForm = product;
+            const allergenIds = [...new Set(this.editProductForm.allergens.map(allergen => allergen.allergen_id))];
+            this.editProductForm.allergens = allergenIds;
+            console.log(allergenIds)
+            console.log(this.editProductForm)
         },
         selectProductImage(src) {
             this.createProductForm.image = src;
@@ -488,7 +611,7 @@ export default {
         selectEditImage(src) {
             this.editForm.image = src;
         }
-    }
+    },
 };
 </script>
 
