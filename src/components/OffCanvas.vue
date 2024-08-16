@@ -562,9 +562,11 @@ export default {
             }
         },
         handleEditProductFormSubmit() {
-            console.log(this.filePath)
+        
+            if (this.filePath) {
+                this.editProductForm.image = this.filePath;
+            }
 
-            this.editProductForm.image = this.filePath;
             this.editProductForm.branch_id = this.branchId;
             console.log(this.editProductForm)
             axios.put(`https://panel.dinelim.ai/api/product/${this.editProductForm.product_id}`, this.editProductForm)

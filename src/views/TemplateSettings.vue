@@ -220,7 +220,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/upload",
+          "https://panel.dinelim.ai/api/upload",
           formData,
           {
             headers: {
@@ -243,7 +243,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/upload",
+          "https://panel.dinelim.ai/api/upload",
           formData,
           {
             headers: {
@@ -286,6 +286,7 @@ export default {
     saveSettings() {
       // Emit an event with the form data
       this.$emit("save-settings", {
+        user_id:null,
         languages: this.selectedLanguagesInternal,
         color: [
           { name: "selectedBgColor", value: this.selectedBgColorInternal },

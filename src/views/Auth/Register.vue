@@ -67,7 +67,7 @@ export default {
                 });
                 this.authStore.setAuthData(response.data.token, response.data.user);
                 this.error = null;
-                this.$router.push('/dashboard'); // Kayıt sonrası yönlendirme
+                this.$router.push('/'); 
             } catch (err) {
                 this.error = 'Registration failed. Please try again.';
             }

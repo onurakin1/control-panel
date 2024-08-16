@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
 // Import Components
-import HomeComp from '@/views/HomeComp.vue';  
+import HomeComp from '@/views/HomeComp.vue';
 import GroupBranchComp from "@/views/BranchGroupComp.vue";
 import ProductManagement from "@/views/Product/CategoryMenu.vue";
 import CategoryMenuDetails from "@/views/Product/CategoryMenuDetails.vue";
@@ -20,8 +20,8 @@ const routes = [
     meta: { requiresAuth: true }, // Giriş gerektirir
   },
   {
-    path: '/home',
-    name: 'Home',
+    path: '/dashboard',
+    name: 'Dashboard',
     component: HomeComp,
     meta: { requiresAuth: true },
   },

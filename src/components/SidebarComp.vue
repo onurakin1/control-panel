@@ -12,7 +12,7 @@
       <li class="nav-item">
         <router-link to="/" class="nav-link text-secondary">
           <i class="bi bi-house fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Home</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Dashboard</span>
         </router-link>
       </li>
       <li>

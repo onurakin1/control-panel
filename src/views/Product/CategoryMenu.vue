@@ -90,7 +90,7 @@ export default {
       console.log(this.editableMenu)
     },
     viewCategory(category) {
-      this.$router.push({ name: 'CategoryMenuDetails', params: { id: category.id } });
+      this.$router.push({ name: 'CategoryMenuDetails', params: { id: category.parent_id } });
 
     },
     dragStart(event, category) {
@@ -120,7 +120,7 @@ export default {
   computed: {
     categories() {
       const categoryStore = useCategoryStore(); // Store'u kullanın
-      return categoryStore.getCategories; // Store'dan kategorileri alın
+      return categoryStore.getCategories.filter((menuItem) => menuItem.language_id == 1); // Store'dan kategorileri alın
     }
   }
 

@@ -36,9 +36,9 @@
                             :class="{ 'border-green': category.visible === 1, 'border-gray': category.visible === 0 }">
                             <div>
                                 <i class="bi bi-grip-horizontal me-3"></i>
-                                <img :src="category.image" :alt="category.category_name" height="30"
+                                <img :src="category.image" :alt="category.name" height="30"
                                     class="filtered-image me-2">
-                                {{ category.category_name }}
+                                {{ category.name }}
                             </div>
 
                             <div class="btn-group">
@@ -82,9 +82,9 @@
 
                             <div>
                                 <i class="bi bi-grip-horizontal me-3"></i>
-                                <img :src="childCategory.image" :alt="childCategory.category_name" height="30"
+                                <img :src="childCategory.image" :alt="childCategory.name" height="30"
                                     class="filtered-image me-2">
-                                {{ childCategory.category_name }}
+                                {{ childCategory.name }}
 
 
                             </div>

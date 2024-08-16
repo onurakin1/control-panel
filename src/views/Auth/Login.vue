@@ -57,7 +57,7 @@ export default {
                 this.authStore.setAuthData(response.data.token, response.data.user);
                 this.error = null;
 
-                this.$router.push({ name: 'Home' });
+                this.$router.push({ name: 'Dashboard' });
                 console.log('User Info:', response.data.user);
             } catch (err) {
                 this.error = 'Login failed. Please check your credentials.';

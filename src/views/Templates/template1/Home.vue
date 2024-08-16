@@ -266,7 +266,8 @@
 </template>
 
 <script>
-import "../../../assets/css/views/templates/template1.css"
+import "../../../assets/css/views/templates/template1.css";
+
 export default {
     name: "HomePage",
     props: {
@@ -303,16 +304,16 @@ export default {
             type: String,
             default: require(`@/assets/img/templates/templates1/logo_1000.png`)
         },
-        selectedLanguages:Array,
-    
+        selectedLanguage: {
+            type: Array,
+            default: () => null
+        },
         fontSize: String,
         disabled: Boolean
-
     },
     data() {
         return {
             isShareMenuVisible: false,
-            languages: ["AR", "EN"],
             hovered: null,
             mode: 'home',
             activeTab: 'EN',
@@ -417,14 +418,13 @@ export default {
         computedMediaUrl() {
             // Check if mediaUrl is valid, otherwise return the default image
             return this.mediaUrl && this.mediaUrl.startsWith('images/')
-                ? `http://127.0.0.1:8000/uploads/${this.mediaUrl}`
+                ? `https://panel.dinelim.ai/uploads/${this.mediaUrl}`
                 : require('@/assets/img/templates/templates1/home_bg.jpg');
         },
         computedLogoUrl() {
             return this.logoUrl && this.logoUrl.startsWith('images/')
-                ? `http://127.0.0.1:8000/uploads/${this.logoUrl}`
+                ? `https://panel.dinelim.ai/uploads/${this.logoUrl}`
                 : require('@/assets/img/templates/templates1/logo_1000.png');
-
         },
         activeMenuTabStyle() {
             return {
@@ -445,11 +445,17 @@ export default {
         },
         videoSource() {
             try {
-                return `http://127.0.0.1:8000/uploads/${this.mediaUrl}`;
+                return `https://panel.dinelim.ai/uploads/${this.mediaUrl}`;
             } catch (error) {
                 console.error('Video not found:', error);
                 return null;
             }
+        },
+        languages() {
+            console.log(this.selectedLanguage);
+            return this.selectedLanguage
+                ? this.selectedLanguage.map(language => language.toUpperCase()) // Gelen dilleri büyük harfe çevir
+                : ["AR", "EN"];
         }
     },
     methods: {

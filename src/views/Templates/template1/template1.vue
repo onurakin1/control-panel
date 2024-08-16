@@ -3,8 +3,7 @@
     <div class="homepage">
       <!-- Image Background -->
 
-      <div v-if="isImage(mediaUrl)" :style="{ backgroundImage: `url(http://127.0.0.1:8000/uploads/${mediaUrl})` }"
-        class="banner">
+      <div v-if="isImage(mediaUrl)" :style="{ backgroundImage: `url(${computedMediaUrl})` }" class="banner">
         <div class="top-actions">
           <div class="share">
             <div class="share-button" @click="toggleShareMenu" :style="{ backgroundColor: mainBgColor }">
@@ -27,11 +26,12 @@
           </div>
           <div class="language">
             <ul class="language-list">
-              <li v-for="language in selectedLanguages" :key="language" :style="{
+              <li v-for="language in transformedLanguages" :key="language.id" :style="{
                 borderColor: mainBgColor,
-                backgroundColor: hovered === language ? mainBgColor : '',
-              }" @mouseenter="hovered = language" @mouseleave="hovered = null">
-                {{ formatLanguage(language) }}
+                backgroundColor: hovered === language.name ? mainBgColor : '',
+              }" @mouseenter="hovered = language.name" @mouseleave="hovered = null"
+                @click="selectedLanguage(language.id)">
+                {{ formatLanguage(language.name) }}
               </li>
             </ul>
           </div>
@@ -66,11 +66,12 @@
           </div>
           <div class="language">
             <ul class="language-list">
-              <li v-for="language in selectedLanguages" :key="language" :style="{
+              <li v-for="language in transformedLanguages" :key="language.id" :style="{
                 borderColor: mainBgColor,
-                backgroundColor: hovered === language ? mainBgColor : '',
-              }" @mouseenter="hovered = language" @mouseleave="hovered = null">
-                {{ formatLanguage(language) }}
+                backgroundColor: hovered === language.name ? mainBgColor : '',
+              }" @mouseenter="hovered = language.name" @mouseleave="hovered = null"
+                @click="selectedLanguage(language.id)">
+                {{ formatLanguage(language.name) }}
               </li>
             </ul>
           </div>
@@ -103,14 +104,14 @@
         <ul class="nav nav-pills flex-column mb-auto">
           <li v-for="item in sideMenuItems" :key="item.category_id" class="nav-item">
             <div @click="handleClick(item)" class="text-white menu-item template-menu-item">
-              <img :src="item.image" :alt="item.category_name" style="width: 70px; height: 70px;" />
-              <span class="template-nav-text">{{ item.category_name }}</span>
+              <img :src="item.image" :alt="item.name" style="width: 70px; height: 70px;" />
+              <span class="template-nav-text">{{ item.name }}</span>
             </div>
             <ul v-if="item.showChildren" class="nav nav-pills flex-column mb-auto">
               <li v-for="child in item.children" :key="child.category_id" class="nav-item">
                 <div class="text-white menu-item template-menu-item" @click="handleClick(child)">
-                  <img :src="child.image" :alt="child.category_name" style="width: 60px; height: 60px;" />
-                  <span class="template-nav-text">{{ child.category_name }}</span>
+                  <img :src="child.image" :alt="child.name" style="width: 60px; height: 60px;" />
+                  <span class="template-nav-text">{{ child.name }}</span>
                 </div>
 
               </li>
@@ -185,7 +186,7 @@
       </div>
       <div v-for="descItem in productDesc" :key="descItem.id">
         <div class="desc-img">
-          <img src='@/assets/img/templates/menu_images/lotus.jpg' />
+          <img :src="getImageUrl(descItem.image)" />
         </div>
         <div class="desc-name">
           <h4>{{ descItem.name }}</h4>
@@ -194,9 +195,6 @@
         </div>
         <div class="mt-4">{{ descItem.desc }}</div>
       </div>
-
-
-
     </div>
   </div>
 </template>
@@ -235,7 +233,10 @@ export default {
       type: String,
       default: '#fff',
     },
-    selectedLanguages: Array,
+    selectedLanguages: {
+      type: Array,
+      required: true
+    },
     mediaUrl: String,
     logoUrl: String,
     fontSize: String
@@ -246,6 +247,7 @@ export default {
       branchStore: useBranchStore(),
       isShareMenuVisible: false,
       languages: ["AR", "EN"],
+      selectedLanguageId: 1,
       hovered: null,
       mode: 'home',
       activeTab: 'EN',
@@ -259,15 +261,42 @@ export default {
     };
   },
   computed: {
+    computedMediaUrl() {
+      // Check if mediaUrl is valid, otherwise return the default image
+      return this.mediaUrl && this.mediaUrl.startsWith('images/')
+        ? `https://panel.dinelim.ai/uploads/${this.mediaUrl}`
+        : require('@/assets/img/templates/templates1/home_bg.jpg');
+    },
+    computedLogoUrl() {
+      return this.logoUrl && this.logoUrl.startsWith('images/')
+        ? `https://panel.dinelim.ai/uploads/${this.logoUrl}`
+        : require('@/assets/img/templates/templates1/logo_1000.png');
+    },
+    transformedLanguages() {
+      // Dil kodlarını name ve id içeren nesnelere dönüştür
+      return this.selectedLanguages.map(languageCode => {
+        if (languageCode === 'en') {
+          return { name: 'EN', id: 1 };
+        } else if (languageCode === 'ar') {
+          return { name: 'AR', id: 2 };
+        }
+        else if (languageCode === 'tr') {
+          return { name: 'TR', id: 0 };
+        }
+        else if (languageCode === 'fr') {
+          return { name: 'FR', id: 3 };
+        }
+        // Diğer diller için dönüşüm eklenebilir
+        return { name: languageCode, id: null };
+      });
+    },
     menuList() {
-      return this.menuStore.getCategories;
+      return this.menuStore.getCategories.filter((menuItem) => menuItem.language_id == this.selectedLanguageId);
     },
     selectedBranchId() {
       return this.branchStore.selectedBranchId;
     },
-    computedLogoUrl() {
-      return require(`@/assets/img/templates/templates1/${this.logoUrl}`);
-    },
+
     activeMenuTabStyle() {
       return {
         background: this.mainBgColor,
@@ -287,14 +316,19 @@ export default {
     },
     videoSource() {
       try {
-        return require(`@/assets/img/templates/templates1/${this.mediaUrl}`);
+        return `https://panel.dinelim.ai/uploads/${this.mediaUrl}`;
       } catch (error) {
         console.error('Video not found:', error);
         return null;
       }
-    }
+    },
   },
   methods: {
+    selectedLanguage(value) {
+
+      this.selectedLanguageId = value;
+      console.log(this.selectedLanguageId)
+    },
     getProductDesc(id) {
       this.mode = 'desc'
 
@@ -311,7 +345,7 @@ export default {
     },
     getImageUrl(image) {
       // Return the image if it's not null, otherwise return the default image
-      return image || this.image;
+      return `https://panel.dinelim.ai/uploads/${image}` || this.image;
     },
     formatLanguage(language) {
       return language.toUpperCase();
