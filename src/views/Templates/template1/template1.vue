@@ -108,7 +108,7 @@
               <span class="template-nav-text">{{ item.name }}</span>
             </div>
             <ul v-if="item.showChildren" class="nav nav-pills flex-column mb-auto">
-              <li v-for="child in item.children" :key="child.category_id" class="nav-item">
+              <li v-for="child in item.children" v-show="child.language_id == this.selectedLanguageId" :key="child.category_id" class="nav-item">
                 <div class="text-white menu-item template-menu-item" @click="handleClick(child)">
                   <img :src="child.image" :alt="child.name" style="width: 60px; height: 60px;" />
                   <span class="template-nav-text">{{ child.name }}</span>
