@@ -162,7 +162,16 @@ input[type="file"] {
       
     }
   }
-  
+  @media (max-width: 768px) {
+    .template-border {
+        width: 470px;
+        height: 768px;
+      
+    }
+    .template-sidebar {
+        width: 110px;
+    }
+}
   /* On screens that are 600px wide or less, the background color is olive */
   @media screen and (max-width: 600px) {
 
