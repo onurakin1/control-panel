@@ -123,11 +123,11 @@
 
         <div class="menu-nav">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation" v-for="item in menuList" :key="item.id">
-              <button class="nav-link" :class="{ active: activeMenuTab === item.id }" :id="`pills-${item.name}-tab`"
+            <li class="nav-item" role="presentation" v-for="item in menuList" :key="item.parent_id">
+              <button class="nav-link" :class="{ active: activeMenuTab === item.parent_id }" :id="`pills-${item.name}-tab`"
                 data-bs-toggle="pill" :data-bs-target="`#pills-${item.name}`" type="button" role="tab"
-                :aria-controls="`pills-${item.name}`" :aria-selected="activeMenuTab === item.id"
-                @click="setMenuActiveTab(item.id)" :style="activeMenuTab === item.id ? activeMenuTabStyle : null">
+                :aria-controls="`pills-${item.name}`" :aria-selected="activeMenuTab === item.parent_id"
+                @click="setMenuActiveTab(item.parent_id)" :style="activeMenuTab === item.parent_id ? activeMenuTabStyle : null">
                 {{ item.name }}
               </button>
             </li>
@@ -138,12 +138,12 @@
         </div>
         <div class="language_nav">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation" v-for="language in selectedLanguages" :key="language">
-              <button class="nav-link" :class="{ active: activeTab === language }" :id="`pills-${language}-tab`"
-                data-bs-toggle="pill" :data-bs-target="`#pills-${language}`" type="button" role="tab"
-                :aria-controls="`pills-${language}`" aria-selected="true" @click="setActiveTab(language)"
-                :style="activeTab === language ? activeTabStyle : color = mainBgColor">
-                {{ formatLanguage(language) }}
+            <li class="nav-item" role="presentation" v-for="language in transformedLanguages" :key="language.id">
+              <button class="nav-link" :class="{ active: activeTab === language.name }" :id="`pills-${language.name}-tab`"
+                data-bs-toggle="pill" :data-bs-target="`#pills-${language.name}`" type="button" role="tab"
+                :aria-controls="`pills-${language.name}`" aria-selected="true" @click="setActiveTab(language)"
+                :style="activeTab === language.name ? activeTabStyle : color = mainBgColor">
+                {{ formatLanguage(language.name) }}
               </button>
             </li>
 
@@ -151,8 +151,8 @@
         </div>
         <div class="product-items">
           <div class="tab-content" id="pills-tabContent">
-            <div v-for="item in menuList" :key="item.id" class="tab-pane fade"
-              :class="{ 'show active': activeMenuTab === item.id }" :id="`pills-${item.name}-tab`" role="tabpanel"
+            <div v-for="item in menuList" :key="item.parent_id" class="tab-pane fade"
+              :class="{ 'show active': activeMenuTab === item.parent_id }" :id="`pills-${item.name}-tab`" role="tabpanel"
               :aria-labelledby="`pills-${item.name}-tab`">
               <div class="row">
                 <div v-for="item in productItems" :key="item.product_id" :class="colClass"
@@ -255,7 +255,7 @@ export default {
 
       isShareMenuVisible: false,
       languages: ["AR", "EN"],
-      selectedLanguageId: 1,
+      selectedLanguageId: 0,
       hovered: null,
       mode: 'home',
       activeTab: 'EN',
@@ -284,12 +284,12 @@ export default {
       // Dil kodlarını name ve id içeren nesnelere dönüştür
       return this.selectedLanguages.map(languageCode => {
         if (languageCode === 'en') {
-          return { name: 'EN', id: 1 };
+          return { name: 'EN', id: 0 };
         } else if (languageCode === 'ar') {
           return { name: 'AR', id: 2 };
         }
         else if (languageCode === 'tr') {
-          return { name: 'TR', id: 0 };
+          return { name: 'TR', id: 1 };
         }
         else if (languageCode === 'fr') {
           return { name: 'FR', id: 3 };
@@ -359,24 +359,27 @@ export default {
       return language.toUpperCase();
     },
     setActiveTab(tab) {
-      this.activeTab = tab;
+      this.selectedLanguageId = tab.id;
+      this.activeTab = tab.name;
+      this.setMenuActiveTab();
     },
     setMenuActiveTab(tab) {
       this.activeMenuTab = tab;
+      console.log( this.activeMenuTab )
       axios.get(`https://panel.dinelim.ai/api/product-category/${tab}`)
         .then(response => {
           const categories = response.data.map(category => ({
             ...category,
             showChildren: false,
-            children: category.child || [] // Alt kategoriler
+            children: category.child || [] 
           }));
 
           const sortedCategories = categories.sort((a, b) => a.sort_order - b.sort_order);
-          this.sideMenuItems = sortedCategories;
+          this.sideMenuItems = sortedCategories.filter((item) => item.language_id == this.selectedLanguageId);
           // Set the active product after categories are loaded
           if (this.sideMenuItems.length > 0) {
             this.activeProduct = this.sideMenuItems[0].category_id;
-            this.setProduct(this.activeProduct); // Call setProduct with the first category
+            this.setProduct(this.activeProduct); 
           }
         })
         .catch(error => {
@@ -385,10 +388,8 @@ export default {
     },
     handleClick(item) {
       if (item.children && item.children.length > 0) {
-        // Toggle visibility of children if they exist
         item.showChildren = !item.showChildren;
       } else {
-        // Call setProduct method if no children
         this.setProduct(item.category_id);
       }
     },
@@ -420,7 +421,7 @@ export default {
   mounted() {
     // Set initial activeMenuTab to the ID of the first item in menuList
     if (this.menuList.length > 0) {
-      this.activeMenuTab = this.menuList[0].id;
+      this.activeMenuTab = this.menuList[0].parent_id;
       this.setMenuActiveTab(this.activeMenuTab); // Fetch data for the initial tab
     }
   },
@@ -428,7 +429,7 @@ export default {
     menuList(newMenuList) {
       console.log(newMenuList)
       if (newMenuList.length > 0 && !this.activeMenuTab) {
-        this.activeMenuTab = newMenuList[0].id;
+        this.activeMenuTab = newMenuList[0].parent_id;
         this.setMenuActiveTab(this.activeMenuTab); // Fetch data for the new tab
       }
     }

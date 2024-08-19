@@ -3,5 +3,9 @@
     "userInformation": "User Information",
     "popupManagement": "Popup Managemenet",
     "branchManagement": "Branch Management",
-    "bannerManagement": "Banner Management"
+    "bannerManagement": "Banner Management",
+    "feedback": "Feedback",
+    "hits":"Hits",
+    "settings": "Settings",
+    "pooldatamanagement": "Pool Data Management"
   }

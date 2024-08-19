@@ -3,5 +3,9 @@
   "userInformation": "Kullanıcı Bilgisi",
   "popupManagement": "Popup Yönetimi",
   "branchManagement": "Şube Yönetimi",
-  "bannerManagement": "Banner Yönetimi"
+  "bannerManagement": "Banner Yönetimi",
+  "feedback": "Geri Bildirim",
+  "hits":"Hit Ürünler",
+  "settings": "Ayarlar",
+  "pooldatamanagement": "Havuz Veri Yönetimi"
 }

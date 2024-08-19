@@ -103,8 +103,8 @@ export default {
       this.dragOverCategory = null;
     },
     drop(event, category) {
-      const categoryStore = useCategoryStore(); // Store'u kullanın
-      const categories = categoryStore.getCategories; // Store'dan kategorileri alın
+      const categoryStore = useCategoryStore(); 
+      const categories = categoryStore.getCategories; 
 
       const draggedIndex = categories.findIndex(c => c.id === this.draggedCategory.id);
       const droppedIndex = categories.findIndex(c => c.id === category.id);
@@ -119,9 +119,9 @@ export default {
   },
   computed: {
     categories() {
-      const categoryStore = useCategoryStore(); // Store'u kullanın
+      const categoryStore = useCategoryStore(); 
       console.log(categoryStore.getCategories)
-      return categoryStore.getCategories.filter((menuItem) => menuItem.language_id == 1); // Store'dan kategorileri alın
+      return categoryStore.getCategories.filter((menuItem) => menuItem.language_id == 0);
     }
   }
 

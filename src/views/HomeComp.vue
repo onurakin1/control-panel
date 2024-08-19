@@ -14,7 +14,7 @@
             <div class="icon-container">
               <i :class="card.iconClass + ' fs-1 text-white'"></i>
             </div>
-            <h5 class="card-title mb-3">{{ card.title }}</h5>
+            <h5 class="card-title mb-3">{{ $t(card.title) }}</h5>
             <p class="card-text text-center">{{ card.description }}</p>
           </div>
         </router-link>
@@ -34,35 +34,35 @@ export default {
       cards: [
         {
           iconClass: "bi bi-person",
-          title: "Settings",
+          title: "settings",
           description:
             "You can update your user information here...",
             link:"/settings"
         },
         {
           iconClass: "bi bi-list-task",
-          title: "Pool Data Management",
+          title: "pooldatamanagement",
           description:
             "You can manage categories and products from here...",
             link:"/"
         },
         {
           iconClass: "bi-bar-chart-fill",
-          title: "Branch",
+          title: "branchManagement",
           description:
             "You can manage your branch from here...",
             link:"/branch"
         },
         {
           iconClass: "bi bi-bug-fill",
-          title: "Feedback",
+          title: "feedback",
           description:
             "You can find customer comments here...",
             link:"/"
         },
         {
           iconClass: "bi bi-star-fill",
-          title: "Hits",
+          title: "hits",
           description:
             "You can access Hit's products from here...",
             link:"/"

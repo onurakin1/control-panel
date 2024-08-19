@@ -1,8 +1,6 @@
 <template>
     <div class="container mt-4">
-        <h3>
-            <div>{{ $t('groupBranch') }}</div>
-        </h3>
+   
         <div class="d-flex justify-content-end mb-3 mt-3">
             <button class="btn btn-primary" @click="addBranch">Add New Branch</button>
         </div>

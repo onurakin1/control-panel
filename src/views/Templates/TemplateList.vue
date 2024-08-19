@@ -172,8 +172,8 @@ export default {
             console.error("There was an error adding the category!", error);
           });
       } else {
-        console.log(this.selectedTemplateId);
 
+        settings.user_id = this.authStore.user.id
         axios
           .put(
             `https://panel.dinelim.ai/api/template/${this.selectedTemplateId}`,

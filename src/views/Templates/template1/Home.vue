@@ -1,8 +1,6 @@
 <template>
     <div v-if="mode == 'home'" style="height: 100%;width: 100%;background-size: cover;">
 
-
-
         <div class="homepage">
             <!-- Image Background -->
             <div v-if="isImage(mediaUrl)" :style="{ backgroundImage: `url(${computedMediaUrl})` }" class="banner">
@@ -28,11 +26,11 @@
                     </div>
                     <div class="language">
                         <ul class="language-list">
-                            <li v-for="language in languages" :key="language" :style="{
+                            <li v-for="language in transformedLanguages" :key="language.id" :style="{
                                 borderColor: mainBgColor,
-                                backgroundColor: hovered === language ? mainBgColor : '',
-                            }" @mouseenter="hovered = language" @mouseleave="hovered = null">
-                                {{ language }}
+                                backgroundColor: hovered === language.name ? mainBgColor : '',
+                            }" @mouseenter="hovered = language.name" @mouseleave="hovered = null">
+                           {{ formatLanguage(language.name) }}
                             </li>
                         </ul>
                     </div>
@@ -68,8 +66,12 @@
                     </div>
                     <div class="language">
                         <ul class="language-list">
-                            <li>AR</li>
-                            <li>EN</li>
+                            <li v-for="language in transformedLanguages" :key="language.id" :style="{
+                                borderColor: mainBgColor,
+                                backgroundColor: hovered === language.name ? mainBgColor : '',
+                            }" @mouseenter="hovered = language.name" @mouseleave="hovered = null">
+                           {{ formatLanguage(language.name) }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -306,7 +308,7 @@ export default {
         },
         selectedLanguage: {
             type: Array,
-            default: () => null
+            default: () =>  ["AR", "EN"]
         },
         fontSize: String,
         disabled: Boolean
@@ -451,14 +453,28 @@ export default {
                 return null;
             }
         },
-        languages() {
-            console.log(this.selectedLanguage);
-            return this.selectedLanguage
-                ? this.selectedLanguage.map(language => language.toUpperCase()) // Gelen dilleri büyük harfe çevir
-                : ["AR", "EN"];
+        transformedLanguages() {
+      return this.selectedLanguage.map(languageCode => {
+        if (languageCode === 'en') {
+          return { name: 'EN', id: 1 };
+        } else if (languageCode === 'ar') {
+          return { name: 'AR', id: 2 };
         }
+        else if (languageCode === 'tr') {
+          return { name: 'TR', id: 0 };
+        }
+        else if (languageCode === 'fr') {
+          return { name: 'FR', id: 3 };
+        }
+        // Diğer diller için dönüşüm eklenebilir
+        return { name: languageCode, id: null };
+      });
+    },
     },
     methods: {
+        formatLanguage(language) {
+      return language.toUpperCase();
+    },
         setActiveTab(tab) {
             this.activeTab = tab;
         },

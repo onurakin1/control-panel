@@ -242,7 +242,7 @@ export default {
     computed: {
 
         sortedCategories() {
-            return [...this.categories].sort((a, b) => a.sort_order - b.sort_order);
+            return [...this.categories].sort((a, b) => a.sort_order - b.sort_order).filter((item) => item.language_id == 0);
         },
         selectedBranchId() {
             return this.branchStore.selectedBranchId;

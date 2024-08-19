@@ -33,7 +33,7 @@
         <button class="btn btn-primary-outline dropdown-toggle text-secondary" type="button" id="navbarDropdown"
           data-bs-toggle="dropdown" aria-expanded="false"
           style="background-color: transparent; border: none; color: white;">
-          EN
+          {{ currentLanguage }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li>
