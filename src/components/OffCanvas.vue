@@ -192,7 +192,7 @@
                             <ckeditor :editor="editor" v-model="editProductForm.desc" :config="editorConfig"></ckeditor>
                         </div>
                         <div class="mb-3 d-flex w-100 gap-20">
-
+                            
                             <div v-if="editProductForm.image">
                                 <div class="photo-area">
                                     <div class="polaroid">
@@ -204,14 +204,31 @@
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <i class="bi bi-trash3"></i>
+                                            <i class="bi bi-trash3" @click="resetFile"></i>
                                         </div>
                                     </div>
                                     <FsLightbox :toggler="toggler"
                                         :sources="[`https://panel.dinelim.ai/uploads/${editProductForm.image}`]" />
                                 </div>
                             </div>
-                            <div>
+                            <div v-if="this.filePath">
+    <div class="photo-area">
+                                    <div class="polaroid">
+                                        <div class="img-container" @click="toggler = !toggler">
+                                            <img :src="`https://panel.dinelim.ai/uploads/${this.filePath}`"
+                                                class="image" style="width:100%">
+                                            <div class="middle">
+                                                <div class="text"><i class="bi bi-eye me-2"></i>Preview</div>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <i class="bi bi-trash3" @click="resetFile"></i>
+                                        </div>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <div v-else>
                                 <label for="image" class="form-label">Image</label>
                                 <div class="file-upload">
 
@@ -573,7 +590,7 @@ export default {
                 .then(response => {
                     console.log(response)
                     toast.success('Product updated successfully!');
-
+  this.filePath = null;
 
                 })
         },
@@ -593,6 +610,9 @@ export default {
         handleCreateProductFormSubmit() {
             this.$emit('createdProduct', this.createProductForm);
         },
+          resetFile(){
+      this.filePath = null;
+    },
         editProduct(product) {
             this.localMode = 'editProduct';
             this.editProductForm = product;
