@@ -120,6 +120,7 @@ export default {
   computed: {
     categories() {
       const categoryStore = useCategoryStore(); // Store'u kullanın
+      console.log(categoryStore.getCategories)
       return categoryStore.getCategories.filter((menuItem) => menuItem.language_id == 1); // Store'dan kategorileri alın
     }
   }

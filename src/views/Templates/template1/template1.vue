@@ -241,10 +241,18 @@ export default {
     logoUrl: String,
     fontSize: String
   },
+  setup() {
+    const branchStore = useBranchStore();
+    const categoryStore = useCategoryStore();
+    return {
+      branchStore,
+      categoryStore
+    };
+  },
   data() {
     return {
       menuStore: useCategoryStore(),
-      branchStore: useBranchStore(),
+
       isShareMenuVisible: false,
       languages: ["AR", "EN"],
       selectedLanguageId: 1,
@@ -418,6 +426,7 @@ export default {
   },
   watch: {
     menuList(newMenuList) {
+      console.log(newMenuList)
       if (newMenuList.length > 0 && !this.activeMenuTab) {
         this.activeMenuTab = newMenuList[0].id;
         this.setMenuActiveTab(this.activeMenuTab); // Fetch data for the new tab

@@ -36,8 +36,7 @@
                             :class="{ 'border-green': category.visible === 1, 'border-gray': category.visible === 0 }">
                             <div>
                                 <i class="bi bi-grip-horizontal me-3"></i>
-                                <img :src="category.image" :alt="category.name" height="30"
-                                    class="filtered-image me-2">
+                                <img :src="category.image" :alt="category.name" height="30" class="filtered-image me-2">
                                 {{ category.name }}
                             </div>
 
@@ -51,7 +50,7 @@
                                         data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> <i
                                             class="bi bi-plus-lg me-2 ms-2"></i>New
                                         Product</li>
-                                        <li @click="createCategory(category.category_id)" data-bs-toggle="offcanvas"
+                                    <li @click="createCategory(category.category_id)" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> <i
                                             class="bi bi-plus-lg me-2 ms-2"></i>New Sub Category</li>
                                     <li @click="viewProducts(category.category_id, category.category_name)"
@@ -126,7 +125,8 @@
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">   {{ previewData.length > 0 ? previewData[0].name : 'Loading...' }}</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle"> {{ previewData.length > 0 ?
+                                    previewData[0].name : 'Loading...' }}</h5>
                                 <button type="button" class="close" @click="closeModal">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -155,7 +155,8 @@
             :title="mode == 'edit' ? 'Edit' : mode == 'createCategory' ? 'Create Category' : mode == 'createProduct' ? 'Create Product' : 'Product List'"
             :products="products" :mode="mode" :category="editableCategory" :newCategory="newCategory"
             :allergens="allergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
-            @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId"/>
+            @createdCategory="addCategory" @createdProduct="addProductToCategory"
+            :selectedBranchId="selectedBranchId" />
 
     </div>
 </template>
@@ -165,7 +166,7 @@ import axios from 'axios';
 import { Modal } from 'bootstrap';
 import OffCanvas from '@/components/OffCanvas.vue';
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, Underline } from 'ckeditor5';
-import { useCategoryStore } from '@/stores/categoryStore'; 
+import { useCategoryStore } from '@/stores/categoryStore';
 import { useBranchStore } from '@/stores/branchStore';
 import { toast } from 'vue3-toastify';
 import SelectedTemplate from '../Templates/SelectedTemplate.vue';
@@ -178,10 +179,17 @@ export default {
         OffCanvas,
         SelectedTemplate
     },
+    setup() {
+        const branchStore = useBranchStore();
+
+        return {
+            branchStore
+        };
+    },
     data() {
         return {
             categoryStore: useCategoryStore(),
-            branchStore :useBranchStore(),
+            store: useBranchStore(),
             editor: ClassicEditor,
             allergens: [],
             selectedTemplateId: 0,
@@ -237,8 +245,8 @@ export default {
             return [...this.categories].sort((a, b) => a.sort_order - b.sort_order);
         },
         selectedBranchId() {
-      return this.branchStore.selectedBranchId;
-    },
+            return this.branchStore.selectedBranchId;
+        },
     },
     methods: {
         closeModal() {
@@ -275,10 +283,11 @@ export default {
                 })
         },
         viewProducts(categoryId) {
+           
             this.mode = 'list';
             axios.get(`https://panel.dinelim.ai/api/product/${categoryId}`)
                 .then(response => {
-                    this.products = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
+                    this.products = response.data.filter(product => product.branch_group_id == this.branchStore.selectedBranchId);
                 })
                 .catch(error => {
                     console.error('There was an error fetching the data!', error);
@@ -458,15 +467,19 @@ export default {
         },
     },
     mounted() {
-
         const id = this.$route.params.id;
         this.getAllergens();
+
+     
         axios.get(`https://panel.dinelim.ai/api/product-category/${id}`)
             .then(response => {
                 this.categories = response.data.map(category => ({
                     ...category,
                     showChildren: false
                 }));
+           
+                // Filter categories based on selectedBranchId and assign the result back to this.categories
+                this.categories = this.categories.filter((item) => item.branch_id ==  this.branchStore.selectedBranchId);
             })
             .catch(error => {
                 console.error('Error fetching category data:', error);

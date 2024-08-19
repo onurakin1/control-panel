@@ -1,5 +1,7 @@
 {
     "controlPanel": "Control Panel",
-    "groupBranch": "Branch Management",
-    "productManagement": "Product Management"
+    "userInformation": "User Information",
+    "popupManagement": "Popup Managemenet",
+    "branchManagement": "Branch Management",
+    "bannerManagement": "Banner Management"
   }

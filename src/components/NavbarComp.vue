@@ -28,16 +28,20 @@
           <li><a class="dropdown-item" href="#" @click="logout">Log out</a></li>
         </ul>
       </div>
-      
+
       <div class="dropdown">
         <button class="btn btn-primary-outline dropdown-toggle text-secondary" type="button" id="navbarDropdown"
           data-bs-toggle="dropdown" aria-expanded="false"
           style="background-color: transparent; border: none; color: white;">
-         EN
+          EN
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="#">EN</a></li>
-          <li><a class="dropdown-item" href="#">TR</a></li>
+          <li>
+            <div class="dropdown-item" @click="changeLanguage('en')">EN</div>
+          </li>
+          <li>
+            <div class="dropdown-item" @click="changeLanguage('tr')">TR</div>
+          </li>
         </ul>
       </div>
     </div>
@@ -48,6 +52,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'NavbarComp',
@@ -60,6 +65,7 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
+    const { locale } = useI18n(); 
 
     const logout = async () => {
       try {
@@ -82,9 +88,16 @@ export default {
       }
     };
 
+    const changeLanguage = (lang) => {
+      locale.value = lang; // Dil değişimini ayarlayın
+    };
+
+
     return {
       logout,
       authStore,
+      changeLanguage,
+      currentLanguage: locale, 
     };
   },
 };

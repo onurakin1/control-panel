@@ -1,4 +1,7 @@
 {
-    "controlPanel": "Kontrol Paneli"
-  
-  }
+  "controlPanel": "Kontrol Paneli",
+  "userInformation": "Kullanıcı Bilgisi",
+  "popupManagement": "Popup Yönetimi",
+  "branchManagement": "Şube Yönetimi",
+  "bannerManagement": "Banner Yönetimi"
+}

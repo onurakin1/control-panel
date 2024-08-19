@@ -54,7 +54,7 @@ export default {
                     email: this.email,
                     password: this.password,
                 });
-                this.authStore.setAuthData(response.data.token, response.data.user);
+                this.authStore.setAuthData(response.data.token, response.data.user, response.data.template);
                 this.error = null;
 
                 this.$router.push({ name: 'Dashboard' });

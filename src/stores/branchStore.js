@@ -4,12 +4,13 @@ import { defineStore } from 'pinia';
 
 export const useBranchStore = defineStore('branchStore', {
   state: () => ({
-    selectedBranchId: null, // Initialize selectedBranchId
+    selectedBranchId: localStorage.getItem('selectedBranchId') || null, // Yerel depolama ile seçili branch ID'yi yükle
   }),
   actions: {
     setSelectedBranchId(id) {
       this.selectedBranchId = id;
-      console.log(id)
+      localStorage.setItem('selectedBranchId', id); // Seçili branch ID'yi yerel depolamaya kaydet
+      console.log(id);
     }
   }
 });

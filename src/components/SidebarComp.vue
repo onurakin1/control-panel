@@ -1,24 +1,24 @@
 <template>
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-secondary sidebar-bg vh-100" :class="{ 'collapsed': isCollapsed }"
-    id="sidebar">
-    <a href="/"
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-secondary sidebar-bg vh-100"
+    :class="{ 'collapsed': isCollapsed }" id="sidebar">
+    <router-link to="/dashboard"
       class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-secondary text-decoration-none w-100 justify-content-center company-logo">
-      <img src="../assets/img/colony.png" alt="Logo" class="rounded-circle"
+      <img :src="'https://panel.dinelim.ai/uploads/' + authStore.getTemplate" alt="Logo" class="rounded-circle"
         :style="{ width: isCollapsed ? '40px' : '60px', height: isCollapsed ? '40px' : '60px' }">
       <!-- Replace with your image path -->
-    </a>
+    </router-link>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <router-link to="/" class="nav-link text-secondary">
+        <router-link to="/dashboard" class="nav-link text-secondary">
           <i class="bi bi-house fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Dashboard</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('controlPanel') }}</span>
         </router-link>
       </li>
       <li>
         <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-secondary">
           <i class="bi bi-person-fill fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">User Information</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('userInformation') }}</span>
         </a>
 
       </li>
@@ -26,16 +26,16 @@
       <li>
         <a href="#submenu2" data-bs-toggle="collapse" class="nav-link text-secondary">
           <i class="bi bi-window-stack fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">POP-UP Management</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('popupManagement') }}</span>
         </a>
 
       </li>
 
-      
+
       <li>
         <router-link to="/branch" class="nav-link text-secondary">
           <i class="bi bi-window-stack fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Branch management</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('branchManagement') }}</span>
         </router-link>
 
 
@@ -43,7 +43,7 @@
       <li>
         <a href="#" class="nav-link text-secondary">
           <i class="bi bi-card-image fs-4"></i>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Banner Management</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('bannerManagement') }}</span>
         </a>
       </li>
       <li>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/authStore';
 import '../assets/css/Sidebar.css'
 export default {
   name: 'SidebarComp',
@@ -66,6 +67,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    const authStore = useAuthStore();
+    return {
+      authStore
+    };
   },
 };
 </script>

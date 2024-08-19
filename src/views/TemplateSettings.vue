@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="template row">
-      <div class="template-setting-area col">
+      <div class="template-setting-area col-md-9">
 
         <div class="template-setting-form">
           <div class="mb-5">
@@ -19,14 +19,32 @@
             </div>
           </div>
           <div class="template-setting-main">
-            <div class="file-upload">
-              <span><b>Upload Logo</b></span>
-              <label for="file-upload" class="custom-file-upload">
-                <i class="bi bi-upload"></i>
-                <div>Upload</div>
-                <span>The file type can only be .jpg, .jpeg, and .png.</span>
-              </label>
-              <input type="file" id="file-upload" @change="onFileChangeLogo" accept="image/*,video/*" />
+            <div v-if="logoUrlInternal != 'logo_1000.png'">
+              <div class="photo-area">
+                <div class="polaroid">
+                  <div class="img-container" @click="toggler = !toggler">
+                    <img :src="'https://panel.dinelim.ai/uploads/' + logoUrlInternal" class="image" style="width:100%">
+
+                  </div>
+                  <div class="container">
+                    <i class="bi bi-trash3" @click="resetFile"></i>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+            <div v-else>
+              <div class="file-upload">
+                <span><b>Upload Logo</b></span>
+                <label for="file-upload" class="custom-file-upload">
+                  <i class="bi bi-upload"></i>
+                  <div>Upload</div>
+                  <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                </label>
+                <input type="file" id="file-upload" @change="onFileChangeLogo" accept="image/*,video/*" />
+              </div>
             </div>
             <div class="color-select">
               <span><b>Select Template Color</b></span>
@@ -94,7 +112,7 @@
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
           aria-controls="offcanvasRight">
           Preview
@@ -109,9 +127,9 @@
           <div class="offcanvas-body">
             <div class="template-border">
               <component :is="template" :mainBgColor="selectedBgColorInternal"
-                :secondaryBgColor="secondaryBgColorInternal" :selectedLanguage="selectedLanguagesInternal" :textColor="textColorInternal" :logoSize="'120px'"
-                :iconSize="iconSizeInternal" :layout="layoutInternal" :logoUrl="logoUrlInternal"
-                :mediaUrl="mediaUrlInternal" :fontSize="fontSize" />
+                :secondaryBgColor="secondaryBgColorInternal" :selectedLanguage="selectedLanguagesInternal"
+                :textColor="textColorInternal" :logoSize="'120px'" :iconSize="iconSizeInternal" :layout="layoutInternal"
+                :logoUrl="logoUrlInternal" :mediaUrl="mediaUrlInternal" :fontSize="fontSize" />
             </div>
           </div>
         </div>
@@ -274,7 +292,9 @@ export default {
       this.layoutInternal = newLayout;
       this.$emit("update:layout", newLayout); // Emit to parent
     },
-
+    resetFile(){
+      this.logoUrlInternal = 'logo_1000.png';
+    },
     handleLogoFileUpload(event) {
       const file = event.target.files[0];
       console.log(file);
@@ -286,7 +306,7 @@ export default {
     saveSettings() {
       // Emit an event with the form data
       this.$emit("save-settings", {
-        user_id:null,
+        user_id: null,
         languages: this.selectedLanguagesInternal,
         color: [
           { name: "selectedBgColor", value: this.selectedBgColorInternal },
