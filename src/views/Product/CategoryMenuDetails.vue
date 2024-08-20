@@ -4,30 +4,17 @@
       <div class="row menu-box-row">
         <div class="col menu-box add mt-5 mb-4">
           <div class="btn-group">
-            <button
-              class="btn box-menu-action"
-              type="button"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="true"
-              aria-expanded="false"
-            >
+            <button class="btn box-menu-action" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+              aria-expanded="false">
               <i class="bi bi-plus-lg me-2"></i>Add
             </button>
             <ul class="dropdown-menu">
-              <li
-                @click="createCategory(0)"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"
-              >
+              <li @click="createCategory(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight">
                 <span class="ms-2">Category</span>
               </li>
-              <li
-                @click="createProduct(0)"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"
-              >
+              <li @click="createProduct(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight">
                 <span class="ms-2">Product</span>
               </li>
             </ul>
@@ -37,84 +24,43 @@
 
       <div v-if="categories.length">
         <div v-for="category in sortedCategories" :key="category.category_id">
-          <div
-            class="row menu-box-row"
-            data-bs-toggle="collapse"
-            :href="'#collapse_' + category.category_id"
-            role="button"
-            aria-expanded="false"
-            :aria-controls="'collapse_' + category.category_id"
-            :class="{
+          <div class="row menu-box-row" data-bs-toggle="collapse" :href="'#collapse_' + category.category_id"
+            role="button" aria-expanded="false" :aria-controls="'collapse_' + category.category_id" :class="{
               'drag-over': category === dragOverCategory,
               dragged: category === draggedCategory,
-            }"
-            draggable="true"
-            @dragstart="dragStart($event, category)"
-            @dragover.prevent="dragOver($event, category)"
-            @dragleave="dragLeave"
-            @drop="drop($event, category)"
-          >
-            <div
-              class="col menu-box"
-              :class="{
-                'border-green': category.visible === 1,
-                'border-gray': category.visible === 0,
-              }"
-            >
+            }" draggable="true" @dragstart="dragStart($event, category)" @dragover.prevent="dragOver($event, category)"
+            @dragleave="dragLeave" @drop="drop($event, category)">
+            <div class="col menu-box" :class="{
+              'border-green': category.visible === 1,
+              'border-gray': category.visible === 0,
+            }">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img
-                  :src="category.image"
-                  :alt="category.name"
-                  height="30"
-                  class="filtered-image me-2"
-                />
+                <img :src="category.image" :alt="category.name" height="30" class="filtered-image me-2" />
                 {{ category.name }}
               </div>
 
               <div class="btn-group">
-                <button
-                  class="btn box-menu-action"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="true"
-                  aria-expanded="false"
-                >
+                <button class="btn box-menu-action" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                  aria-expanded="false">
                   <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu">
-                  <li
-                    @click="createProduct(category.category_id)"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="createProduct(category.category_id)" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-plus-lg me-2 ms-2"></i>New Product
                   </li>
-                  <li
-                    @click="createCategory(category.category_id)"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="createCategory(category.category_id)" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-plus-lg me-2 ms-2"></i>New Sub Category
                   </li>
-                  <li
-                    @click="
-                      viewProducts(category.category_id, category.category_name)
-                    "
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="
+                    viewProducts(category.category_id, category.category_name)
+                    " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-eye me-2 ms-2"></i>View Products
                   </li>
-                  <li
-                    @click="editCategory(category)"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="editCategory(category)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight">
                     <i class="bi bi-pencil-square me-2 ms-2"></i>Edit
                   </li>
                   <li @click="deleteCategory(category.category_id)">
@@ -124,68 +70,39 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="category.child.length"
-            class="collapse"
-            :id="'collapse_' + category.category_id"
-          >
-            <div
-              v-for="childCategory in sortedChildCategories(category.child)"
-              :key="childCategory.category_id"
-              class="mb-1 mt-1 box-sub-menu"
-              :class="{
+          <div v-if="category.child.length" class="collapse" :id="'collapse_' + category.category_id">
+            <div v-for="childCategory in sortedChildCategories(category.child)" :key="childCategory.category_id"
+            
+              class="mb-1 mt-1 box-sub-menu" :class="{
                 'border-green': childCategory.visible === 1,
                 'border-gray': childCategory.visible === 0,
                 'drag-over': childCategory === dragOverChildCategory,
                 dragged: childCategory === draggedChildCategory,
-              }"
-              draggable="true"
-              @dragstart="dragStartChild($event, childCategory, category)"
-              @dragover.prevent="dragOverChild($event, childCategory)"
-              @dragleave="dragLeaveChild"
-              @drop="dropChild($event, childCategory, category)"
-            >
+              }" draggable="true" @dragstart="dragStartChild($event, childCategory, category)"
+              @dragover.prevent="dragOverChild($event, childCategory)" @dragleave="dragLeaveChild"
+              @drop="dropChild($event, childCategory, category)">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img
-                  :src="childCategory.image"
-                  :alt="childCategory.name"
-                  height="30"
-                  class="filtered-image me-2"
-                />
+                <img :src="childCategory.image" :alt="childCategory.name" height="30" class="filtered-image me-2" />
                 {{ childCategory.name }}
               </div>
               <div class="btn-group">
-                <button
-                  class="btn box-menu-action"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="true"
-                  aria-expanded="false"
-                >
+                <button class="btn box-menu-action" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                  aria-expanded="false">
                   <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu">
-                  <li
-                    @click="
-                      viewProducts(
-                        childCategory.category_id,
-                        childCategory.category_name
-                      )
-                    "
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="
+                    viewProducts(
+                      childCategory.category_id,
+                      childCategory.category_name
+                    )
+                    " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-eye me-2 ms-2"></i>View Products
                   </li>
 
-                  <li
-                    @click="editCategory(childCategory)"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="offcanvasRight"
-                  >
+                  <li @click="editCategory(childCategory)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight">
                     <i class="bi bi-pencil-square me-2 ms-2"></i>Edit
                   </li>
 
@@ -198,25 +115,14 @@
           </div>
         </div>
         <div class="d-flex justify-content-end">
-          <button
-            @click="fetchData"
-            data-toggle="modal"
-            data-target="#previewTemplate"
-            class="pre-button mt-5"
-          >
+          <button @click="fetchData" data-toggle="modal" data-target="#previewTemplate" class="pre-button mt-5">
             Preview with Your Template
           </button>
         </div>
 
         <!-- Modal -->
-        <div
-          class="modal fade bd-example-modal-lg"
-          id="templateModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="branchModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade bd-example-modal-lg" id="templateModal" tabindex="-1" role="dialog"
+          aria-labelledby="branchModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -230,19 +136,12 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div
-                  v-if="previewData.length > 0"
-                  style="position: relative; z-index: 2000"
-                >
+                <div v-if="previewData.length > 0" style="position: relative; z-index: 2000">
                   <SelectedTemplate :template="previewData" />
                 </div>
               </div>
               <div class="modal-footer">
-                <button
-                  class="update-btn"
-                  @click="updateTemplate"
-                  role="button"
-                >
+                <button class="update-btn" @click="updateTemplate" role="button">
                   Update Template
                 </button>
               </div>
@@ -256,33 +155,21 @@
       </div>
     </div>
 
-    <OffCanvas
-      id="offcanvasRight"
-      :title="
-        mode == 'edit'
-          ? 'Edit'
-          : mode == 'createCategory'
-          ? 'Create Category'
-          : mode == 'createProduct'
+    <OffCanvas id="offcanvasRight" :title="mode == 'edit'
+      ? 'Edit'
+      : mode == 'createCategory'
+        ? 'Create Category'
+        : mode == 'createProduct'
           ? 'Create Product'
           : 'Product List'
-      "
-      :products="products"
-      :mode="mode"
-      :category="editableCategory"
-      :newCategory="newCategory"
-      :allergens="allergens"
-      :newProduct="newProduct"
-      :categories="categories"
-      @updatedCategory="updateCategory"
-      @createdCategory="addCategory"
-      @createdProduct="addProductToCategory"
-      :selectedBranchId="selectedBranchId"
-    />
+      " :products="products" :mode="mode" :category="editableCategory" :newCategory="newCategory"
+      :allergens="allergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
+      @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId" />
   </div>
 </template>
 
 <script>
+import { computed } from 'vue';
 import axios from "axios";
 import { Modal } from "bootstrap";
 import OffCanvas from "@/components/OffCanvas.vue";
@@ -302,6 +189,7 @@ import { useCategoryStore } from "@/stores/categoryStore";
 import { useBranchStore } from "@/stores/branchStore";
 import { toast } from "vue3-toastify";
 import SelectedTemplate from "../Templates/SelectedTemplate.vue";
+import { useI18n } from 'vue-i18n';
 import "ckeditor5/ckeditor5.css";
 import "../../assets/css/views/CategoryMenuDetails.css";
 
@@ -314,9 +202,22 @@ export default {
   setup() {
     const branchStore = useBranchStore();
     const authStore = useAuthStore();
+    const { locale } = useI18n(); 
+
+    const selectedLanguageId = computed(() => {
+      if (locale.value === 'en') {
+        return 0;
+      } else if (locale.value === 'tr') {
+        return 1;
+      }
+      return 0; // default or fallback
+    });
+
     return {
       branchStore,
       authStore,
+      currentLanguage: locale, 
+      selectedLanguageId
     };
   },
   data() {
@@ -326,6 +227,7 @@ export default {
       editor: ClassicEditor,
       allergens: [],
       selectedTemplateId: 0,
+      currentLanguageId:0,
       categories: [],
       editableCategory: {},
       products: [],
@@ -381,10 +283,13 @@ export default {
 
   computed: {
     sortedCategories() {
+      console.log(this.selectedLanguageId)
+ 
       return [...this.categories]
         .sort((a, b) => a.sort_order - b.sort_order)
-        .filter((item) => item.language_id == 0);
+        .filter((item) => item.language_id == this.selectedLanguageId);
     },
+  
     selectedBranchId() {
       return this.branchStore.selectedBranchId;
     },
@@ -496,16 +401,16 @@ export default {
         });
     },
     sortedChildCategories(childCategories) {
-      return [...childCategories].sort((a, b) => a.sort_order - b.sort_order);
+      return [...childCategories].sort((a, b) => a.sort_order - b.sort_order).filter((item) => item.language_id == this.selectedLanguageId);
     },
     fetchData() {
-        console.log( this.authStore.getUser.id)
-       
+      console.log(this.authStore.getUser.id)
+
       axios
         .get("https://panel.dinelim.ai/api/template")
         .then((response) => {
-          this.previewData = response.data.filter((item)=> item.user_id == this.authStore.getUser.id)
-          this.selectedTemplateId= response.data.filter((item)=> item.user_id == this.authStore.getUser.id)[0];
+          this.previewData = response.data.filter((item) => item.user_id == this.authStore.getUser.id)
+          this.selectedTemplateId = response.data.filter((item) => item.user_id == this.authStore.getUser.id)[0];
           console.log(this.selectedTemplateId); // Handle the data as needed
           const modal = new Modal(document.getElementById("templateModal"));
           modal.show();

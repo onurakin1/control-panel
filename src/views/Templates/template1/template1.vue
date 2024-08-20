@@ -343,7 +343,7 @@ export default {
       axios.get(`https://panel.dinelim.ai/api/product-description/${id}`)
         .then(response => {
 
-          this.productDesc = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
+          this.productDesc = response.data.filter(product => product.branch_group_id == this.branchStore.selectedBranchId);
           console.log(this.productDesc)
         })
         .catch(error => {
@@ -397,7 +397,7 @@ export default {
       this.activeProduct = tab;
       axios.get(`https://panel.dinelim.ai/api/product/${tab}`)
         .then(response => {
-          this.productItems = response.data.filter(product => product.branch_group_id === this.selectedBranchId);
+          this.productItems = response.data.filter(product => product.branch_group_id == this.branchStore.selectedBranchId);
           console.log(this.productItems)
         })
         .catch(error => {

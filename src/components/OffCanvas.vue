@@ -192,7 +192,7 @@
                             <ckeditor :editor="editor" v-model="editProductForm.desc" :config="editorConfig"></ckeditor>
                         </div>
                         <div class="mb-3 d-flex w-100 gap-20">
-                            
+
                             <div v-if="editProductForm.image">
                                 <div class="photo-area">
                                     <div class="polaroid">
@@ -212,7 +212,7 @@
                                 </div>
                             </div>
                             <div v-if="this.filePath">
-    <div class="photo-area">
+                                <div class="photo-area">
                                     <div class="polaroid">
                                         <div class="img-container" @click="toggler = !toggler">
                                             <img :src="`https://panel.dinelim.ai/uploads/${this.filePath}`"
@@ -225,7 +225,7 @@
                                             <i class="bi bi-trash3" @click="resetFile"></i>
                                         </div>
                                     </div>
-                               
+
                                 </div>
                             </div>
                             <div v-else>
@@ -579,7 +579,7 @@ export default {
             }
         },
         handleEditProductFormSubmit() {
-        
+
             if (this.filePath) {
                 this.editProductForm.image = this.filePath;
             }
@@ -590,7 +590,8 @@ export default {
                 .then(response => {
                     console.log(response)
                     toast.success('Product updated successfully!');
-  this.filePath = null;
+                    this.$router.go();
+                    this.filePath = null;
 
                 })
         },
@@ -610,9 +611,9 @@ export default {
         handleCreateProductFormSubmit() {
             this.$emit('createdProduct', this.createProductForm);
         },
-          resetFile(){
-      this.filePath = null;
-    },
+        resetFile() {
+            this.filePath = null;
+        },
         editProduct(product) {
             this.localMode = 'editProduct';
             this.editProductForm = product;
