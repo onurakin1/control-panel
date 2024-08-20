@@ -323,3 +323,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.form-select[multiple] {
+  height: auto;
+}
+</style>

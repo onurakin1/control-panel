@@ -11,13 +11,17 @@
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
         <router-link to="/dashboard" class="nav-link text-secondary">
-          <i class="bi bi-house fs-4"></i>
+          <span class="material-symbols-outlined">
+            browse
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('controlPanel') }}</span>
         </router-link>
       </li>
       <li>
         <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-secondary">
-          <i class="bi bi-person-fill fs-4"></i>
+          <span class="material-symbols-outlined">
+            person
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('userInformation') }}</span>
         </a>
 
@@ -25,7 +29,9 @@
 
       <li>
         <a href="#submenu2" data-bs-toggle="collapse" class="nav-link text-secondary">
-          <i class="bi bi-window-stack fs-4"></i>
+          <span class="material-symbols-outlined">
+            ad_group
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('popupManagement') }}</span>
         </a>
 
@@ -34,7 +40,9 @@
 
       <li>
         <router-link to="/branch" class="nav-link text-secondary">
-          <i class="bi bi-window-stack fs-4"></i>
+          <span class="material-symbols-outlined">
+            home_work
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('branchManagement') }}</span>
         </router-link>
 
@@ -42,13 +50,17 @@
       </li>
       <li>
         <a href="#" class="nav-link text-secondary">
-          <i class="bi bi-card-image fs-4"></i>
+          <span class="material-symbols-outlined">
+            tab
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('bannerManagement') }}</span>
         </a>
       </li>
       <li>
         <router-link to="/settings" class="nav-link text-secondary">
-          <i class="bi bi-gear fs-4"></i>
+          <span class="material-symbols-outlined">
+            manufacturing
+          </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Settings</span>
         </router-link>
       </li>

@@ -404,14 +404,11 @@ export default {
       return [...childCategories].sort((a, b) => a.sort_order - b.sort_order).filter((item) => item.language_id == this.selectedLanguageId);
     },
     fetchData() {
-      console.log(this.authStore.getUser.id)
-
       axios
         .get("https://panel.dinelim.ai/api/template")
         .then((response) => {
           this.previewData = response.data.filter((item) => item.user_id == this.authStore.getUser.id)
           this.selectedTemplateId = response.data.filter((item) => item.user_id == this.authStore.getUser.id)[0];
-          console.log(this.selectedTemplateId); // Handle the data as needed
           const modal = new Modal(document.getElementById("templateModal"));
           modal.show();
         })

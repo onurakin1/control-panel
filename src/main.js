@@ -10,6 +10,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import messages from './locales';
 import { ToastifyContainer } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import "flag-icon-css/css/flag-icons.min.css"
 
 const i18n = createI18n({
     legacy: false,

@@ -17,7 +17,7 @@ const routes = [
     path: '/',
     name: 'Template_List',
     component: TemplateList,
-    meta: { requiresAuth: true }, // Giriş gerektirir
+    meta: { requiresAuth: true }, 
   },
   {
     path: '/dashboard',

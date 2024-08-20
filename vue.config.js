@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+
 module.exports = defineConfig({
   devServer: {
     client: {
@@ -6,10 +7,16 @@ module.exports = defineConfig({
         warnings: false,
         errors: false,
       },
-
       // or
       overlay: false,
     }
   },
-  transpileDependencies: true
+  transpileDependencies: true,
+  chainWebpack: config => {
+    config.plugin('html')
+      .tap(args => {
+        args[0].title = 'Dinelim Dashboard'; 
+        return args;
+      });
+  }
 })

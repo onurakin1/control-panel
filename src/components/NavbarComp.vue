@@ -5,7 +5,10 @@
         class="me-2">
 
       <div @click="$emit('toggleSidebar')" class="me-2">
-        <i class="text-secondary bi" :class="isCollapsed ? 'bi-arrow-right-square ' : 'bi-arrow-left-square'"></i>
+        <span class="text-secondary material-symbols-outlined">
+          {{ isCollapsed ? 'menu_open' : 'menu' }}
+        </span>
+
       </div>
 
       <!-- Search form -->
@@ -33,14 +36,17 @@
         <button class="btn btn-primary-outline dropdown-toggle text-secondary" type="button" id="navbarDropdown"
           data-bs-toggle="dropdown" aria-expanded="false"
           style="background-color: transparent; border: none; color: white;">
-          {{ currentLanguage }}
+          <span class="flag-icon" :class="`flag-icon-${getFlagIcon(currentLanguage)}`"></span>
+          <span class="ms-2">{{ currentLanguage }}</span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li>
-            <div class="dropdown-item" @click="changeLanguage('en')">EN</div>
+            <div class="dropdown-item" @click="changeLanguage('en')"><span class="flag-icon flag-icon-gb me-2"></span>
+              EN</div>
           </li>
           <li>
-            <div class="dropdown-item" @click="changeLanguage('tr')">TR</div>
+            <div class="dropdown-item" @click="changeLanguage('tr')"><span class="flag-icon flag-icon-tr me-2"></span>
+              TR</div>
           </li>
         </ul>
       </div>
@@ -50,6 +56,7 @@
 
 <script>
 import axios from 'axios';
+import { computed } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -65,11 +72,10 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
-    const { locale } = useI18n(); 
+    const { locale } = useI18n();
 
     const logout = async () => {
       try {
-
         await axios.post('https://panel.dinelim.ai/api/logout', {}, {
           headers: {
             Authorization: `Bearer ${authStore.token}`,
@@ -92,13 +98,27 @@ export default {
       locale.value = lang; // Dil değişimini ayarlayın
     };
 
+    const getFlagIcon = (language) => {
+      switch (language.toLowerCase()) {
+        case 'en':
+          return 'gb'; // İngiliz bayrağı
+        case 'tr':
+          return 'tr'; // Türk bayrağı
+        default:
+          return 'us'; // Varsayılan bayrak
+      }
+    };
+
+    // currentLanguage'i computed olarak tanımlayın
+    const currentLanguage = computed(() => locale.value.toUpperCase());
 
     return {
       logout,
       authStore,
       changeLanguage,
-      currentLanguage: locale, 
+      currentLanguage,
+      getFlagIcon,
     };
-  },
+  }
 };
 </script>
