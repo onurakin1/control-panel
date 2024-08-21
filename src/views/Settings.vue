@@ -62,7 +62,7 @@ export default {
 
         const submitForm = async () => {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/company', form.value);
+                const response = await axios.post('https://panel.dinelim.ai/api/company', form.value);
                 companyStore.setCompany(response.data);
                 alert('Form submitted successfully');
             } catch (error) {
