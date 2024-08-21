@@ -1,113 +1,109 @@
 <template>
     <div id="app">
         <h4>Settings</h4>
-  
-        <div class="mb-3" style="border: 1px solid #ddd;padding: 20px;max-width:600px;width: 100%;">
-            <div>
-                <h6>Button style view</h6>
-                <div style="display: flex;gap: 30px;">
-                    <div class="mb-3">
-                        <span class="mb-2">Button Background</span>
-                        <ColorPicker @color-changed="handleBgColorChange" />
+
+        <div class="mb-3" style="border: 1px solid #ddd; padding: 20px; max-width: 600px; width: 100%;">
+            <form @submit.prevent="submitForm">
+                <div class="mb-3">
+                    <label for="company_name" class="form-label">Company Name</label>
+                    <input type="text" id="company_name" v-model="form.company_name" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="logo" class="form-label">Logo</label>
+                    <div v-if="form.logo">
+                        <div class="photo-area">
+                            <div class="polaroid">
+                                <div class="img-container" @click="toggler = !toggler">
+                                    <img :src="'https://panel.dinelim.ai/uploads/' + form.logo" class="image" style="width:100%" />
+                                </div>
+                                <div class="container">
+                                    <i class="bi bi-trash3" @click="resetFile"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="mb-2">Text Color</span>
-                        <ColorPicker @color-changed="handleTxtColorChange" />
+                    <div v-else>
+                        <div class="file-upload">
+                            <span><b>Upload Logo</b></span>
+                            <label for="file-upload" class="custom-file-upload">
+                                <i class="bi bi-upload"></i>
+                                <div>Upload</div>
+                                <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                            </label>
+                            <input type="file" id="file-upload" @change="onFileChangeLogo" accept="image/*" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <h6>Menu style view</h6>
-                <div style="display: flex;gap: 30px;">
-                    <div class="mb-3">
-                        <span class="mb-2">Button Background</span>
-                        <ColorPicker @color-changed="handleMenuBgColorChange" />
-                    </div>
-                    <div>
-                        <span class="mb-2">Text Color</span>
-                        <ColorPicker @color-changed="handleMenuTxtColorChange" />
-                    </div>
-                </div>
-            </div>
-
-
-            <DynamicButton width="100px" height="40px" :backgroundColor=selectedBgColor :textColor=selectedTxtColor
-                fontSize="14px" @click="handleButtonClick">
-                Click Me!
-            </DynamicButton>
-        </div>
-        <div style="border: 1px solid #ddd;padding: 20px;max-width:600px;width: 100%;">
-            <div class="mb-3">
-                <h6>Calorie options</h6>
-                <select class="form-select" aria-label="Default select example">
-                    <option value="1">cal</option>
-                    <option value="2">kcal</option>
-
-                </select>
-            </div>
-            <div class="mb-3">
-                <h6>Content / Allergen Warnings</h6>
-                <div class="d-flex">
-                    <span>Show content warning labels</span>
-                    <div class="form-check form-switch ms-3">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                    </div>
-                </div>
-
-            </div>
-            <hr/>
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-success">Kaydet</button>
-            </div>
+                <input type="hidden" v-model="form.user_id" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
-import ColorPicker from '../components/ColorPickerComp.vue';
-import DynamicButton from '../components/ButtonComp.vue';
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import { useCompanyStore } from '@/stores/companyStore';
+import { useAuthStore } from '@/stores/authStore';
+
 export default {
     name: 'SettingsComp',
-    components: {
-        ColorPicker,
-        DynamicButton,
-    },
-    data() {
-        return {
-            selectedMenuBgColor: '#000',
-            selectedMenuTxtColor:'#fff',
-            selectedBgColor: '#000000',
-            selectedTxtColor: '#fff'
+    setup() {
+        const authStore = useAuthStore();
+        const companyStore = useCompanyStore();
+        const userId = computed(() => authStore.user?.id || null);
+        const form = ref({
+            company_name: '',
+            logo: '',
+            user_id: userId.value,
+        });
+        const toggler = ref(false);
+
+        const submitForm = async () => {
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/company', form.value);
+                companyStore.setCompany(response.data);
+                alert('Form submitted successfully');
+            } catch (error) {
+                console.error('There was an error submitting the form:', error);
+            }
         };
-    },
-    methods: {
-        handleMenuBgColorChange(newColor) {
-            this.selectedMenuBgColor = newColor;
-        },
-        handleMenuTxtColorChange(newColor) {
-            this.selectedMenuTxtColor = newColor;
-        },
-        handleBgColorChange(newColor) {
-            this.selectedBgColor = newColor;
-        },
-        handleTxtColorChange(newColor) {
-            this.selectedTxtColor = newColor;
-        },
+
+        const onFileChangeLogo = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await axios.post("https://panel.dinelim.ai/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                form.value.logo = response.data.filePath;
+            } catch (error) {
+                console.error("File upload error:", error);
+            }
+        };
+
+        const resetFile = () => {
+            form.value.logo = '';
+        };
+
+        return {
+            form,
+            submitForm,
+            onFileChangeLogo,
+            resetFile,
+            toggler,
+        };
     },
 };
 </script>
 
-<style>
-.color-display {
-    width: 100%;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    color: #fff;
-    font-size: 1.2em;
-    border: 1px solid #ddd;
-}
+<style scoped>
+/* You can add your styles here */
 </style>

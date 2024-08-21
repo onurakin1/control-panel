@@ -161,7 +161,9 @@ export default {
 
     handleSaveSettings(settings) {
       if (this.selectedTemplateId === 0) {
-        settings.user_id = this.authStore.user.id
+        settings.user_id = this.authStore.user.id;
+        const selectedLanguageCodes = settings.languages.map(lang => lang.value);
+        settings.languages = selectedLanguageCodes;
         axios
           .post("https://panel.dinelim.ai/api/template", settings)
           .then((response) => {
@@ -172,7 +174,8 @@ export default {
             console.error("There was an error adding the category!", error);
           });
       } else {
-
+        const selectedLanguageCodes = settings.languages.map(lang => lang.value);
+        settings.languages = selectedLanguageCodes;
         settings.user_id = this.authStore.user.id
         axios
           .put(

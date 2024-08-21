@@ -67,7 +67,7 @@ export default {
                 });
                 this.authStore.setAuthData(response.data.token, response.data.user);
                 this.error = null;
-                this.$router.push('/'); 
+                this.$router.push('/login'); 
             } catch (err) {
                 this.error = 'Registration failed. Please try again.';
             }

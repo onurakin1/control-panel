@@ -5,9 +5,21 @@
 
         <div class="template-setting-form">
           <div class="mb-5">
+            <div v-if="mediaUrlInternal != 'home_bg.jpg'">
+              <div class="photo-area">
+                <div class="polaroid">
+                  <div class="img-container" @click="toggler = !toggler">
+                    <img :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" class="image" style="width:100%">
 
-            <div class="file-template-upload">
-              <span><b>Upload Template</b></span>
+                  </div>
+                  <div class="container">
+                    <i class="bi bi-trash3" @click="resetBannerFile"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="file-template-upload" v-else>
+              <span><b>Upload Banner</b></span>
               <label for="file-template-upload" class="custom-file-template-upload">
                 <i class="bi bi-upload"></i>
                 <div>Upload</div>
@@ -30,10 +42,7 @@
                     <i class="bi bi-trash3" @click="resetFile"></i>
                   </div>
                 </div>
-
               </div>
-
-
             </div>
             <div v-else>
               <div class="file-upload">
@@ -94,16 +103,13 @@
           </div>
           <div class="layout-items">
             <span><b>Select Languages:</b></span>
-            <select v-model="selectedLanguagesInternal" class="form-select" multiple style="width: 200px"
-              aria-label="Select languages">
-              <option value="ar">Arabic</option>
-              <option value="en">English</option>
-              <option value="fr">French</option>
-              <option value="es">Spanish</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="tr">Turkish</option>
-            </select>
+
+            <multiselect v-model="selectedLanguagesInternal" :options="languages" :multiple="true"
+              :close-on-select="false" placeholder="Select languages" label="label" track-by="value"
+              class="multiselect-custom" style="width: 300px">
+            </multiselect>
+
+
           </div>
           <div class="d-flex justify-content-end">
             <button class="save-button" @click="saveSettings">
@@ -140,6 +146,7 @@
 
 <script>
 import axios from "axios";
+import Multiselect from "vue-multiselect";
 import Template1 from "./Templates/template1/Home.vue";
 import ColorPicker from "../components/ColorPickerComp.vue";
 import "../assets/css/views/templates/templateSettings.css";
@@ -149,6 +156,7 @@ export default {
   components: {
     ColorPicker,
     Template1,
+    Multiselect
   },
   props: {
     template: String,
@@ -198,7 +206,25 @@ export default {
       mediaUrlInternal: this.mediaUrl,
       logoUrlInternal: this.logoUrl,
       iconSizeInternal: this.IconSize,
-      selectedLanguagesInternal: this.selectedLanguages, // Initialized in created hook
+      selectedLanguagesInternal: this.selectedLanguages,
+      languages: [
+        { value: 'ar', label: 'Arabic' },
+        { value: 'en', label: 'English' },
+        { value: 'fr', label: 'French' },
+        { value: 'es', label: 'Spanish' },
+        { value: 'de', label: 'German' },
+        { value: 'it', label: 'Italian' },
+        { value: 'tr', label: 'Turkish' }
+      ],
+      languageMap: {
+        'ar': 'Arabic',
+        'en': 'English',
+        'fr': 'French',
+        'es': 'Spanish',
+        'de': 'German',
+        'it': 'Italian',
+        'tr': 'Turkish'
+      },
       fontSize: "14px", // Default font size
     };
   },
@@ -228,7 +254,14 @@ export default {
       this.selectedLanguagesInternal = newVal;
     },
   },
-
+  mounted() {
+    this.selectedLanguagesInternal = this.selectedLanguages.map(langCode => {
+      return {
+        value: langCode,
+        label: this.languageMap[langCode] || langCode
+      };
+    });
+  },
   methods: {
     async onFileChangeTemplate(e) {
       this.file = e.target.files[0];
@@ -292,7 +325,10 @@ export default {
       this.layoutInternal = newLayout;
       this.$emit("update:layout", newLayout); // Emit to parent
     },
-    resetFile(){
+    resetBannerFile() {
+      this.mediaUrlInternal = 'home_bg.jpg';
+    },
+    resetFile() {
       this.logoUrlInternal = 'logo_1000.png';
     },
     handleLogoFileUpload(event) {
@@ -323,7 +359,7 @@ export default {
   },
 };
 </script>
-
+<style src="../../node_modules/vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
 .form-select[multiple] {
   height: auto;

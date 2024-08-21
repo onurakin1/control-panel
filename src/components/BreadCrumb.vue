@@ -1,59 +1,76 @@
 <template>
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
-          <router-link :to="crumb.route">
-            {{ crumb.label }}
-          </router-link>
-        </li>
-      </ol>
-    </nav>
-  </template>
-  
-  <script>
-  export default {
-    name: 'BreadCrumb',
-    computed: {
-      crumbs() {
-        const routes = this.$route.matched;
-        return routes.map(route => ({
-          label: route.meta.breadcrumb || route.name,
-          route: route.path
-        })).filter(crumb => crumb.label !== null && crumb.label !== undefined); // Filter out null or undefined labels
-      }
+  <div class="breadcrumb">
+    <ul>
+      <li v-for="(breadcrumb, idx) in breadcrumbList" :key="idx" @click="routeTo(idx)"
+        :class="{ 'linked': !!breadcrumb.link }">
+
+        {{ breadcrumb.name }}
+
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BreadCrumb',
+  data() {
+    return {
+      breadcrumbList: []
     }
-  };
-  </script>
-  
-  <style scoped>
-  .breadcrumb {
-    background-color: #f8f9fa;
-    padding: 8px 15px;
-    border-radius: 4px;
-    margin-bottom: 0;
+  },
+  mounted() { this.updateList() },
+  watch: { '$route'() { this.updateList() } },
+  methods: {
+    routeTo(pRouteTo) {
+      if(pRouteTo == 0){
+        if (this.breadcrumbList[pRouteTo].link) this.$router.push(this.breadcrumbList[pRouteTo].link)
+      }
+      else if(pRouteTo != 0){
+        if (this.breadcrumbList[pRouteTo].link) this.$router.go(-1) 
+      }
+
+    },
+    updateList() { this.breadcrumbList = this.$route.meta.breadcrumb }
   }
-  
-  .breadcrumb-item {
-    font-size: 14px;
-  }
-  
-  .breadcrumb-item:not(:last-child) {
-    margin-right: 4px;
-  }
-  
-  .breadcrumb-item a {
-    color: #6c757d;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-  }
-  
-  .breadcrumb-item a:hover {
-    color: #495057;
-  }
-  
-  .breadcrumb-item a i {
-    margin-right: 4px;
-  }
-  </style>
-  
+}
+</script>
+
+<style scoped>
+.breadcrumb {}
+
+ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul>li {
+  display: flex;
+  float: left;
+  height: 10px;
+  width: auto;
+  color: default;
+  font-weight: bold;
+  font-size: .8em;
+  cursor: default;
+  align-items: center;
+}
+
+ul>li:not(:last-child)::after {
+  content: '/';
+  float: right;
+  font-size: .8em;
+  margin: 0 .5em;
+
+  cursor: default;
+}
+
+.linked {
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: normal;
+}
+</style>

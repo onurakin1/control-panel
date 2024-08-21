@@ -12,36 +12,66 @@ import TemplateList from '@/views/Templates/TemplateList.vue';
 import Register from '@/views/Auth/Register.vue';
 import Login from '@/views/Auth/Login.vue';
 
+
+
 const routes = [
   {
     path: '/',
     name: 'Template_List',
     component: TemplateList,
-    meta: { requiresAuth: true }, 
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Template List' }
+      ]
+    },
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: HomeComp,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Dashboard' }
+      ]
+    },
   },
   {
     path: '/branch',
     name: 'GroupBranch',
     component: GroupBranchComp,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Branch' }
+      ]
+    },
   },
   {
-    path: '/product/:id',
+    path: '/category/:id',
     name: 'ProductManagement',
     component: ProductManagement,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Branch', link:'/branch' },
+        { name: 'Category' }
+      ]
+    },
   },
   {
-    path: '/category-menu/:id',
+    path: '/category-details/:id',
     name: 'CategoryMenuDetails',
     component: CategoryMenuDetails,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Branch', link:'/branch' },
+        { name: 'Category', link:'/category/:id' },
+        { name: 'Category Details' }
+      ]
+    },
   },
   {
     path: '/settings',
