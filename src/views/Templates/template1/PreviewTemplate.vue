@@ -30,7 +30,7 @@
                                 borderColor: mainBgColor,
                                 backgroundColor: hovered === language.name ? mainBgColor : '',
                             }" @mouseenter="hovered = language.name" @mouseleave="hovered = null">
-                                {{ formatLanguage(language.name) }}
+                           {{ formatLanguage(language.name) }}
                             </li>
                         </ul>
                     </div>
@@ -70,7 +70,7 @@
                                 borderColor: mainBgColor,
                                 backgroundColor: hovered === language.name ? mainBgColor : '',
                             }" @mouseenter="hovered = language.name" @mouseleave="hovered = null">
-                                {{ formatLanguage(language.name) }}
+                           {{ formatLanguage(language.name) }}
                             </li>
                         </ul>
                     </div>
@@ -113,17 +113,23 @@
     <div class="menupage" v-else>
 
         <div class="d-flex" style="gap:20px;" :style="{ backgroundColor: secondaryBgColor }">
-            <div class="d-flex flex-column flex-shrink-0 text-white vh-100" id="sidebar" style="width: 100px;"
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white vh-100" id="sidebar" style="width: 150px;"
                 :style="{ backgroundColor: mainBgColor }">
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li v-for="(item, index) in sideMenuItems" :key="index" class="nav-item">
-                        <div class="nav-link text-white menu-item">
+                        <router-link v-if="item.type === 'router-link'" :to="item.route"
+                            class="nav-link text-white menu-item">
                             <img :src="item.image" :alt="item.name" class="card-img"
-                                style="height: 50px;width: 50px;" />
+                                style="height: 80px;width: 80px;" />
                             <!-- <i :class="`bi ${item.icon} fs-4 mb-3`"></i> -->
                             <span class="nav-text">{{ item.name }}</span>
-
-                        </div>
+                        </router-link>
+                        <a v-else-if="item.type === 'collapse'" :href="item.route" data-bs-toggle="collapse"
+                            class="nav-link text-white menu-item">
+                            <img :src="item.image" :alt="item.name" class="card-img"
+                                style="height: 80px;width: 80px;" />
+                            <span class="nav-text">{{ item.name }}</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -161,18 +167,46 @@
                 </div>
                 <div class="language_nav">
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation" v-for="language in transformedLanguages"
-                            :key="language.id">
-                            <button class="nav-link" :class="{ active: activeTab === language.name }"
-                                :id="`pills-${language.name}-tab`" data-bs-toggle="pill"
-                                :data-bs-target="`#pills-${language.name}`" type="button" role="tab"
-                                :aria-controls="`pills-${language.name}`" aria-selected="true"
-                                @click="setActiveTab(language)"
-                                :style="activeTab === language.name ? activeTabStyle : color = mainBgColor">
-                                {{ formatLanguage(language.name) }}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" :class="{ active: activeTab === 'EN' }" id="pills-home-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab"
+                                aria-controls="pills-home" aria-selected="true" @click="setActiveTab('EN')"
+                                :style="activeTab === 'EN' ? activeTabStyle : color = mainBgColor">
+                                EN
                             </button>
                         </li>
-
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" :class="{ active: activeTab === 'ES' }" id="pills-es-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-es" type="button" role="tab"
+                                aria-controls="pills-es" aria-selected="false" @click="setActiveTab('ES')"
+                                :style="activeTab === 'ES' ? activeTabStyle : null">
+                                ES
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" :class="{ active: activeTab === 'RU' }" id="pills-ru-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-ru" type="button" role="tab"
+                                aria-controls="pills-ru" aria-selected="false" @click="setActiveTab('RU')"
+                                :style="activeTab === 'RU' ? activeTabStyle : null">
+                                RU
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" :class="{ active: activeTab === 'TR' }" id="pills-tr-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-tr" type="button" role="tab"
+                                aria-controls="pills-tr" aria-selected="false" @click="setActiveTab('TR')"
+                                :style="activeTab === 'TR' ? activeTabStyle : null">
+                                TR
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" :class="{ active: activeTab === 'AR' }" id="pills-ar-tab"
+                                data-bs-toggle="pill" data-bs-target="#pills-ar" type="button" role="tab"
+                                aria-controls="pills-ar" aria-selected="false" @click="setActiveTab('AR')"
+                                :style="activeTab === 'AR' ? activeTabStyle : null">
+                                AR
+                            </button>
+                        </li>
                     </ul>
                 </div>
                 <div class="product-items">
@@ -274,7 +308,7 @@ export default {
         },
         selectedLanguage: {
             type: Array,
-            default: () => ["AR", "EN"]
+            default: () =>  ["AR", "EN"]
         },
         fontSize: String,
         disabled: Boolean
@@ -392,7 +426,7 @@ export default {
         computedLogoUrl() {
             return this.logoUrl && this.logoUrl.startsWith('images/')
                 ? `https://panel.dinelim.ai/uploads/${this.logoUrl}`
-                : 'https://panel.dinelim.ai/uploads/images/1724332912_no-image.jpg';
+                : require('@/assets/img/templates/templates1/logo_1000.png');
         },
         activeMenuTabStyle() {
             return {
@@ -420,27 +454,27 @@ export default {
             }
         },
         transformedLanguages() {
-            return this.selectedLanguage.map(languageCode => {
-                if (languageCode === 'en') {
-                    return { name: 'EN', id: 1 };
-                } else if (languageCode === 'ar') {
-                    return { name: 'AR', id: 2 };
-                }
-                else if (languageCode === 'tr') {
-                    return { name: 'TR', id: 0 };
-                }
-                else if (languageCode === 'fr') {
-                    return { name: 'FR', id: 3 };
-                }
-                // Diğer diller için dönüşüm eklenebilir
-                return { name: languageCode, id: null };
-            });
-        },
+      return this.selectedLanguage.map(languageCode => {
+        if (languageCode === 'en') {
+          return { name: 'EN', id: 1 };
+        } else if (languageCode === 'ar') {
+          return { name: 'AR', id: 2 };
+        }
+        else if (languageCode === 'tr') {
+          return { name: 'TR', id: 0 };
+        }
+        else if (languageCode === 'fr') {
+          return { name: 'FR', id: 3 };
+        }
+        // Diğer diller için dönüşüm eklenebilir
+        return { name: languageCode, id: null };
+      });
+    },
     },
     methods: {
         formatLanguage(language) {
-            return language.toUpperCase();
-        },
+      return language.toUpperCase();
+    },
         setActiveTab(tab) {
             this.activeTab = tab;
         },

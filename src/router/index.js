@@ -9,6 +9,7 @@ import CategoryMenuDetails from "@/views/Product/CategoryMenuDetails.vue";
 import SettingsComp from "@/views/Settings.vue";
 import TemplateSettings from "@/views/TemplateSettings.vue";
 import TemplateList from '@/views/Templates/TemplateList.vue';
+import WizardTemplate from '@/views/Templates/Wizard/WizardTemplate.vue';
 import Register from '@/views/Auth/Register.vue';
 import Login from '@/views/Auth/Login.vue';
 
@@ -82,12 +83,16 @@ const routes = [
       ]
     },
   },
-
-
   {
     path: '/template-settings',
     name: 'Template_Settings',
     component: TemplateSettings,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/wizard-template',
+    name: 'WizardTemplate',
+    component: WizardTemplate,
     meta: { requiresAuth: true },
   },
   {

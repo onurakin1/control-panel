@@ -1,16 +1,14 @@
 <template>
   <div id="app">
- 
     <div v-if="authStore.isAuthenticated">
-      <NavbarComp :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
+      <NavbarComp v-if="!isWizardPage" :isCollapsed="isSidebarCollapsed" @toggleSidebar="toggleSidebar" />
       <div class="container-fluid">
         <div class="row flex-nowrap">
-          <div class="col-auto px-0" :class="{'collapsed': isSidebarCollapsed}">
+          <div v-if="!isWizardPage" class="col-auto px-0" :class="{ 'collapsed': isSidebarCollapsed }">
             <SidebarComp :isCollapsed="isSidebarCollapsed" />
           </div>
-          <div class="col py-3" style="background: whitesmoke;" :class="{'expand': isSidebarCollapsed}">
-            <BreadCrumb />
-      
+          <div class="col py-3" style="background: whitesmoke;" :class="{ 'expand': isSidebarCollapsed }">
+            <BreadCrumb v-if="!isWizardPage" />
             <router-view></router-view>
             <ToastComp ref="toast" />
           </div>
@@ -19,7 +17,6 @@
     </div>
 
     <div v-else>
-
       <router-view></router-view>
     </div>
   </div>
@@ -31,6 +28,8 @@ import NavbarComp from './components/NavbarComp.vue';
 import SidebarComp from './components/SidebarComp.vue';
 import BreadCrumb from './components/BreadCrumb.vue';
 import ToastComp from './components/ToastComp.vue';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'App',
@@ -42,7 +41,11 @@ export default {
   },
   setup() {
     const authStore = useAuthStore();
-    return { authStore };
+    const route = useRoute();
+
+    const isWizardPage = computed(() => route.path.startsWith('/wizard'));
+
+    return { authStore, isWizardPage };
   },
   data() {
     return {
@@ -59,20 +62,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.expand {
-  transition-delay: 250ms;
-  transition-property: margin-right;
-}
-
-.collapsed {
-  width: 60px !important;
-  transition: width 0.3s ease; 
-}
-
-#sidebar:not(.collapsed) {
-  width: 250px;
-  transition: width 0.3s ease; 
-}
-</style>

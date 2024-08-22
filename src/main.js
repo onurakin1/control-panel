@@ -11,6 +11,7 @@ import messages from './locales';
 import { ToastifyContainer } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import "flag-icon-css/css/flag-icons.min.css"
+import Antd from 'ant-design-vue';
 
 const i18n = createI18n({
     legacy: false,
@@ -21,10 +22,10 @@ const i18n = createI18n({
 const app = createApp(App);
 const pinia = createPinia();
 
+app.use(Antd);
 app.use(CKEditor);
 app.use(router);
 app.use(pinia);
 app.use(i18n);
 app.component('ToastContainer', ToastifyContainer); // Register ToastContainer globally
-
 app.mount('#app');

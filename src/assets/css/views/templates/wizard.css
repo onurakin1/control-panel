@@ -1,0 +1,45 @@
+.wizard-container {
+    /* background: linear-gradient(-45deg, #2996d1, #8672b4); */
+    background: linear-gradient(-45deg, #8672b4, #c05db3, #0d7ea7, #2996d1);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+}
+
+.wizard-form {
+    background: #ffffff;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border-radius: 8px;
+    max-width: 1000px;
+    width: 100%;
+    padding: 24px;
+}
+.wizard-form-item{
+    display: flex;
+    justify-content: space-between;
+}
+
+.layout-items .d-flex div {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.layout-items .d-flex div.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+@media screen and (max-width: 992px) {
+    .wizard-form {  background: red;}
+  }
+  
+  /* On screens that are 600px or less, set the background color to olive */
+  @media screen and (max-width: 600px) {
+    .wizard-form { background: blue;}
+  }
