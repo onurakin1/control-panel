@@ -7,8 +7,8 @@
           <div v-if="!isWizardPage" class="col-auto px-0" :class="{ 'collapsed': isSidebarCollapsed }">
             <SidebarComp :isCollapsed="isSidebarCollapsed" />
           </div>
-          <div class="col py-3" style="background: whitesmoke;" :class="{ 'expand': isSidebarCollapsed }">
-            <BreadCrumb v-if="!isWizardPage" />
+          <div class="col" style="background: whitesmoke;" :class="{ 'expand': isSidebarCollapsed }">
+            <BreadCrumb v-if="!isWizardPage" class="mt-3" />
             <router-view></router-view>
             <ToastComp ref="toast" />
           </div>

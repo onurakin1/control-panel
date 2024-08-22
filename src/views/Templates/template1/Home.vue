@@ -387,7 +387,7 @@ export default {
             // Check if mediaUrl is valid, otherwise return the default image
             return this.mediaUrl && this.mediaUrl.startsWith('images/')
                 ? `https://panel.dinelim.ai/uploads/${this.mediaUrl}`
-                : require('@/assets/img/templates/templates1/home_bg.jpg');
+                : 'https://panel.dinelim.ai/uploads/images/1724355186_home_bg.jpg';
         },
         computedLogoUrl() {
             return this.logoUrl && this.logoUrl.startsWith('images/')

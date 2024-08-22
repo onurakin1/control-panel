@@ -1,6 +1,7 @@
 <template>
     <div class="wizard-container d-flex flex-column justify-content-center align-items-center">
         <form @submit.prevent="submitForm">
+            <!-- Step 1 -->
             <div class="wizard-form" v-show="step === 1">
                 <div class="d-flex justify-content-start">
                     <img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png"
@@ -9,7 +10,7 @@
                 <div class="d-flex justify-content-start mt-5">
                     <h3>Hello {{ authStore.getUser.name }}!</h3>
                 </div>
-                <div class="row mt-5">
+                <div class="row mt-2">
                     <div class="col-md-5">
                         <div class="mb-3 wizard-form-item">
                             <label for="languages" class="form-label">Select Languages:</label><br />
@@ -46,7 +47,9 @@
                         </div>
                         <div class="mb-3 wizard-form-item">
                             <label for="logo" class="form-label">Company Name</label><br/>
-                            <input type="text" v-model="form.company_name" />
+                            <a-space direction="vertical" style="width: 52%">
+                                <a-input v-model:value="form.company_name" placeholder="Company Name" />
+                            </a-space>
                         </div>
                         <div class="layout-items mb-3">
                             <span>Select Menu Layout:</span><br/>
@@ -67,18 +70,79 @@
                         </div>
                     </div>
                 </div>
-         <div class="d-flex justify-content-start mt-5">
-            <button type="button" @click="nextStep">İleri</button>
+                <div class="d-flex justify-content-start mt-2">
+                    <button type="button" @click="nextStep">İleri</button>
+                </div>
             </div>
 
-                
-            </div>
+            <!-- Step 2 -->
             <div class="wizard-form" v-show="step === 2">
-                <h2>Adım 2</h2>
-                <p>Bu ikinci adımdır.</p>
+                <div class="d-flex justify-content-start">
+                    <img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png"
+                        style="max-width: 100px;" />
+                </div>
+                <div class="d-flex justify-content-start mt-5">
+                    <h3>Hello {{ authStore.getUser.name }}!</h3>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-5">
+                        <div class="mb-3 wizard-form-item">
+                            <label for="logo" class="form-label">Banner</label>
+                            <div v-if="form.banner != 'images/1724355186_home_bg.jpg'">
+                                <div class="photo-area">
+                                    <div class="polaroid">
+                                        <div class="img-container" @click="toggler = !toggler">
+                                            <img :src="'https://panel.dinelim.ai/uploads/' + form.banner" class="image"
+                                                style="width:100%" />
+                                        </div>
+                                        <div class="container">
+                                            <i class="bi bi-trash3" @click="resetBanner"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div class="file-upload-banner">
+                                    <label for="file-upload-banner" class="custom-file-upload">
+                                        <i class="bi bi-upload"></i>
+                                        <div>Upload</div>
+                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                    </label>
+                                    <input type="file" id="file-upload-banner" @change="onFileChangeBanner"
+                                        accept=".jpg, .jpeg, .png" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span>Select Template Color</span>
+                            <div class="mb-2 wizard-form-item align-items-center">
+                                <span>Background Color</span>
+                                <ColorPicker :selectedColor="form.secondaryBgColor" @color-changed="handleSecondaryBgColorChange" />
+                            </div>
+                            <div class="mb-2 wizard-form-item align-items-center">
+                                <span>Accent Color</span>
+                                <ColorPicker :selectedColor="form.selectedBgColor" @color-changed="handleBgColorChange" />
+                            </div>
+                            <div class="mb-2 wizard-form-item align-items-center">
+                                <span>Text Color</span>
+                                <ColorPicker :selectedColor="form.textColor" @color-changed="handleTextColorChange" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="template-border">
+                            <Template1 :selectedLanguage="form.selectedLanguages" :mediaUrl="form.banner"
+                                :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="form.layout"
+:mainBgColor="form.selectedBgColor"
+                :secondaryBgColor="form.secondaryBgColor" :textColor="form.textColor" />
+                        </div>
+                    </div>
+                </div>
                 <button type="button" @click="prevStep">Geri</button>
                 <button type="button" @click="nextStep">İleri</button>
             </div>
+
+            <!-- Step 3 -->
             <div class="wizard-form" v-show="step === 3">
                 <h2>Adım 3</h2>
                 <p>Bu üçüncü adımdır.</p>
@@ -89,25 +153,29 @@
     </div>
 </template>
 
-
 <script>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import "@/assets/css/views/templates/wizard.css"
 import Template1 from "../template1/Home.vue";
+import ColorPicker from "../../../components/ColorPickerComp.vue";
 import axios from 'axios'; // Ensure axios is imported
 
 export default {
     name: 'WizardComponent',
     components: {
-        Template1
+        Template1,
+        ColorPicker
     },
     setup() {
         const step = ref(1);
         const authStore = useAuthStore();
         const form = ref({
-            banner: 'home_bg.jpg',
+            banner: 'images/1724355186_home_bg.jpg',
             logo: null,
+            secondaryBgColor: '#ffffff',
+            selectedBgColor: '#000000',
+            textColor: '#333333',
             company_name: null,
             selectedLanguages: [],
             layout: 'two'
@@ -121,6 +189,8 @@ export default {
 
         const toggler = ref(false);
 
+    
+
         const onFileChangeLogo = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -130,39 +200,67 @@ export default {
 
             try {
                 const response = await axios.post("https://panel.dinelim.ai/api/upload", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+                    headers: { "Content-Type": "multipart/form-data" }
                 });
                 form.value.logo = response.data.filePath;
             } catch (error) {
-                console.error("File upload error:", error);
+                console.error("Error uploading logo:", error);
             }
+        };
+
+           const onFileChangeBanner = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await axios.post("https://panel.dinelim.ai/api/upload", formData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+                form.value.banner = response.data.filePath;
+                console.log(form.value.banner)
+            } catch (error) {
+                console.error("Error uploading logo:", error);
+            }
+        };
+
+        const handleSecondaryBgColorChange = (color) => {
+            form.value.secondaryBgColor = color;
+        };
+
+        const handleBgColorChange = (color) => {
+            form.value.selectedBgColor = color;
+        };
+
+        const handleTextColorChange = (color) => {
+            form.value.textColor = color;
         };
 
         const resetFile = () => {
             form.value.logo = null;
         };
 
-        const submitForm = () => {
-            alert('Form submitted!');
-            // Handle form submission logic here
+        const resetBanner = () => {
+            form.value.banner = null;
         };
 
         const nextStep = () => {
-            if (step.value < 4) {
-                step.value++;
-            }
+            step.value++;
         };
 
         const prevStep = () => {
-            if (step.value > 1) {
-                step.value--;
-            }
+            step.value--;
         };
 
-        const completeWizard = () => {
-            alert('Wizard tamamlandı!');
+        const submitForm = async () => {
+            try {
+                // Your form submission logic here
+                console.log('Form submitted:', form.value);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+            }
         };
 
         const setLayout = (layout) => {
@@ -171,17 +269,22 @@ export default {
 
         return {
             step,
+            authStore,
+            form,
+            options,
+            toggler,
+            onFileChangeLogo,
+            onFileChangeBanner,
+            handleSecondaryBgColorChange,
+            handleBgColorChange,
+            handleTextColorChange,
+            resetFile,
+            resetBanner,
             nextStep,
             prevStep,
-            completeWizard,
             submitForm,
-            authStore,
-            options,
-            onFileChangeLogo,
-            form,
-            toggler,
-            resetFile,
-            setLayout
+            setLayout,
+  
         };
     }
 };
