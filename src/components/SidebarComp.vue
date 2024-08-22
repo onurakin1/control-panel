@@ -3,7 +3,7 @@
     :class="{ 'collapsed': isCollapsed }" id="sidebar">
     <router-link to="/dashboard"
       class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-secondary text-decoration-none w-100 justify-content-center company-logo">
-      <img :src="'https://panel.dinelim.ai/uploads/' + companyStore.company.logo" alt="Logo" class="rounded-circle"
+      <img :src="'https://panel.dinelim.ai/uploads/' + compStore.company" alt="Logo" class="rounded-circle"
         :style="{ width: isCollapsed ? '40px' : '60px', height: isCollapsed ? '40px' : '60px' }">
       <!-- Replace with your image path -->
     </router-link>
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+
 import { useCompanyStore } from '@/stores/companyStore';
 import '../assets/css/Sidebar.css'
 export default {
@@ -81,9 +82,11 @@ export default {
     },
   },
   setup() {
-    const companyStore = useCompanyStore();
+
+    const compStore = useCompanyStore();
     return {
-      companyStore
+
+      compStore
     };
   },
 };

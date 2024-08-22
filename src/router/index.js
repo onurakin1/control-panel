@@ -12,8 +12,6 @@ import TemplateList from '@/views/Templates/TemplateList.vue';
 import Register from '@/views/Auth/Register.vue';
 import Login from '@/views/Auth/Login.vue';
 
-
-
 const routes = [
   {
     path: '/',
@@ -34,6 +32,17 @@ const routes = [
       requiresAuth: true, 
       breadcrumb: [
         { name: 'Dashboard' }
+      ]
+    },
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: SettingsComp,
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Settings' }
       ]
     },
   },
@@ -73,12 +82,8 @@ const routes = [
       ]
     },
   },
-  {
-    path: '/settings',
-    name: 'Settings',
-    component: SettingsComp,
-    meta: { requiresAuth: true },
-  },
+
+
   {
     path: '/template-settings',
     name: 'Template_Settings',
@@ -102,12 +107,14 @@ const router = createRouter({
   routes,
 });
 
-// Giriş yapılmamış kullanıcıları login sayfasına yönlendirme
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  authStore.checkTokenExpiry();
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !authStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next('/login');
+  } else if (to.name === 'Login' && authStore.isAuthenticated) {
+    next('/dashboard');
   } else {
     next();
   }

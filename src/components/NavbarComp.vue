@@ -12,12 +12,7 @@
       </div>
 
       <!-- Search form -->
-      <form class="d-flex ms-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
-      </form>
+      <SearchBar/>
 
       <!-- Dropdown -->
       <div class="dropdown">
@@ -60,6 +55,7 @@ import { computed } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import SearchBar from './SearchBar.vue';
 
 export default {
   name: 'NavbarComp',
@@ -68,6 +64,9 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  components:{
+    SearchBar
   },
   setup() {
     const authStore = useAuthStore();

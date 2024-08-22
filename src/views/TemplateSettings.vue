@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="template-setting-main">
-            <div v-if="logoUrlInternal != 'logo_1000.png'">
+            <!-- <div v-if="logoUrlInternal != 'logo_1000.png'">
               <div class="photo-area">
                 <div class="polaroid">
                   <div class="img-container" @click="toggler = !toggler">
@@ -54,7 +54,7 @@
                 </label>
                 <input type="file" id="file-upload" @change="onFileChangeLogo" accept="image/*,video/*" />
               </div>
-            </div>
+            </div> -->
             <div class="color-select">
               <span><b>Select Template Color</b></span>
               <div class="color-select-item">
@@ -104,7 +104,7 @@
           <div class="layout-items">
             <span><b>Select Languages:</b></span>
 
-            <multiselect v-model="selectedLanguagesInternal" :options="languages" :multiple="true"
+            <multiselect v-model="selectedLanguagesInternal" :options="languages" :multiple="true" :max-height="150" 
               :close-on-select="false" placeholder="Select languages" label="label" track-by="value"
               class="multiselect-custom" style="width: 300px">
             </multiselect>

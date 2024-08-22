@@ -238,9 +238,9 @@ export default {
             };
             try {
                 if (this.editMode) {
-                    await axios.put(`http://127.0.0.1:8000/api/group-branch/${this.form.branch_id}`, this.form, { headers });
+                    await axios.put(`https://panel.dinelim.ai/api/group-branch/${this.form.branch_id}`, this.form, { headers });
                 } else {
-                    await axios.post('http://127.0.0.1:8000/api/group-branch', this.form, { headers });
+                    await axios.post('https://panel.dinelim.ai/api/group-branch', this.form, { headers });
                 }
                 this.GroupBranchLoad();
             } catch (error) {

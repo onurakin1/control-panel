@@ -14,7 +14,8 @@
                         <div class="photo-area">
                             <div class="polaroid">
                                 <div class="img-container" @click="toggler = !toggler">
-                                    <img :src="'https://panel.dinelim.ai/uploads/' + form.logo" class="image" style="width:100%" />
+                                    <img :src="'https://panel.dinelim.ai/uploads/' + form.logo" class="image"
+                                        style="width:100%" />
                                 </div>
                                 <div class="container">
                                     <i class="bi bi-trash3" @click="resetFile"></i>
@@ -35,23 +36,23 @@
                     </div>
                 </div>
                 <input type="hidden" v-model="form.user_id" />
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Submit' }}</button>
             </form>
         </div>
     </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useCompanyStore } from '@/stores/companyStore';
 import { useAuthStore } from '@/stores/authStore';
-
+import { useCompanyStore } from '@/stores/companyStore';
 export default {
     name: 'SettingsComp',
     setup() {
         const authStore = useAuthStore();
-        const companyStore = useCompanyStore();
+        const compStore = useCompanyStore();
+
         const userId = computed(() => authStore.user?.id || null);
         const form = ref({
             company_name: '',
@@ -59,11 +60,30 @@ export default {
             user_id: userId.value,
         });
         const toggler = ref(false);
+        const isEditing = ref(false);
+
+        onMounted(async () => {
+            if (userId.value) {
+                try {
+                    const response = await axios.get(`https://panel.dinelim.ai/api/company/${userId.value}`);
+                    if (response.data) {
+                        form.value = response.data[0];
+                        isEditing.value = true;
+                    }
+                } catch (error) {
+                    console.error('Error fetching company data:', error);
+                }
+            }
+        });
 
         const submitForm = async () => {
             try {
-                const response = await axios.post('https://panel.dinelim.ai/api/company', form.value);
-                companyStore.setCompany(response.data);
+                const url = isEditing.value
+                    ? `https://panel.dinelim.ai/api/company/${form.value.id}`
+                    : 'https://panel.dinelim.ai/api/company';
+                const method = isEditing.value ? 'put' : 'post';
+                const response = await axios({ method, url, data: form.value });
+                compStore.setCompData(response.data.logo)
                 alert('Form submitted successfully');
             } catch (error) {
                 console.error('There was an error submitting the form:', error);
@@ -99,11 +119,9 @@ export default {
             onFileChangeLogo,
             resetFile,
             toggler,
+            isEditing,
+            compStore
         };
     },
 };
 </script>
-
-<style scoped>
-/* You can add your styles here */
-</style>

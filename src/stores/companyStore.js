@@ -1,30 +1,26 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
 
-export const useCompanyStore = defineStore('company', () => {
-    const company = ref({
-        company_name: '',
-        logo: '',
-        id: null,
-    });
+export const useCompanyStore = defineStore('company', {
+    state: () => ({
+        company: localStorage.getItem('company') || null,
 
-    const setCompany = (data) => {
-        company.value = data;
-        localStorage.setItem('company', JSON.stringify(data));
-    };
+    }),
+    actions: {
+        setCompData(company) {
+            this.company = company;
+            localStorage.setItem('company', company);
 
-    const loadCompanyFromLocalStorage = () => {
-        const storedCompany = localStorage.getItem('company');
-        if (storedCompany) {
-            company.value = JSON.parse(storedCompany);
-        }
-    };
+        },
+        clearAuthData() {
+            this.company = null;
+            localStorage.removeItem('company');
 
-    // Load the company data from local storage when the store is initialized
-    loadCompanyFromLocalStorage();
+        },
 
-    return {
-        company,
-        setCompany,
-    };
+    },
+    getters: {
+
+        getCompany: (state) => state.company,
+
+    },
 });
