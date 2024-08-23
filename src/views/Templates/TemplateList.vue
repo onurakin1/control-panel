@@ -23,7 +23,7 @@
           @click="selectTemplate(template.name)">
           <Template1 :disabled="true" :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
             :textColor="textColorDefault" :logoSize="'40px'" :iconSize="IconSizeDefault" :layout="layoutDefault"
-            :logoUrl="logoUrlDefault" :mediaUrl="mediaUrlDefault" :fontSize="fontSizeDefault" />
+            :logoUrl="compStore.company" :mediaUrl="mediaUrlDefault" :fontSize="fontSizeDefault" />
           <div class="checkbox" v-if="selectedTemplate === template.name">
             <i class="bi bi-check-circle-fill"></i>
           </div>
@@ -34,13 +34,9 @@
     <div v-if="selectedTemplate" class="mt-5 template-list">
       <TemplateSettings @save-settings="handleSaveSettings" :selectedTemplateId="selectedTemplateId"
         :template="selectedTemplate" :selectedBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-        :textColor="textColor" :layout="layout" :mediaUrl="mediaUrl" :logoUrl="logoUrl" :IconSize="IconSize"
+        :textColor="textColor" :layout="layout" :mediaUrl="mediaUrl" :logoUrl="compStore.company" :IconSize="IconSize"
         :selectedLanguages="selectedLanguages" />
-      <div class="d-flex justify-content-end mt-2">
-        <!-- HTML !-->
-        <router-link to="/dashboard" class="ai-btn" role="button"><span class="text">Continue <i
-              class="bi bi-forward-fill"></i></span></router-link>
-      </div>
+   
     </div>
     <div v-else>
       <!-- Optional: Add some message or component to show when no template is selected -->
@@ -55,6 +51,7 @@ import { toast } from "vue3-toastify";
 import { mapState, mapActions } from "pinia";
 import { useTemplateStore } from "@/stores/templateStore"; 
 import { useAuthStore } from '@/stores/authStore';
+import { useCompanyStore } from '@/stores/companyStore';
 import { Swiper, SwiperSlide } from "swiper/vue";
 import Template1 from "@/views/Templates/template1/Home.vue";
 import TemplateSettings from "@/views/TemplateSettings.vue";
@@ -74,10 +71,12 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const templateStore = useTemplateStore();
+    const compStore = useCompanyStore();
 
     return {
       authStore,
       templateStore,
+      compStore
     };
   },
   data() {
@@ -162,8 +161,7 @@ export default {
     handleSaveSettings(settings) {
       if (this.selectedTemplateId === 0) {
         settings.user_id = this.authStore.user.id;
-        const selectedLanguageCodes = settings.languages.map(lang => lang.value);
-        settings.languages = selectedLanguageCodes;
+
         axios
           .post("https://panel.dinelim.ai/api/template", settings)
           .then((response) => {
@@ -174,8 +172,7 @@ export default {
             console.error("There was an error adding the category!", error);
           });
       } else {
-        const selectedLanguageCodes = settings.languages.map(lang => lang.value);
-        settings.languages = selectedLanguageCodes;
+
         settings.user_id = this.authStore.user.id
         axios
           .put(

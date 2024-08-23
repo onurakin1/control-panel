@@ -1,18 +1,20 @@
 <template>
     <div id="app">
         <div class="template">
-            <div class="template-preview">
+      
                 <div class="template-border">
                     <component :is="template1" :mainBgColor="selectedBgColor" :secondaryBgColor="secondaryBgColor"
-                        :textColor="textColor" :logoSize="'120px'" :iconSize="IconSize" :layout="layout"
-                        :logoUrl="logoUrl" :mediaUrl="mediaUrl" :fontSize="fontSize" :selectedLanguages="selectedLanguages"/>
+                        :textColor="textColor" :logoSize="'80px'" :iconSize="'80px'" :layout="layout"
+                        :logoUrl="compStore.company" :mediaUrl="mediaUrl" :fontSize="fontSize"
+                        :selectedLanguages="selectedLanguages" />
                 </div>
-            </div>
+         
         </div>
     </div>
 </template>
 
 <script>
+import { useCompanyStore } from '@/stores/companyStore';
 import Template1 from "./template1/template1.vue";
 import "../../assets/css/views/templates/templateSettings.css";
 
@@ -27,6 +29,14 @@ export default {
             required: true
         }
     },
+    setup() {
+        const compStore = useCompanyStore();
+
+        return {
+
+            compStore
+        };
+    },
     data() {
         return {
             selectedBgColor: "#505095",
@@ -38,7 +48,7 @@ export default {
             IconSize: '120px',
             fontSize: '14px',
             template1: '',
-            selectedLanguages:[]
+            selectedLanguages: []
         };
     },
     watch: {

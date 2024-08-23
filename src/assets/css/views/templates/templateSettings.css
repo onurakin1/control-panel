@@ -84,10 +84,20 @@ input[type="file"] {
 }
 
 .template-border {
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     height: 700px;
     overflow: hidden;
     border: 25px solid #000;
+    border-radius: 23px;
+}
+
+.template-wizard-border {
+    width: 100%;
+    max-width: 410px;
+    height: 569px;
+    overflow: hidden;
+    border: 20px solid #000;
     border-radius: 23px;
 }
 
@@ -157,15 +167,15 @@ input[type="file"] {
         max-width: 500px;
     }
     .template-border {
-        width: 568px;
-        height: 768px;
+        width: 478px;
+        height: 668px;
       
     }
   }
   @media (max-width: 768px) {
     .template-border {
-        width: 470px;
-        height: 768px;
+        width: 414px;
+        height: 700px;
       
     }
     .template-sidebar {

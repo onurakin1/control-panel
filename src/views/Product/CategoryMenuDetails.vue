@@ -72,7 +72,6 @@
           </div>
           <div v-if="category.child.length" class="collapse" :id="'collapse_' + category.category_id">
             <div v-for="childCategory in sortedChildCategories(category.child)" :key="childCategory.category_id"
-            
               class="mb-1 mt-1 box-sub-menu" :class="{
                 'border-green': childCategory.visible === 1,
                 'border-gray': childCategory.visible === 0,
@@ -202,7 +201,7 @@ export default {
   setup() {
     const branchStore = useBranchStore();
     const authStore = useAuthStore();
-    const { locale } = useI18n(); 
+    const { locale } = useI18n();
 
     const selectedLanguageId = computed(() => {
       if (locale.value === 'en') {
@@ -216,7 +215,7 @@ export default {
     return {
       branchStore,
       authStore,
-      currentLanguage: locale, 
+      currentLanguage: locale,
       selectedLanguageId
     };
   },
@@ -227,7 +226,7 @@ export default {
       editor: ClassicEditor,
       allergens: [],
       selectedTemplateId: 0,
-      currentLanguageId:0,
+      currentLanguageId: 0,
       categories: [],
       editableCategory: {},
       products: [],
@@ -284,12 +283,12 @@ export default {
   computed: {
     sortedCategories() {
       console.log(this.selectedLanguageId)
- 
+
       return [...this.categories]
         .sort((a, b) => a.sort_order - b.sort_order)
         .filter((item) => item.language_id == this.selectedLanguageId);
     },
-  
+
     selectedBranchId() {
       return this.branchStore.selectedBranchId;
     },
@@ -308,7 +307,7 @@ export default {
     },
     updateTemplate() {
       // Navigate to the new route
-      this.$router.push({ path: "/", query: { id: this.selectedTemplateId.id } });
+      this.$router.push({ path: "/template-settings", query: { id: this.selectedTemplateId.id } });
 
       // Close the modal after navigation
       this.$nextTick(() => {

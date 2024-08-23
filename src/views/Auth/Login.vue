@@ -59,7 +59,13 @@ export default {
                     this.authStore.setAuthData(response.data.token, response.data.user, response.data.company);
                     this.compStore.setCompData(response.data.company)
                     this.error = null;
-                    this.$router.push({ name: 'Dashboard' });
+                    if(response.data.company){
+                        this.$router.push({ name: 'Dashboard' });
+                    }
+                    else{
+                        this.$router.push({ name: 'WizardTemplate' });
+                    }
+              
                     console.log('User Info:', response.data.user);
                 } else {
                     this.error = 'Invalid response from server. Please try again later.';

@@ -5,6 +5,17 @@
 
         <div class="template-setting-form">
           <div class="mb-5">
+            <a-spin :spinning="loading">
+  <div class="file-template-upload" v-if="mediaUrlInternal === 'home_bg.jpg'">
+    <span><b>Upload Banner</b></span>
+    <label for="file-template-upload" class="custom-file-template-upload">
+      <i class="bi bi-upload"></i>
+      <div>Upload</div>
+      <span>The file type can only be .jpg, .jpeg, and .png.</span>
+    </label>
+    <input type="file" id="file-template-upload" @change="onFileChangeTemplate" />
+  </div>
+</a-spin>
             <div v-if="mediaUrlInternal != 'home_bg.jpg'">
               <div class="photo-area">
                 <div class="polaroid">
@@ -18,43 +29,10 @@
                 </div>
               </div>
             </div>
-            <div class="file-template-upload" v-else>
-              <span><b>Upload Banner</b></span>
-              <label for="file-template-upload" class="custom-file-template-upload">
-                <i class="bi bi-upload"></i>
-                <div>Upload</div>
-                <span>The file type can only be .jpg, .jpeg, and .png.</span>
-              </label>
-
-              <input type="file" id="file-template-upload" @change="onFileChangeTemplate" />
-
-            </div>
+ 
           </div>
           <div class="template-setting-main">
-            <!-- <div v-if="logoUrlInternal != 'logo_1000.png'">
-              <div class="photo-area">
-                <div class="polaroid">
-                  <div class="img-container" @click="toggler = !toggler">
-                    <img :src="'https://panel.dinelim.ai/uploads/' + logoUrlInternal" class="image" style="width:100%">
-
-                  </div>
-                  <div class="container">
-                    <i class="bi bi-trash3" @click="resetFile"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="file-upload">
-                <span><b>Upload Logo</b></span>
-                <label for="file-upload" class="custom-file-upload">
-                  <i class="bi bi-upload"></i>
-                  <div>Upload</div>
-                  <span>The file type can only be .jpg, .jpeg, and .png.</span>
-                </label>
-                <input type="file" id="file-upload" @change="onFileChangeLogo" accept="image/*,video/*" />
-              </div>
-            </div> -->
+   
             <div class="color-select">
               <span><b>Select Template Color</b></span>
               <div class="color-select-item">
@@ -104,12 +82,12 @@
           <div class="layout-items">
             <span><b>Select Languages:</b></span>
 
-            <multiselect v-model="selectedLanguagesInternal" :options="languages" :multiple="true" :max-height="150" 
-              :close-on-select="false" placeholder="Select languages" label="label" track-by="value"
-              class="multiselect-custom" style="width: 300px">
-            </multiselect>
 
 
+            <a-select id="languages" mode="multiple" :options="languages"
+                                v-model:value="selectedLanguagesInternal" placeholder="Select items"
+                                style="width: 200px" />
+                    
           </div>
           <div class="d-flex justify-content-end">
             <button class="save-button" @click="saveSettings">
@@ -134,7 +112,7 @@
             <div class="template-border">
               <component :is="template" :mainBgColor="selectedBgColorInternal"
                 :secondaryBgColor="secondaryBgColorInternal" :selectedLanguage="selectedLanguagesInternal"
-                :textColor="textColorInternal" :logoSize="'120px'" :iconSize="iconSizeInternal" :layout="layoutInternal"
+                :textColor="textColorInternal" :logoSize="'80px'" :iconSize="'80px'" :layout="layoutInternal"
                 :logoUrl="logoUrlInternal" :mediaUrl="mediaUrlInternal" :fontSize="fontSize" />
             </div>
           </div>
@@ -146,7 +124,7 @@
 
 <script>
 import axios from "axios";
-import Multiselect from "vue-multiselect";
+import { Spin } from 'ant-design-vue';
 import Template1 from "./Templates/template1/Home.vue";
 import ColorPicker from "../components/ColorPickerComp.vue";
 import "../assets/css/views/templates/templateSettings.css";
@@ -156,7 +134,7 @@ export default {
   components: {
     ColorPicker,
     Template1,
-    Multiselect
+    Spin,
   },
   props: {
     template: String,
@@ -225,7 +203,8 @@ export default {
         'it': 'Italian',
         'tr': 'Turkish'
       },
-      fontSize: "14px", // Default font size
+      fontSize: "14px",
+      loading: false,
     };
   },
   watch: {
@@ -254,38 +233,33 @@ export default {
       this.selectedLanguagesInternal = newVal;
     },
   },
-  mounted() {
-    this.selectedLanguagesInternal = this.selectedLanguages.map(langCode => {
-      return {
-        value: langCode,
-        label: this.languageMap[langCode] || langCode
-      };
-    });
-  },
+
   methods: {
     async onFileChangeTemplate(e) {
-      this.file = e.target.files[0];
-      console.log(this.file);
-      const formData = new FormData();
-      formData.append("file", this.file);
+    this.file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", this.file);
 
-      try {
-        const response = await axios.post(
-          "https://panel.dinelim.ai/api/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        this.mediaUrlInternal = response.data.filePath;
-        this.$emit("update:mediaUrl", response.data.filePath);
-      } catch (error) {
-        console.error("File upload error:", error);
-      }
-    },
+    this.loading = true; // Show spinner
 
+    try {
+      const response = await axios.post(
+        "https://panel.dinelim.ai/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      this.mediaUrlInternal = response.data.filePath;
+      this.$emit("update:mediaUrl", response.data.filePath);
+    } catch (error) {
+      console.error("File upload error:", error);
+    } finally {
+      this.loading = false; // Hide spinner
+    }
+  },
     async onFileChangeLogo(e) {
       this.file = e.target.files[0];
       console.log(this.file);
@@ -359,7 +333,7 @@ export default {
   },
 };
 </script>
-<style src="../../node_modules/vue-multiselect/dist/vue-multiselect.css"></style>
+
 <style scoped>
 .form-select[multiple] {
   height: auto;

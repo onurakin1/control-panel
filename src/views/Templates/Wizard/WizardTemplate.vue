@@ -14,10 +14,11 @@
                     <div class="col-md-5">
                         <div class="mb-3 wizard-form-item">
                             <label for="languages" class="form-label">Select Languages:</label><br />
-                            <a-select id="languages" mode="multiple" :options="options" v-model:value="form.selectedLanguages"
-                                placeholder="Select items" style="width: 200px" />
+                            <a-select id="languages" mode="multiple" :options="options"
+                                v-model:value="form.selectedLanguages" placeholder="Select items"
+                                style="width: 200px" />
                         </div>
-                        
+
                         <div class="mb-3 wizard-form-item">
                             <label for="logo" class="form-label">Logo</label>
                             <div v-if="form.logo">
@@ -46,13 +47,13 @@
                             </div>
                         </div>
                         <div class="mb-3 wizard-form-item">
-                            <label for="logo" class="form-label">Company Name</label><br/>
+                            <label for="logo" class="form-label">Company Name</label><br />
                             <a-space direction="vertical" style="width: 52%">
                                 <a-input v-model:value="form.company_name" placeholder="Company Name" />
                             </a-space>
                         </div>
                         <div class="layout-items mb-3">
-                            <span>Select Menu Layout:</span><br/>
+                            <span>Select Menu Layout:</span><br />
                             <span class="d-flex justify-content-between">
                                 <div @click="setLayout('two')" :class="{ active: form.layout === 'two' }">
                                     <i class="bi bi-grid-1x2"></i> Two Column
@@ -64,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="template-border">
+                        <div class="template-wizard-border">
                             <Template1 :selectedLanguage="form.selectedLanguages" :mediaUrl="form.banner"
                                 :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="form.layout" />
                         </div>
@@ -117,11 +118,13 @@
                             <span>Select Template Color</span>
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Background Color</span>
-                                <ColorPicker :selectedColor="form.secondaryBgColor" @color-changed="handleSecondaryBgColorChange" />
+                                <ColorPicker :selectedColor="form.secondaryBgColor"
+                                    @color-changed="handleSecondaryBgColorChange" />
                             </div>
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Accent Color</span>
-                                <ColorPicker :selectedColor="form.selectedBgColor" @color-changed="handleBgColorChange" />
+                                <ColorPicker :selectedColor="form.selectedBgColor"
+                                    @color-changed="handleBgColorChange" />
                             </div>
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Text Color</span>
@@ -130,25 +133,19 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="template-border">
+                        <div class="template-wizard-border">
                             <Template1 :selectedLanguage="form.selectedLanguages" :mediaUrl="form.banner"
                                 :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="form.layout"
-:mainBgColor="form.selectedBgColor"
-                :secondaryBgColor="form.secondaryBgColor" :textColor="form.textColor" />
+                                :mainBgColor="form.selectedBgColor" :secondaryBgColor="form.secondaryBgColor"
+                                :textColor="form.textColor" />
                         </div>
                     </div>
                 </div>
                 <button type="button" @click="prevStep">Geri</button>
-                <button type="button" @click="nextStep">İleri</button>
+                <button type="button" @click="submitForm">Save and Continue</button>
             </div>
 
-            <!-- Step 3 -->
-            <div class="wizard-form" v-show="step === 3">
-                <h2>Adım 3</h2>
-                <p>Bu üçüncü adımdır.</p>
-                <button type="button" @click="prevStep">Geri</button>
-                <button type="submit">Tamamla</button>
-            </div>
+
         </form>
     </div>
 </template>
@@ -156,10 +153,13 @@
 <script>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import "@/assets/css/views/templates/wizard.css"
+import { useRouter } from 'vue-router'; // Import useRouter
+import "@/assets/css/views/templates/wizard.css";
 import Template1 from "../template1/Home.vue";
 import ColorPicker from "../../../components/ColorPickerComp.vue";
+import { useCompanyStore } from '@/stores/companyStore';
 import axios from 'axios'; // Ensure axios is imported
+import { toast } from "vue3-toastify";
 
 export default {
     name: 'WizardComponent',
@@ -170,6 +170,8 @@ export default {
     setup() {
         const step = ref(1);
         const authStore = useAuthStore();
+        const compStore = useCompanyStore();
+        const router = useRouter(); // Get router instance
         const form = ref({
             banner: 'images/1724355186_home_bg.jpg',
             logo: null,
@@ -189,8 +191,6 @@ export default {
 
         const toggler = ref(false);
 
-    
-
         const onFileChangeLogo = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -208,7 +208,7 @@ export default {
             }
         };
 
-           const onFileChangeBanner = async (e) => {
+        const onFileChangeBanner = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -220,9 +220,9 @@ export default {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
                 form.value.banner = response.data.filePath;
-                console.log(form.value.banner)
+                console.log(form.value.banner);
             } catch (error) {
-                console.error("Error uploading logo:", error);
+                console.error("Error uploading banner:", error);
             }
         };
 
@@ -256,10 +256,31 @@ export default {
 
         const submitForm = async () => {
             try {
-                // Your form submission logic here
-                console.log('Form submitted:', form.value);
+                const color = [
+                    { name: 'selectedBgColor', value: form.value.selectedBgColor },
+                    { name: 'secondaryBgColor', value: form.value.secondaryBgColor },
+                    { name: 'textColor', value: form.value.textColor }
+                ];
+
+                const payload = {
+                    banner: form.value.banner,
+                    logo: form.value.logo,
+                    color: color,
+                    company_name: form.value.company_name,
+                    languages: form.value.selectedLanguages,
+                    layout: form.value.layout,
+                    user_id: authStore.getUser.id,
+                    size: '80px',
+                    name: 'Template1'
+                };
+
+                const response = await axios.post('https://panel.dinelim.ai/api/template', payload);
+                compStore.setCompData(response.data.company.logo);
+                toast.success("Company and template saved successfully");
+                router.push({ name: 'Dashboard' }); // Use router instance to navigate
+      
             } catch (error) {
-                console.error('Error submitting form:', error);
+                console.error('An error occurred while sending the form:', error);
             }
         };
 
@@ -270,6 +291,7 @@ export default {
         return {
             step,
             authStore,
+            compStore,
             form,
             options,
             toggler,
@@ -284,8 +306,8 @@ export default {
             prevStep,
             submitForm,
             setLayout,
-  
         };
     }
 };
+
 </script>
