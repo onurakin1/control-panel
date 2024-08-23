@@ -19,10 +19,7 @@ const routes = [
     name: 'Template_Settings',
     component: TemplateList,
     meta: {
-      requiresAuth: true, 
-      breadcrumb: [
-        { name: 'Template Settings' }
-      ]
+      requiresAuth: true
     },
   },
   {

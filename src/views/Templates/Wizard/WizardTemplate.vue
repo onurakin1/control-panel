@@ -35,15 +35,20 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div class="file-upload">
-                                    <label for="file-upload" class="custom-file-upload">
-                                        <i class="bi bi-upload"></i>
-                                        <div>Upload</div>
-                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
-                                    </label>
-                                    <input type="file" id="file-upload" @change="onFileChangeLogo"
-                                        accept=".jpg, .jpeg, .png" />
-                                </div>
+                                <a-spin :spinning="loading">
+                                    <div class="file-upload">
+                                        <label for="file-upload" class="custom-file-upload">
+                                            <i class="bi bi-upload"></i>
+                                            <div>Upload</div>
+                                            <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                        </label>
+                                        <input type="file" id="file-upload" @change="onFileChangeLogo"
+                                            accept=".jpg, .jpeg, .png" />
+                                        <div v-if="loading" class="spinner-overlay">
+
+                                        </div>
+                                    </div>
+                                </a-spin>
                             </div>
                         </div>
                         <div class="mb-3 wizard-form-item">
@@ -72,7 +77,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-start mt-2">
-                    <button type="button" @click="nextStep">İleri</button>
+                    <button type="button" class="wizard-step-btn" @click="nextStep">Next</button>
                 </div>
             </div>
 
@@ -103,15 +108,20 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div class="file-upload-banner">
-                                    <label for="file-upload-banner" class="custom-file-upload">
-                                        <i class="bi bi-upload"></i>
-                                        <div>Upload</div>
-                                        <span>The file type can only be .jpg, .jpeg, and .png.</span>
-                                    </label>
-                                    <input type="file" id="file-upload-banner" @change="onFileChangeBanner"
-                                        accept=".jpg, .jpeg, .png" />
-                                </div>
+                                <a-spin :spinning="loading">
+                                    <div class="file-upload-banner">
+                                        <label for="file-upload-banner" class="custom-file-upload">
+                                            <i class="bi bi-upload"></i>
+                                            <div>Upload</div>
+                                            <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                        </label>
+                                        <input type="file" id="file-upload-banner" @change="onFileChangeBanner"
+                                            accept=".jpg, .jpeg, .png" />
+                                        <div v-if="loading" class="spinner-overlay">
+                                            <Spin size="large" />
+                                        </div>
+                                    </div>
+                                </a-spin>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -141,8 +151,8 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" @click="prevStep">Geri</button>
-                <button type="button" @click="submitForm">Save and Continue</button>
+                <button type="button" class="wizard-prev-step-btn" @click="prevStep">Prev</button>
+                <button type="button" class="wizard-step-btn" @click="submitForm">Save and Continue</button>
             </div>
 
 
@@ -153,25 +163,27 @@
 <script>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import { useRouter } from 'vue-router'; // Import useRouter
+import { Spin } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
 import "@/assets/css/views/templates/wizard.css";
 import Template1 from "../template1/Home.vue";
 import ColorPicker from "../../../components/ColorPickerComp.vue";
 import { useCompanyStore } from '@/stores/companyStore';
-import axios from 'axios'; // Ensure axios is imported
+import axios from 'axios';
 import { toast } from "vue3-toastify";
 
 export default {
     name: 'WizardComponent',
     components: {
         Template1,
-        ColorPicker
+        ColorPicker,
+        Spin
     },
     setup() {
         const step = ref(1);
         const authStore = useAuthStore();
         const compStore = useCompanyStore();
-        const router = useRouter(); // Get router instance
+        const router = useRouter();
         const form = ref({
             banner: 'images/1724355186_home_bg.jpg',
             logo: null,
@@ -190,10 +202,13 @@ export default {
         ]);
 
         const toggler = ref(false);
+        const loading = ref(false);
 
         const onFileChangeLogo = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+
+            loading.value = true; // Start loading
 
             const formData = new FormData();
             formData.append("file", file);
@@ -205,12 +220,16 @@ export default {
                 form.value.logo = response.data.filePath;
             } catch (error) {
                 console.error("Error uploading logo:", error);
+            } finally {
+                loading.value = false; // End loading
             }
         };
 
         const onFileChangeBanner = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+
+            loading.value = true; // Start loading
 
             const formData = new FormData();
             formData.append("file", file);
@@ -223,6 +242,8 @@ export default {
                 console.log(form.value.banner);
             } catch (error) {
                 console.error("Error uploading banner:", error);
+            } finally {
+                loading.value = false; // End loading
             }
         };
 
@@ -243,7 +264,7 @@ export default {
         };
 
         const resetBanner = () => {
-            form.value.banner = null;
+            form.value.banner = 'images/1724355186_home_bg.jpg';
         };
 
         const nextStep = () => {
@@ -277,8 +298,8 @@ export default {
                 const response = await axios.post('https://panel.dinelim.ai/api/template', payload);
                 compStore.setCompData(response.data.company.logo);
                 toast.success("Company and template saved successfully");
-                router.push({ name: 'Dashboard' }); // Use router instance to navigate
-      
+                router.push({ name: 'Dashboard' });
+
             } catch (error) {
                 console.error('An error occurred while sending the form:', error);
             }
@@ -295,6 +316,7 @@ export default {
             form,
             options,
             toggler,
+            loading,
             onFileChangeLogo,
             onFileChangeBanner,
             handleSecondaryBgColorChange,
@@ -309,5 +331,4 @@ export default {
         };
     }
 };
-
 </script>

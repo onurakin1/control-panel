@@ -6,16 +6,16 @@
         <div class="template-setting-form">
           <div class="mb-5">
             <a-spin :spinning="loading">
-  <div class="file-template-upload" v-if="mediaUrlInternal === 'home_bg.jpg'">
-    <span><b>Upload Banner</b></span>
-    <label for="file-template-upload" class="custom-file-template-upload">
-      <i class="bi bi-upload"></i>
-      <div>Upload</div>
-      <span>The file type can only be .jpg, .jpeg, and .png.</span>
-    </label>
-    <input type="file" id="file-template-upload" @change="onFileChangeTemplate" />
-  </div>
-</a-spin>
+              <div class="file-template-upload" v-if="mediaUrlInternal === 'home_bg.jpg'">
+                <span><b>Upload Banner</b></span>
+                <label for="file-template-upload" class="custom-file-template-upload">
+                  <i class="bi bi-upload"></i>
+                  <div>Upload</div>
+                  <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                </label>
+                <input type="file" id="file-template-upload" @change="onFileChangeTemplate" />
+              </div>
+            </a-spin>
             <div v-if="mediaUrlInternal != 'home_bg.jpg'">
               <div class="photo-area">
                 <div class="polaroid">
@@ -29,10 +29,10 @@
                 </div>
               </div>
             </div>
- 
+
           </div>
           <div class="template-setting-main">
-   
+
             <div class="color-select">
               <span><b>Select Template Color</b></span>
               <div class="color-select-item">
@@ -84,10 +84,9 @@
 
 
 
-            <a-select id="languages" mode="multiple" :options="languages"
-                                v-model:value="selectedLanguagesInternal" placeholder="Select items"
-                                style="width: 200px" />
-                    
+            <a-select id="languages" mode="multiple" :options="languages" v-model:value="selectedLanguagesInternal"
+              placeholder="Select items" style="width: 200px" />
+
           </div>
           <div class="d-flex justify-content-end">
             <button class="save-button" @click="saveSettings">
@@ -236,30 +235,30 @@ export default {
 
   methods: {
     async onFileChangeTemplate(e) {
-    this.file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", this.file);
+      this.file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", this.file);
 
-    this.loading = true; // Show spinner
+      this.loading = true; // Show spinner
 
-    try {
-      const response = await axios.post(
-        "https://panel.dinelim.ai/api/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      this.mediaUrlInternal = response.data.filePath;
-      this.$emit("update:mediaUrl", response.data.filePath);
-    } catch (error) {
-      console.error("File upload error:", error);
-    } finally {
-      this.loading = false; // Hide spinner
-    }
-  },
+      try {
+        const response = await axios.post(
+          "https://panel.dinelim.ai/api/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.mediaUrlInternal = response.data.filePath;
+        this.$emit("update:mediaUrl", response.data.filePath);
+      } catch (error) {
+        console.error("File upload error:", error);
+      } finally {
+        this.loading = false; // Hide spinner
+      }
+    },
     async onFileChangeLogo(e) {
       this.file = e.target.files[0];
       console.log(this.file);

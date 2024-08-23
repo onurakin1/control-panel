@@ -324,8 +324,8 @@
 }
 
 .template-sidebar {
-    width: 170px;
-    height: 1000px;
+    width: 147px;
+    height: 650px;
 
     overflow: scroll;
 }
@@ -368,7 +368,7 @@
 
 .menu-card {
     margin-bottom: 20px;
-    height: 264px;
+    height: 190px;
     /* Fixed height for uniformity */
     display: flex;
     flex-direction: column;
@@ -406,6 +406,15 @@
     margin: 8px 0 0;
     font-size: 16px;
     color: #555;
+}
+.wizard-nav .nav-link{
+    font-size: 13px;
+}
+.wizard-nav .nav-text{
+    font-size: 11px;
+}
+.wizard-card b{
+    font-size: 13px;
 }
 
 .desc-area {

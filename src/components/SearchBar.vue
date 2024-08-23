@@ -1,56 +1,70 @@
 <template>
-    <div class="autocomplete">
-      <div class="autocomplete-input">
-        <input v-model="searchQuery" @input="filterRoutes" placeholder="Search" />
-        <span class="material-symbols-outlined search-icon">search</span>
-      </div>
-      <ul v-if="filteredRoutes.length > 0" class="autocomplete-suggestions">
-        <li v-for="route in filteredRoutes" :key="route.path" @click="selectRoute(route)">
-          {{ formatBreadcrumb(route.meta.breadcrumb) }}
-        </li>
-      </ul>
+  <div class="autocomplete">
+    <div class="autocomplete-input">
+      <input v-model="searchQuery" @input="filterRoutes" placeholder="Search" />
+      <span class="material-symbols-outlined search-icon">search</span>
     </div>
-  </template>
+    <ul v-if="filteredRoutes.length > 0" class="autocomplete-suggestions">
+      <li v-for="route in filteredRoutes" :key="route.path" @click="selectRoute(route)">
+        {{ formatBreadcrumb(route.meta.breadcrumb) }}
+      </li>
+    </ul>
+  </div>
+</template>
   
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  // Router'ı al ve route'ları getir
-  const router = useRouter();
-  const routes = router.getRoutes();
-  
-  // Arama sorgusu ve filtrelenmiş route'lar için state
-  const searchQuery = ref('');
-  const filteredRoutes = ref([]);
-  
-  // Route'ları filtreleme fonksiyonu
-  const filterRoutes = () => {
-    if (searchQuery.value) {
-      filteredRoutes.value = routes.filter(route =>
-        route.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
-    } else {
-      filteredRoutes.value = [];
-    }
-  };
-  
-  // Seçilen route'a yönlendirme fonksiyonu
-  const selectRoute = (route) => {
-    router.push(route.path);
-    searchQuery.value = ''; // Arama terimini temizle
-    filteredRoutes.value = []; // Önerileri temizle
-  };
-  
-  // Breadcrumb'ları formatlama fonksiyonu
-  const formatBreadcrumb = (breadcrumbs) => {
-  // Ensure breadcrumbs is an array or return an empty string if undefined
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const routes = router.getRoutes();
+
+const searchQuery = ref('');
+const filteredRoutes = ref([]);
+
+// Function to filter routes based on search query and breadcrumb conditions
+const filterRoutes = () => {
+  if (searchQuery.value) {
+    filteredRoutes.value = routes.filter(route => {
+      // Exclude routes with ':id' or any dynamic segments
+      const hasDynamicSegment = route.path.includes(':');
+      
+      // Ensure breadcrumb exists and has a valid name
+      const hasValidBreadcrumb = Array.isArray(route.meta?.breadcrumb) &&
+        route.meta.breadcrumb.length > 0 &&
+        route.meta.breadcrumb.some(breadcrumb => breadcrumb.name);
+
+      // Check if route name matches search query and meets breadcrumb and dynamic segment criteria
+      return !hasDynamicSegment && hasValidBreadcrumb && route.name?.toLowerCase().includes(searchQuery.value.toLowerCase());
+    });
+  } else {
+    // When search query is empty, show all routes without dynamic segments and with valid breadcrumbs
+    filteredRoutes.value = routes.filter(route => {
+      const hasDynamicSegment = route.path.includes(':');
+      const hasValidBreadcrumb = Array.isArray(route.meta?.breadcrumb) &&
+        route.meta.breadcrumb.length > 0 &&
+        route.meta.breadcrumb.some(breadcrumb => breadcrumb.name);
+      return !hasDynamicSegment && hasValidBreadcrumb;
+    });
+  }
+};
+
+// Function to navigate to the selected route
+const selectRoute = (route) => {
+  router.push(route.path);
+  searchQuery.value = ''; 
+  filteredRoutes.value = []; 
+};
+
+// Function to format the breadcrumb trail for display
+const formatBreadcrumb = (breadcrumbs) => {
   if (!Array.isArray(breadcrumbs)) {
     return '';
   }
   return breadcrumbs.map(breadcrumb => breadcrumb.name).join(' > ');
 };
-  </script>
+</script>
+
   
   <style scoped>
   .autocomplete {

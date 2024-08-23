@@ -61,7 +61,7 @@
           <span class="material-symbols-outlined">
             manufacturing
           </span>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Settings</span>
+          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{ $t('settings') }}</span>
         </router-link>
       </li>
     </ul>

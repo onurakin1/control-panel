@@ -92,6 +92,16 @@ input[type="file"] {
     border-radius: 23px;
 }
 
+.template-border .sidebar-size{
+
+    height: 650px;
+}
+.template-border .product-wizard-items {
+    height:522px;
+    overflow-y: scroll;
+    margin-top: calc(3vh - 16px);
+}
+
 .template-wizard-border {
     width: 100%;
     max-width: 410px;
@@ -101,6 +111,16 @@ input[type="file"] {
     border-radius: 23px;
 }
 
+.template-wizard-border .sidebar-size{
+
+    height: 532px;
+}
+
+.template-wizard-border .product-wizard-items {
+    height: 422px;
+    overflow-y: scroll;
+    margin-top: calc(3vh - 16px);
+}
 .color-select-item {
     display: flex;
     justify-content: space-between;

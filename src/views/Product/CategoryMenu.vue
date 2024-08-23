@@ -17,7 +17,7 @@
 
 
     <OffCanvas id="offcanvasRight" :title="'Add Menu'" :mode="mode" :newMenu="newCategory" :editMenu="editableMenu"
-      @createdMenu="addCategory" />
+      @createdMenu="addCategory" @updatedMenu="updateCategory" />
 
   </div>
 </template>
@@ -41,6 +41,7 @@ export default {
       dragOverCategory: null,
       icon: "bi bi-menu-button-wide",
       editableMenu: {},
+      sendCategory:{},
       mode: 'createMenu',
       newCategory: {
         branch_id: 0,
@@ -63,6 +64,21 @@ export default {
         })
         .catch(error => {
           console.error('There was an error fetching the data!', error);
+        });
+    },
+    updateCategory(category) {
+      console.log(category)
+      this.sendCategory.push(category);
+
+      axios
+        .put(
+           `https://panel.dinelim.ai/api/category/${category.id}`,
+          this.sendCategory
+        )
+        .then((response) => {
+          console.log(response);
+ 
+          this.$router.go();
         });
     },
     addCategory(category) {

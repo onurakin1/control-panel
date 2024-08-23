@@ -47,6 +47,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
 import { useCompanyStore } from '@/stores/companyStore';
+import { toast } from "vue3-toastify";
 export default {
     name: 'SettingsComp',
     setup() {
@@ -84,7 +85,7 @@ export default {
                 const method = isEditing.value ? 'put' : 'post';
                 const response = await axios({ method, url, data: form.value });
                 compStore.setCompData(response.data.logo)
-                alert('Form submitted successfully');
+                toast.success("Company Informations Updated Successfully!");
             } catch (error) {
                 console.error('There was an error submitting the form:', error);
             }

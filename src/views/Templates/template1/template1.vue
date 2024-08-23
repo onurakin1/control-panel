@@ -84,7 +84,8 @@
       <div class="menu-body" :style="{ backgroundColor: secondaryBgColor }">
 
         <div class="menu-container">
-          <div class="menu-icon-item" v-for="item in menuList" :key="item.id" @click="view('menu');setMenuActiveTab(item.parent_id);">
+          <div class="menu-icon-item" v-for="item in menuList" :key="item.id"
+            @click="view('menu'); setMenuActiveTab(item.parent_id);">
             <div class="icon-circle" :style="{ backgroundColor: mainBgColor, height: iconSize, width: iconSize }">
               <img :src="item.image" alt="Food Icon" class="icon-image" />
             </div>
@@ -364,7 +365,7 @@ export default {
     setActiveTab(tab) {
       this.selectedLanguageId = tab.id;
       this.activeTab = tab.name;
-      this.setMenuActiveTab();
+      this.setMenuActiveTab(this.activeMenuTab);
     },
     setMenuActiveTab(tab) {
       console.log(tab)
@@ -380,8 +381,7 @@ export default {
 
           const sortedCategories = categories.sort((a, b) => a.sort_order - b.sort_order);
           this.sideMenuItems = sortedCategories.filter((item) => item.language_id == this.selectedLanguageId);
-          console.log("aktif ürün", this.sideMenuItems)
-          // Set the active product after categories are loaded
+
           if (this.sideMenuItems.length > 0) {
             if (this.sideMenuItems[0].children.length > 0) {
               this.activeProduct = this.sideMenuItems[0].children[0].category_id;

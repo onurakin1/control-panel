@@ -34,6 +34,21 @@
     color: #fff;
     border-color: #007bff;
 }
+.wizard-prev-step-btn{
+    background: #ffffff;
+    color: #929292;
+    border: 1px solid #929292;
+    padding: 8px 25px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+.wizard-step-btn{
+    background: #2996d1;
+    color: #ffffff;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 8px;
+}
 
 @media screen and (max-width: 992px) {
 
