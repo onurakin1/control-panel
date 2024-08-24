@@ -81,6 +81,7 @@
                 </div>
             </div>
 
+
             <!-- Step 2 -->
             <div class="wizard-form" v-show="step === 2">
                 <div class="d-flex justify-content-start">
@@ -94,7 +95,7 @@
                     <div class="col-md-5">
                         <div class="mb-3 wizard-form-item">
                             <label for="logo" class="form-label">Banner</label>
-                            <div v-if="form.banner != 'images/1724355186_home_bg.jpg'">
+                            <div class="wizard-form-item-left" v-if="form.banner != 'images/1724355186_home_bg.jpg'">
                                 <div class="photo-area">
                                     <div class="polaroid">
                                         <div class="img-container" @click="toggler = !toggler">
@@ -107,7 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-else>
+                            <div class="wizard-form-item-left" v-else>
                                 <a-spin :spinning="loading">
                                     <div class="file-upload-banner">
                                         <label for="file-upload-banner" class="custom-file-upload">
@@ -129,16 +130,16 @@
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Background Color</span>
                                 <ColorPicker :selectedColor="form.secondaryBgColor"
-                                    @color-changed="handleSecondaryBgColorChange" />
+                                    @color-changed="handleSecondaryBgColorChange" class="wizard-form-item-left" />
                             </div>
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Accent Color</span>
                                 <ColorPicker :selectedColor="form.selectedBgColor"
-                                    @color-changed="handleBgColorChange" />
+                                    @color-changed="handleBgColorChange" class="wizard-form-item-left"/>
                             </div>
                             <div class="mb-2 wizard-form-item align-items-center">
                                 <span>Text Color</span>
-                                <ColorPicker :selectedColor="form.textColor" @color-changed="handleTextColorChange" />
+                                <ColorPicker :selectedColor="form.textColor" @color-changed="handleTextColorChange" class="wizard-form-item-left"/>
                             </div>
                         </div>
                     </div>

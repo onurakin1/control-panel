@@ -64,6 +64,16 @@ input[type="file"] {
     flex-direction: column;
     gap: 10px;
 }
+.file-upload-banner {
+    width: 100%;
+    max-width: 200px;
+    height: 100%;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 
 .custom-file-upload {
     border: 1px dashed #ccc;

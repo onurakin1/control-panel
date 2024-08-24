@@ -18,6 +18,9 @@
     display: flex;
     justify-content: space-between;
 }
+.wizard-form-item-left{
+    margin: 0 20px;
+}
 
 .layout-items .d-flex div {
     margin: 5px;

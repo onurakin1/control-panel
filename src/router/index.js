@@ -23,7 +23,7 @@ const routes = [
     },
   },
   {
-    path: '/dashboard',
+    path: '/',
     name: 'Dashboard',
     component: HomeComp,
     meta: {
@@ -111,7 +111,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next('/login');
   } else if (to.name === 'Login' && authStore.isAuthenticated) {
-    next('/dashboard');
+    next('/');
   } else {
     next();
   }

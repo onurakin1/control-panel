@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-shrink-0 p-3 text-secondary sidebar-bg vh-100"
     :class="{ 'collapsed': isCollapsed }" id="sidebar">
-    <router-link to="/dashboard"
+    <router-link to="/"
       class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-secondary text-decoration-none w-100 justify-content-center company-logo">
       <img :src="'https://panel.dinelim.ai/uploads/' + compStore.company" alt="Logo" class="rounded-circle"
         :style="{ width: isCollapsed ? '40px' : '60px', height: isCollapsed ? '40px' : '60px' }">
@@ -10,7 +10,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <router-link to="/dashboard" class="nav-link text-secondary">
+        <router-link to="/" class="nav-link text-secondary">
           <span class="material-symbols-outlined">
             browse
           </span>
