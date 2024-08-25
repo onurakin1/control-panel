@@ -87,8 +87,11 @@
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-collapse">
             <li>
-              <router-link to="/settings" class="link-dark rounded text-secondary"
-                >Company Settings</router-link
+              <router-link to="/settings" class="link-dark rounded text-secondary" 
+                >
+                         <span class="material-symbols-outlined">store</span>
+                             <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Company Settings</span>
+                </router-link
               >
             </li>
             <li>
@@ -99,7 +102,9 @@
                 }"
                 class="link-dark rounded text-secondary mt-3"
               >
-                Template Settings
+             <span class="material-symbols-outlined">tab_inactive</span>
+                <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Template Settings</span>
+                
               </router-link>
             </li>
           </ul>
