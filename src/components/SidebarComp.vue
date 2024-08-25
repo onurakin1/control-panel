@@ -95,7 +95,7 @@
               <router-link
                 :to="{
                   name: 'Template_Settings',
-                  query: { id: tempStore.templateId },
+                  query: { id: authStore.template },
                 }"
                 class="link-dark rounded text-secondary mt-3"
               >
