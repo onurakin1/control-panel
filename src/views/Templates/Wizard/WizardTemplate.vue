@@ -170,6 +170,8 @@ import "@/assets/css/views/templates/wizard.css";
 import Template1 from "../template1/Home.vue";
 import ColorPicker from "../../../components/ColorPickerComp.vue";
 import { useCompanyStore } from '@/stores/companyStore';
+import { useTempStore } from '@/stores/tempStore';
+
 import axios from 'axios';
 import { toast } from "vue3-toastify";
 
@@ -184,6 +186,7 @@ export default {
         const step = ref(1);
         const authStore = useAuthStore();
         const compStore = useCompanyStore();
+        const tempStore = useTempStore();
         const router = useRouter();
         const form = ref({
             banner: 'images/1724355186_home_bg.jpg',
@@ -283,7 +286,10 @@ export default {
                     { name: 'secondaryBgColor', value: form.value.secondaryBgColor },
                     { name: 'textColor', value: form.value.textColor }
                 ];
-
+                if(form.value.logo == null || form.value.company_name == null){
+                    toast.warn("Company name cannot be null")
+                    
+                }
                 const payload = {
                     banner: form.value.banner,
                     logo: form.value.logo,
@@ -298,6 +304,7 @@ export default {
 
                 const response = await axios.post('https://panel.dinelim.ai/api/template', payload);
                 compStore.setCompData(response.data.company.logo);
+                tempStore.setTempData(response.data.template_setting.id);
                 toast.success("Company and template saved successfully");
                 router.push({ name: 'Dashboard' });
 
@@ -314,6 +321,7 @@ export default {
             step,
             authStore,
             compStore,
+            tempStore,
             form,
             options,
             toggler,

@@ -46,3 +46,13 @@
     position: relative;
     z-index: 1;
   }
+  .sidebar-collapse{
+    margin-left: 20px;
+  }
+  .sidebar-collapse li a{
+    text-decoration-line: none;
+  }
+  .sidebar-collapse li {
+
+    margin-top: 10px;
+  }

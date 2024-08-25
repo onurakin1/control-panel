@@ -4,21 +4,24 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     company: localStorage.getItem('company') || null,
+    template: localStorage.getItem('template') || null,
     user: JSON.parse(localStorage.getItem('user')) || null,
     tokenExpiry: localStorage.getItem('tokenExpiry') || null,
   }),
   actions: {
-    setAuthData(token, user, company, expiresIn) {
+    setAuthData(token, user, company, template, expiresIn) {
  
       const expiryTime = expiresIn ? new Date().getTime() + expiresIn * 1000 : new Date().getTime() + 3600 * 1000;
       
       this.token = token;
       this.user = user;
       this.company = company;
+      this.template = template;
       this.tokenExpiry = expiryTime;
     
       localStorage.setItem('token', token);
       localStorage.setItem('company', company);
+      localStorage.setItem('template', template);
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('tokenExpiry', expiryTime);
     },
@@ -26,9 +29,11 @@ export const useAuthStore = defineStore('auth', {
       this.token = null;
       this.user = null;
       this.company = null;
+      this.template = null;
       this.tokenExpiry = null;
       localStorage.removeItem('token');
       localStorage.removeItem('company');
+      localStorage.removeItem('template');
       localStorage.removeItem('user');
       localStorage.removeItem('tokenExpiry');
     },

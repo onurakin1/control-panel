@@ -373,7 +373,7 @@ export default {
                 {
                     name: 'Lotus Affogato',
                     price: '16.00$',
-                    image: require('@/assets/img/templates/menu_images/lotus.jpg'),
+                    image: require('@/assets/img/templates/menu_images/lotus-affogato.jpg'),
                 },
                 {
                     name: 'Oreo Affogato',

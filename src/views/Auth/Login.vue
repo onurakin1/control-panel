@@ -67,7 +67,7 @@ export default {
 
 
                 if (response.data.token && response.data.user) {
-                    this.authStore.setAuthData(response.data.token, response.data.user, response.data.company);
+                    this.authStore.setAuthData(response.data.token, response.data.user, response.data.company, response.data.template);
                     this.compStore.setCompData(response.data.company)
                     this.error = null;
                     if (response.data.company) {

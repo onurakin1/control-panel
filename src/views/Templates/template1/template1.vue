@@ -266,7 +266,7 @@ export default {
       activeMenuTab: '',
       activeProduct: '', // Added activeProduct to track selected product category
       sideMenuItems: [],
-      image: require('@/assets/img/templates/menu_images/lotus.jpg'),
+      image: require('@/assets/img/templates/menu_images/lotus-affogato.jpg'),
 
       productItems: [],
       productDesc: []

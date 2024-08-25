@@ -167,7 +167,7 @@
                                         <div class="container">
                                             <h4><b :style="{ color: textColor, fontSize: fontSize }">{{ item.name
                                                     }}</b></h4>
-                                            <p :style="{ color: textColor }">{{ item.price }}$</p>
+                                            <p :style="{ color: textColor }">{{ item.price }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -350,7 +350,147 @@ export default {
 
             ],
             productItems: [
+                 {
+                    category_id: 2,
+                    language_id: 0,
+                    name: 'Tomato Soup',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/TomatoSoup.jpg'),
+                },
                 {
+                    category_id: 2,
+                    language_id: 0,
+                    name: 'Chicken Soup',
+                    price: '16.00$',
+                    image: require('@/assets/img/templates/menu_images/chicken-soup.jpg'),
+                },
+                {
+                    category_id: 2,
+                    language_id: 0,
+                    name: 'Spagetti Soup',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/spaghetti-squash-soup.jpg'),
+                },
+                  {
+                    category_id: 2,
+                    language_id: 0,
+                    name: 'Mushroom Soup',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/mushroom-soup.jpg'),
+                },
+
+   {
+                    category_id: 2,
+                    language_id: 1,
+                    name: 'Domatos Çorbası',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/TomatoSoup.jpg'),
+                },
+                {
+                    category_id: 2,
+                    language_id: 1,
+                    name: 'Tavuk Çorbası',
+                    price: '16.00$',
+                    image: require('@/assets/img/templates/menu_images/chicken-soup.jpg'),
+                },
+                {
+                    category_id: 2,
+                    language_id: 1,
+                    name: 'Spagetti Çorbası',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/spaghetti-squash-soup.jpg'),
+                },
+                  {
+                    category_id: 2,
+                    language_id:1,
+                    name: 'Mantar Çorbası',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/mushroom-soup.jpg'),
+                },
+
+                   {
+                    category_id: 3,
+                    language_id: 0,
+                    name: 'Bean Salad',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/bean-salad.jpg'),
+                },
+                {
+                    category_id: 3,
+                    language_id: 0,
+                    name: 'Broccoli Salad',
+                    price: '16.00$',
+                    image: require('@/assets/img/templates/menu_images/broccoli-salads.jpg'),
+                },
+                {
+                    category_id: 3,
+                    language_id: 0,
+                    name: 'Chicken Salad',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/chicken-salad.jpg'),
+                },
+                  {
+                    category_id: 3,
+                    language_id: 0,
+                    name: 'Shepherds Salad',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/shepherds-salad.jpg'),
+                },
+
+
+ {
+                    category_id: 3,
+                    language_id: 1,
+                    name: 'Fasulye Salatası',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/bean-salad.jpg'),
+                },
+                {
+                    category_id: 3,
+                    language_id: 1,
+                    name: 'Brokoli Salata',
+                    price: '16.00$',
+                    image: require('@/assets/img/templates/menu_images/broccoli-salads.jpg'),
+                },
+                {
+                    category_id: 3,
+                    language_id: 1,
+                    name: 'Tavuklu Salata',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/chicken-salad.jpg'),
+                },
+                  {
+                    category_id: 3,
+                    language_id: 1,
+                    name: 'Çoban Salatası',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/shepherds-salad.jpg'),
+                },
+
+
+                {
+                    category_id: 4,
+                    language_id: 0,
+                    name: 'Affogato',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/affogato.jpg'),
+                },
+                {
+                    category_id: 4,
+                    language_id: 0,
+                    name: 'Lotus Affogato',
+                    price: '16.00$',
+                    image: require('@/assets/img/templates/menu_images/lotus-affogato.jpg'),
+                },
+                {
+                    category_id: 4,
+                    language_id: 0,
+                    name: 'Oreo Affogato',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/oreo-affogato.jpg'),
+                },
+
+                   {
                     category_id: 4,
                     language_id: 1,
                     name: 'Affogato',
@@ -360,25 +500,68 @@ export default {
                 {
                     category_id: 4,
                     language_id: 1,
-                    name: 'Lotus Affogato',
+                    name: 'Lotuslu Affogato',
                     price: '16.00$',
-                    image: require('@/assets/img/templates/menu_images/lotus.jpg'),
+                    image: require('@/assets/img/templates/menu_images/lotus-affogato.jpg'),
                 },
                 {
                     category_id: 4,
                     language_id: 1,
-                    name: 'Oreo Affogato',
+                    name: 'Oreolu Affogato',
                     price: '18.00$',
-                    image: require('@/assets/img/templates/menu_images/oreo.jpg'),
+                    image: require('@/assets/img/templates/menu_images/oreo-affogato.jpg'),
                 },
                 {
                     category_id: 1,
-                    language_id: 1,
+                    language_id: 0,
                     name: 'Breakfast Spread',
                     price: '55.00$',
                     image: require('@/assets/img/templates/menu_images/breakfast_spread.jpg'),
                 },
                 {
+                    category_id: 1,
+                    language_id: 0,
+                    name: 'Omlette',
+                    price: '9.00$',
+                    image: require('@/assets/img/templates/menu_images/omlette.jpg'),
+                },
+                {
+                    category_id: 1,
+                    language_id: 0,
+                    name: 'Sogus Plate',
+                    price: '14.00$',
+                    image: require('@/assets/img/templates/menu_images/sogus_plate.jpg'),
+                },
+                {
+                    category_id: 1,
+                    language_id: 0,
+                    name: 'Cheese Plate',
+                    price: '18.00$',
+                    image: require('@/assets/img/templates/menu_images/cheese_plate.jpg'),
+                },
+                {
+                    category_id: 1,
+                    language_id: 0,
+                    name: 'Menemen',
+                    price: '12.00$',
+                    image: require('@/assets/img/templates/menu_images/menemen.jpg'),
+                },
+                {
+                    category_id: 1,
+                    language_id: 0,
+                    name: 'Fried Egg',
+                    price: '9.00$',
+                    image: require('@/assets/img/templates/menu_images/fried_egg.jpg'),
+                },
+            
+  {
+                    category_id: 1,
+                    language_id: 1,
+                    name: 'Kahvaltı Tabağı',
+                    price: '55.00$',
+                    image: require('@/assets/img/templates/menu_images/breakfast_spread.jpg'),
+                },
+             {
                     category_id: 1,
                     language_id: 1,
                     name: 'Omlette',
@@ -388,14 +571,14 @@ export default {
                 {
                     category_id: 1,
                     language_id: 1,
-                    name: 'Sogus Plate',
+                    name: 'Söğüş Tabağı',
                     price: '14.00$',
                     image: require('@/assets/img/templates/menu_images/sogus_plate.jpg'),
                 },
                 {
                     category_id: 1,
                     language_id: 1,
-                    name: 'Cheese Plate',
+                    name: 'Peynir Tabağı',
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/cheese_plate.jpg'),
                 },
@@ -409,11 +592,10 @@ export default {
                 {
                     category_id: 1,
                     language_id: 1,
-                    name: 'Fried Egg',
+                    name: 'Kaynamış Yumurta',
                     price: '9.00$',
                     image: require('@/assets/img/templates/menu_images/fried_egg.jpg'),
                 },
-                // Add more items as needed
             ],
             sortedProductItems: []
         };
@@ -510,7 +692,7 @@ export default {
         setSideMenuActiveProducts(id) {
             this.activeProduct = id;
             const sortedProductItems = this.productItems.filter((item) => item.category_id == id);
-            this.sortedProductItems = sortedProductItems;
+            this.sortedProductItems = sortedProductItems.filter((item) => item.language_id == this.selectedLanguageId);
             console.log(this.sortedProductItems)
 
         },
