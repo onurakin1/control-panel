@@ -114,11 +114,13 @@
           </div>
         </div>
         <div class="d-flex justify-content-end">
-          <button @click="fetchData" data-toggle="modal" data-target="#previewTemplate" class="pre-button mt-5">
-            Preview with Your Template
-          </button>
-        </div>
-
+  <a-spin :spinning="loading">
+    <button @click="fetchData" data-bs-toggle="modal" data-bs-target="#previewTemplate" class="pre-button mt-5">
+      Preview with Your Template
+    </button>
+  </a-spin>
+</div>
+  
         <!-- Modal -->
         <div class="modal fade bd-example-modal-lg" id="templateModal" tabindex="-1" role="dialog"
           aria-labelledby="branchModalLabel" aria-hidden="true">
@@ -150,7 +152,9 @@
       </div>
 
       <div v-else>
-        <p>No Found Category</p>
+        <a-spin :spinning="fetchCategoryLoading">
+          <p v-if="!fetchCategoryLoading">No Found Category</p>
+        </a-spin>
       </div>
     </div>
 
@@ -239,6 +243,8 @@ export default {
       dragOverChildCategory: null,
       parentId: null,
       categoryId: null,
+      fetchCategoryLoading:false,
+      loading: false,
       editorConfig: {
         plugins: [
           Bold,
@@ -282,7 +288,7 @@ export default {
 
   computed: {
     sortedCategories() {
-      console.log(this.selectedLanguageId)
+
 
       return [...this.categories]
         .sort((a, b) => a.sort_order - b.sort_order)
@@ -399,11 +405,14 @@ export default {
           console.error("Error adding category:", error);
         });
     },
+
     sortedChildCategories(childCategories) {
       return [...childCategories].sort((a, b) => a.sort_order - b.sort_order).filter((item) => item.language_id == this.selectedLanguageId);
     },
     fetchData() {
-      axios
+      this.loading = true;
+      try{
+        axios
         .get("https://panel.dinelim.ai/api/template")
         .then((response) => {
           this.previewData = response.data.filter((item) => item.user_id == this.authStore.getUser.id)
@@ -411,10 +420,14 @@ export default {
           const modal = new Modal(document.getElementById("templateModal"));
           modal.show();
         })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          alert("Failed to fetch data.");
-        });
+      }
+      catch (error) {
+        alert("Failed to fetch data.");
+        console.error("File upload error:", error);
+      } finally {
+        this.loading = false; // Hide spinner
+      }
+     
     },
     resetForm() {
       this.newCategory = {
@@ -531,7 +544,7 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.getAllergens();
-
+    this.fetchCategoryLoading = true;
     axios
       .get(`https://panel.dinelim.ai/api/product-category/${id}`)
       .then((response) => {
@@ -539,7 +552,7 @@ export default {
           ...category,
           showChildren: false,
         }));
-
+        this.fetchCategoryLoading = false;
         // Filter categories based on selectedBranchId and assign the result back to this.categories
         this.categories = this.categories.filter(
           (item) => item.branch_id == this.branchStore.selectedBranchId

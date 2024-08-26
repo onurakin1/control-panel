@@ -12,7 +12,7 @@
       </div>
 
       <!-- Search form -->
-      <SearchBar/>
+      <SearchBar />
 
       <!-- Dropdown -->
       <div class="dropdown">
@@ -22,10 +22,11 @@
           {{ authStore.getUser.name }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="#">Update Profile</a></li>
-          <li><a class="dropdown-item d-flex align-items-center justify-content-around" href="#" @click="logout">Logout <span class="material-symbols-outlined text-secondary">
-logout
-</span> </a></li>
+          <li><router-link to="/profile" class="dropdown-item">Update Profile <span class="material-symbols-outlined text-secondary"> person </span></router-link></li>
+          <li><a class="dropdown-item d-flex align-items-center justify-content-around" href="#" @click="logout">Logout
+              <span class="material-symbols-outlined text-secondary">
+                logout
+              </span> </a></li>
         </ul>
       </div>
 
@@ -67,7 +68,7 @@ export default {
       default: false,
     },
   },
-  components:{
+  components: {
     SearchBar
   },
   setup() {
