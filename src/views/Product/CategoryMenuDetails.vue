@@ -55,7 +55,7 @@
                     <i class="bi bi-plus-lg me-2 ms-2"></i>New Sub Category
                   </li>
                   <li @click="
-                    viewProducts(category.category_id, category.category_name)
+                    viewProducts(category.category_id, category.name)
                     " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-eye me-2 ms-2"></i>View Products
                   </li>
@@ -94,7 +94,7 @@
                   <li @click="
                     viewProducts(
                       childCategory.category_id,
-                      childCategory.category_name
+                      childCategory.name
                     )
                     " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                     <i class="bi bi-eye me-2 ms-2"></i>View Products

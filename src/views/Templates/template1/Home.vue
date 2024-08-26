@@ -336,7 +336,7 @@ export default {
                     group_id: 2,
                     language_id: 0,
                     name: 'Hot Drink',
-                    image: require('@/assets/img/icons/cat_4.png'),
+                    image: require('@/assets/img/icons/cat_727.png'),
 
                 },
                 {
@@ -344,13 +344,13 @@ export default {
                     group_id: 2,
                     language_id: 1,
                     name: 'Sıcak İçecekler',
-                    image: require('@/assets/img/icons/cat_4.png'),
+                    image: require('@/assets/img/icons/cat_727.png'),
 
                 }
 
             ],
             productItems: [
-                 {
+                {
                     category_id: 2,
                     language_id: 0,
                     name: 'Tomato Soup',
@@ -371,7 +371,7 @@ export default {
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/spaghetti-squash-soup.jpg'),
                 },
-                  {
+                {
                     category_id: 2,
                     language_id: 0,
                     name: 'Mushroom Soup',
@@ -379,7 +379,7 @@ export default {
                     image: require('@/assets/img/templates/menu_images/mushroom-soup.jpg'),
                 },
 
-   {
+                {
                     category_id: 2,
                     language_id: 1,
                     name: 'Domatos Çorbası',
@@ -400,15 +400,15 @@ export default {
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/spaghetti-squash-soup.jpg'),
                 },
-                  {
+                {
                     category_id: 2,
-                    language_id:1,
+                    language_id: 1,
                     name: 'Mantar Çorbası',
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/mushroom-soup.jpg'),
                 },
 
-                   {
+                {
                     category_id: 3,
                     language_id: 0,
                     name: 'Bean Salad',
@@ -429,7 +429,7 @@ export default {
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/chicken-salad.jpg'),
                 },
-                  {
+                {
                     category_id: 3,
                     language_id: 0,
                     name: 'Shepherds Salad',
@@ -438,7 +438,7 @@ export default {
                 },
 
 
- {
+                {
                     category_id: 3,
                     language_id: 1,
                     name: 'Fasulye Salatası',
@@ -459,7 +459,7 @@ export default {
                     price: '18.00$',
                     image: require('@/assets/img/templates/menu_images/chicken-salad.jpg'),
                 },
-                  {
+                {
                     category_id: 3,
                     language_id: 1,
                     name: 'Çoban Salatası',
@@ -490,7 +490,7 @@ export default {
                     image: require('@/assets/img/templates/menu_images/oreo-affogato.jpg'),
                 },
 
-                   {
+                {
                     category_id: 4,
                     language_id: 1,
                     name: 'Affogato',
@@ -553,15 +553,15 @@ export default {
                     price: '9.00$',
                     image: require('@/assets/img/templates/menu_images/fried_egg.jpg'),
                 },
-            
-  {
+
+                {
                     category_id: 1,
                     language_id: 1,
                     name: 'Kahvaltı Tabağı',
                     price: '55.00$',
                     image: require('@/assets/img/templates/menu_images/breakfast_spread.jpg'),
                 },
-             {
+                {
                     category_id: 1,
                     language_id: 1,
                     name: 'Omlette',
@@ -687,7 +687,7 @@ export default {
 
             this.activeProduct = sortedMenuItems[0].category_id;
             this.setSideMenuActiveProducts(this.activeProduct);
- 
+
         },
         setSideMenuActiveProducts(id) {
             this.activeProduct = id;

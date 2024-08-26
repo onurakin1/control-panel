@@ -7,7 +7,7 @@ import GroupBranchComp from "@/views/BranchGroupComp.vue";
 import ProductManagement from "@/views/Product/CategoryMenu.vue";
 import CategoryMenuDetails from "@/views/Product/CategoryMenuDetails.vue";
 import SettingsComp from "@/views/Settings.vue";
-
+import AccountSettings from "@/views/User/User.vue"
 import TemplateList from '@/views/Templates/TemplateList.vue';
 import WizardTemplate from '@/views/Templates/Wizard/WizardTemplate.vue';
 import Register from '@/views/Auth/Register.vue';
@@ -41,6 +41,17 @@ const routes = [
       requiresAuth: true, 
       breadcrumb: [
         { name: 'Settings' }
+      ]
+    },
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: AccountSettings,
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Account Settings' }
       ]
     },
   },
