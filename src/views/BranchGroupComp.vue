@@ -107,6 +107,7 @@
 import { mask } from 'vue-the-mask';
 import { useBranchStore } from '../stores/branchStore';
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
 
 import "../assets/css/views/Branch.css"
 
@@ -230,7 +231,9 @@ export default {
             this.$router.push({ name: 'ProductManagement', params: { id: branch.branch_id } });
         },
         async saveBranch() {
+
             const fullPhoneNumber = `${this.branch_country_code} ${this.form.branch_phone}`;
+            console.log(fullPhoneNumber)
             this.form.branch_phone = fullPhoneNumber;
             const headers = {
                 'Content-Type': 'application/json',
@@ -239,8 +242,10 @@ export default {
             try {
                 if (this.editMode) {
                     await axios.put(`https://panel.dinelim.ai/api/group-branch/${this.form.branch_id}`, this.form, { headers });
+                    toast.success('Branch updated successfully!');
                 } else {
                     await axios.post('https://panel.dinelim.ai/api/group-branch', this.form, { headers });
+                    toast.success('Branch created successfully!');
                 }
                 this.GroupBranchLoad();
             } catch (error) {

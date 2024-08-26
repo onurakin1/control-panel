@@ -368,8 +368,8 @@
 
 .menu-card {
     margin-bottom: 20px;
-    height: 190px;
-    /* Fixed height for uniformity */
+    height: 100%;
+    max-height: 206px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

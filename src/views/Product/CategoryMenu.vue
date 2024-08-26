@@ -24,6 +24,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
 import CardComponent from '@/components/MenuCardComp.vue';
 import OffCanvas from '@/components/OffCanvas.vue';
 import { useCategoryStore } from '@/stores/categoryStore';
@@ -68,7 +69,7 @@ export default {
     },
     updateCategory(category) {
       console.log(category)
-      this.sendCategory.push(category);
+      this.sendCategory = category;
 
       axios
         .put(
@@ -77,7 +78,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
- 
+          toast.success('Category updated successfully!');
           this.$router.go();
         });
     },

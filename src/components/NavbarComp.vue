@@ -23,7 +23,9 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="#">Update Profile</a></li>
-          <li><a class="dropdown-item" href="#" @click="logout">Log out</a></li>
+          <li><a class="dropdown-item d-flex align-items-center justify-content-around" href="#" @click="logout">Logout <span class="material-symbols-outlined text-secondary">
+logout
+</span> </a></li>
         </ul>
       </div>
 
