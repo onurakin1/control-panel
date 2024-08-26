@@ -37,6 +37,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
 import { useCompanyStore } from '@/stores/companyStore';
+import { useTempStore } from '@/stores/tempStore';
 import "@/assets/css/views/Auth.css"
 
 export default {
@@ -44,9 +45,11 @@ export default {
     setup() {
         const authStore = useAuthStore();
         const compStore = useCompanyStore();
+        const tempStore = useTempStore();
         return {
             authStore,
-            compStore
+            compStore,
+            tempStore
         };
     },
     data() {
@@ -69,6 +72,7 @@ export default {
                 if (response.data.token && response.data.user) {
                     this.authStore.setAuthData(response.data.token, response.data.user, response.data.company, response.data.template);
                     this.compStore.setCompData(response.data.company)
+                    this.tempStore.setTempData(response.data.template)
                     this.error = null;
                     if (response.data.company) {
                         this.$router.push({ name: 'Dashboard' });
