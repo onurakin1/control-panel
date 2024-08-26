@@ -17,10 +17,19 @@
               </div>
             </a-spin>
             <div v-if="mediaUrlInternal != 'home_bg.jpg'">
-              <div class="photo-area">
+              <div class="photo-area" style="max-width: 300px;">
                 <div class="polaroid">
                   <div class="img-container" @click="toggler = !toggler">
-                    <img :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" class="image" style="width:100%">
+                    <template v-if="isImage(mediaUrlInternal)">
+                      <img :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" class="image" style="width:100%">
+                    </template>
+                    <template v-else-if="isVideo(mediaUrlInternal)">
+                      <video controls style="width:100%">
+                        <source :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </template>
+            
 
                   </div>
                   <div class="container">
@@ -234,6 +243,12 @@ export default {
   },
 
   methods: {
+    isImage(url) {
+      return url.match(/\.(jpg|jpeg|png)$/i);
+    },
+    isVideo(url) {
+      return url.match(/\.(mp4)$/i);
+    },
     async onFileChangeTemplate(e) {
       this.file = e.target.files[0];
       const formData = new FormData();
