@@ -17,7 +17,7 @@
               </div>
             </a-spin>
             <div v-if="mediaUrlInternal != 'home_bg.jpg'">
-              <div class="photo-area" style="max-width: 300px;">
+              <div class="photo-area" style="max-width: 200px;">
                 <div class="polaroid">
                   <div class="img-container" @click="toggler = !toggler">
                     <template v-if="isImage(mediaUrlInternal)">

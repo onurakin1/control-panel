@@ -1,8 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark menu-bg">
     <div class="container-fluid">
-      <img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png" alt="Home" height="50"
-        class="me-2">
+      <router-link to="/"><img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png" alt="Home" height="50"
+        class="me-2"></router-link>
+      
 
       <div @click="$emit('toggleSidebar')" class="me-2">
         <span class="text-secondary material-symbols-outlined">
