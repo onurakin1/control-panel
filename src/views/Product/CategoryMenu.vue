@@ -60,8 +60,8 @@ export default {
       const id = this.$route.params.id;
       axios.get(`https://panel.dinelim.ai/api/category/${id}`)
         .then(response => {
-          const categoryStore = useCategoryStore(); // Store'u kullanın
-          categoryStore.setCategories(response.data); // Verileri store'a ekleyin
+          const categoryStore = useCategoryStore(); 
+          categoryStore.setCategories(response.data); 
         })
         .catch(error => {
           console.error('There was an error fetching the data!', error);
@@ -84,7 +84,7 @@ export default {
     },
     addCategory(category) {
       console.log(category)
-      const categoryStore = useCategoryStore(); // Store'u kullanın
+      const categoryStore = useCategoryStore(); 
       category.branch_id = this.$route.params.id;
       axios.post('https://panel.dinelim.ai/api/category', category)
         .then(response => {

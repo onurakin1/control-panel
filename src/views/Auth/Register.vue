@@ -66,13 +66,8 @@ export default {
                     password_confirmation: this.password_confirmation,
                 });
                 if (response.data.token && response.data.user) {
-            
                     this.error = null;
-              
                         this.$router.push({ name: 'Login', query: { success: "User was created! Please log in with your email and password. " }});
-               
-              
-           
                 } else {
                     this.error = 'Invalid response from server. Please try again later.';
                 }
