@@ -114,13 +114,13 @@
           </div>
         </div>
         <div class="d-flex justify-content-end">
-  <a-spin :spinning="loading">
-    <button @click="fetchData" data-bs-toggle="modal" data-bs-target="#previewTemplate" class="pre-button mt-5">
-      Preview with Your Template
-    </button>
-  </a-spin>
-</div>
-  
+          <a-spin :spinning="loading">
+            <button @click="fetchData" data-bs-toggle="modal" data-bs-target="#previewTemplate" class="pre-button mt-5">
+              Preview with Your Template
+            </button>
+          </a-spin>
+        </div>
+
         <!-- Modal -->
         <div class="modal fade bd-example-modal-lg" id="templateModal" tabindex="-1" role="dialog"
           aria-labelledby="branchModalLabel" aria-hidden="true">
@@ -243,7 +243,7 @@ export default {
       dragOverChildCategory: null,
       parentId: null,
       categoryId: null,
-      fetchCategoryLoading:false,
+      fetchCategoryLoading: false,
       loading: false,
       editorConfig: {
         plugins: [
@@ -288,7 +288,6 @@ export default {
 
   computed: {
     sortedCategories() {
-
 
       return [...this.categories]
         .sort((a, b) => a.sort_order - b.sort_order)
@@ -411,15 +410,15 @@ export default {
     },
     fetchData() {
       this.loading = true;
-      try{
+      try {
         axios
-        .get("https://panel.dinelim.ai/api/template")
-        .then((response) => {
-          this.previewData = response.data.filter((item) => item.user_id == this.authStore.getUser.id)
-          this.selectedTemplateId = response.data.filter((item) => item.user_id == this.authStore.getUser.id)[0];
-          const modal = new Modal(document.getElementById("templateModal"));
-          modal.show();
-        })
+          .get("https://panel.dinelim.ai/api/template")
+          .then((response) => {
+            this.previewData = response.data.filter((item) => item.user_id == this.authStore.getUser.id)
+            this.selectedTemplateId = response.data.filter((item) => item.user_id == this.authStore.getUser.id)[0];
+            const modal = new Modal(document.getElementById("templateModal"));
+            modal.show();
+          })
       }
       catch (error) {
         alert("Failed to fetch data.");
@@ -427,7 +426,7 @@ export default {
       } finally {
         this.loading = false; // Hide spinner
       }
-     
+
     },
     resetForm() {
       this.newCategory = {
@@ -457,26 +456,37 @@ export default {
         (c) => c.category_id === category.category_id
       );
 
-      // Swap the categories in the array
-      this.categories.splice(draggedIndex, 1); // Remove dragged category
-      this.categories.splice(droppedIndex, 0, this.draggedCategory); // Insert dragged category at dropped position
 
-      // Update sort_order based on array index
-      this.categories.forEach((cat, index) => {
-        cat.sort_order = index + 1; // Set sort_order starting from 1
+      this.categories.splice(draggedIndex, 1); 
+      this.categories.splice(droppedIndex, 0, this.draggedCategory); 
+
+
+      const categorySortMap = new Map(); 
+      let currentSortOrder = 1;
+
+      this.categories.forEach((cat) => {
+        if (!categorySortMap.has(cat.category_id)) {
+          categorySortMap.set(cat.category_id, currentSortOrder);
+          currentSortOrder++;
+        }
+        cat.sort_order = categorySortMap.get(cat.category_id);
       });
+
+  
       axios
-        .put(
-          `https://panel.dinelim.ai/api/product-category/update`,
-          this.categories
-        )
+        .put(`https://panel.dinelim.ai/api/product-category/update`, this.categories)
         .then((response) => {
           console.log(response);
+        })
+        .catch((error) => {
+          console.error("API request failed:", error);
         });
+
       console.log(this.categories);
       this.draggedCategory = null;
       this.dragOverCategory = null;
     },
+
     dragStartChild(event, childCategory, parentCategory) {
       this.draggedChildCategory = childCategory;
       this.draggedParentCategory = parentCategory;
@@ -553,6 +563,7 @@ export default {
           showChildren: false,
         }));
         this.fetchCategoryLoading = false;
+        console.log( this.categories)
         // Filter categories based on selectedBranchId and assign the result back to this.categories
         this.categories = this.categories.filter(
           (item) => item.branch_id == this.branchStore.selectedBranchId

@@ -361,7 +361,7 @@
 }
 
 .product-items {
-    height: 820px;
+    height: 500px;
     overflow-y: scroll;
     margin-top: calc(3vh - 16px);
 }

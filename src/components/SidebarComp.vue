@@ -56,7 +56,7 @@
       </li>
 
       <li>
-        <div class="nav-link text-secondary collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
+        <div class="nav-link text-secondary collapsed" data-bs-original-title="Orders" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
           aria-expanded="false">
           <span class="material-symbols-outlined"> manufacturing </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
@@ -64,11 +64,13 @@
           }}</span>
         </div>
         <div class="collapse" id="dashboard-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-collapse">
+          <ul class="btn-toggle list-unstyled fw-normal pb-1 small sidebar-collapse">
             <li>
               <router-link to="/settings" class="link-dark rounded text-secondary">
                 <span class="material-symbols-outlined">store</span>
-                <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Company Settings</span>
+                <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
+            $t("companySettings")
+          }}</span>
               </router-link>
             </li>
             <li>
@@ -77,7 +79,9 @@
                 query: { id: tempStore.templateId },
               }" class="link-dark rounded text-secondary mt-3">
                 <span class="material-symbols-outlined">tab_inactive</span>
-                <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">Template Settings</span>
+                <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
+            $t("templateSettings")
+          }}</span>
 
               </router-link>
             </li>

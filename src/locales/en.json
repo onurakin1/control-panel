@@ -8,6 +8,8 @@
   "hits": "Hits",
   "settings": "Settings",
   "pooldatamanagement": "Pool Data Management",
+  "companySettings": "Company Settings",
+  "templateSettings": "Template Settings",
   "name": "Name",
   "email": "Email",
   "update": "Update",
