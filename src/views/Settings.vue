@@ -1,7 +1,6 @@
 <template>
     <div id="app">
-        <h4>Settings</h4>
-
+    
         <div class="mb-3" style="border: 1px solid #ddd; padding: 20px; max-width: 600px; width: 100%;">
             <form @submit.prevent="submitForm">
                 <div class="mb-3">

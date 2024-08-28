@@ -85,6 +85,7 @@
     padding: 6px;
     font-size: 12px;
     display: flex;
+    background: #ffffff;
     justify-content: space-between;
     flex-direction: row;
     border: 1px solid #ddd;

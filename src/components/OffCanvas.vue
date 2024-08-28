@@ -245,16 +245,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="allergen" class="form-label">Content Warnings</label>
-                            <select multiple class="form-select" id="allergenSelect"
-                                v-model="editProductForm.allergens">
-                                <option v-show="allergen.language_id == 1" v-for="allergen in allergens"
-                                    :key="allergen.allergen_id" :value="allergen.allergen_id">
-                                    {{ allergen.name }}
-                                </option>
-                            </select>
+                       
+                           
+                            <a-select id="allergens" mode="multiple" :options="allergens" v-model.value="editAllergens"
+                                placeholder="Select allergens" style="width: 200px" @change="handleChange" />
+
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
@@ -386,20 +384,19 @@
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
                             <select class="form-select" id="categorySelect" v-model="createProductForm.category_id">
-                                <option v-for="category in categories" :key="category.category_id"
+                                <option v-for="category in categories"
+                                    v-show="category.language_id == selectedLanguageId" :key="category.category_id"
                                     :value="category.category_id">
-                                    {{ category.category_name }}
+                                    {{ category.name }}
                                 </option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="allergen" class="form-label">Content Warnings</label>
-                            <select class="form-select" id="allergenSelect" v-model="createProductForm.allergen_id">
-                                <option v-show="allergen.language_id == 1" v-for="allergen in allergens"
-                                    :key="allergen.allergen_id" :value="allergen.allergen_id">
-                                    {{ allergen.name }}
-                                </option>
-                            </select>
+                            <a-select id="allergens" mode="multiple" :options="allergens"
+                                v-model.value="createProductForm.allergen_id" placeholder="Select items"
+                                style="width: 200px" />
+
                         </div>
                         <div class="mb-3">
                             <label for="is_new_category" class="form-label">Is New Product</label>
@@ -453,6 +450,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import axios from "axios";
 import FsLightbox from "fslightbox-vue/v3";
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, Underline, Heading } from 'ckeditor5';
@@ -466,6 +464,7 @@ export default {
         id: String,
         title: String,
         selectedBranchId: String,
+        selectedLanguageId: Number,
         mode: {
             type: String,
             default: 'edit'
@@ -475,7 +474,7 @@ export default {
             required: true,
         },
         allergens: {
-            type: Array,
+            type: String,
             required: true,
         },
         categories: {
@@ -504,6 +503,23 @@ export default {
         }
     },
     components: { FsLightbox },
+    setup() {
+        const editAllergens = ref([]);
+
+        
+        const handleChange = (value) => {
+            editAllergens.value = value; 
+            console.log(`selected ${editAllergens.value}`);
+        };
+
+
+        return {
+      
+            editAllergens,
+            handleChange,
+          
+        };
+    },
     data() {
         return {
             editor: ClassicEditor,
@@ -516,6 +532,7 @@ export default {
             createProductForm: { ...this.newProduct },
             createMenuForm: { ...this.newMenu },
             localMode: this.mode,
+
             toggler: false,
             selectedCategory: '',
             editorConfig: {
@@ -547,6 +564,7 @@ export default {
 
             }
         },
+
         category: {
             immediate: true,
             handler(newValue) {
@@ -579,18 +597,18 @@ export default {
             }
         },
         handleEditProductFormSubmit() {
-
+            console.log(this.editAllergens)
             if (this.filePath) {
                 this.editProductForm.image = this.filePath;
             }
-
+            this.editProductForm.allergens = this.editAllergens
             this.editProductForm.branch_id = this.branchId;
             console.log(this.editProductForm)
             axios.put(`https://panel.dinelim.ai/api/product/${this.editProductForm.product_id}`, this.editProductForm)
                 .then(response => {
                     console.log(response)
                     toast.success('Product updated successfully!');
-                    this.$router.go();
+
                     this.filePath = null;
 
                 })
@@ -615,12 +633,14 @@ export default {
             this.filePath = null;
         },
         editProduct(product) {
+
             this.localMode = 'editProduct';
+
             this.editProductForm = product;
-            const allergenIds = [...new Set(this.editProductForm.allergens.map(allergen => allergen.allergen_id))];
-            this.editProductForm.allergens = allergenIds;
-            console.log(allergenIds)
-            console.log(this.editProductForm)
+            const allergenIds = [...new Set(this.editProductForm.allergens.filter((item) => item.language_id == this.selectedLanguageId).map(allergen => allergen.allergen_id))];
+            this.editAllergens = allergenIds;
+     
+
         },
         selectProductImage(src) {
             this.createProductForm.image = src;

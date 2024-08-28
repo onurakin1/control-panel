@@ -91,8 +91,6 @@
           <div class="layout-items">
             <span><b>Select Languages:</b></span>
 
-
-
             <a-select id="languages" mode="multiple" :options="languages" v-model:value="selectedLanguagesInternal"
               placeholder="Select items" style="width: 200px" />
 

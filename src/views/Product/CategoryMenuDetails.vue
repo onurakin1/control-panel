@@ -166,8 +166,8 @@
           ? 'Create Product'
           : 'Product List'
       " :products="products" :mode="mode" :category="editableCategory" :newCategory="newCategory"
-      :allergens="allergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
-      @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId" />
+      :allergens="sortedAllergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
+      @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId" :selectedLanguageId="selectedLanguageId" />
   </div>
 </template>
 
@@ -293,7 +293,15 @@ export default {
         .sort((a, b) => a.sort_order - b.sort_order)
         .filter((item) => item.language_id == this.selectedLanguageId);
     },
+    sortedAllergens(){
+      return [...this.allergens]
+      .filter((item) => item.language_id == this.selectedLanguageId)
+      .map(allergen => ({
+        value: allergen.allergen_id,
+      label: allergen.name
 
+    }));
+    },
     selectedBranchId() {
       return this.branchStore.selectedBranchId;
     },

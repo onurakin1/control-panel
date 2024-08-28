@@ -40,7 +40,7 @@ const routes = [
     meta: {
       requiresAuth: true, 
       breadcrumb: [
-        { name: 'Settings' }
+        { name: 'Company Settings' }
       ]
     },
   },
