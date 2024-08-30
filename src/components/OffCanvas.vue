@@ -11,7 +11,7 @@
                     <form @submit.prevent="handleEditFormSubmit">
                         <div class="mb-3">
                             <label for="category_name" class="form-label">Category Name</label>
-                            <input type="text" v-model="editForm.category_name" class="form-control" id="category_name">
+                            <input type="text" v-model="editForm.name" class="form-control" id="category_name">
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
@@ -32,30 +32,35 @@
                                                 </div>
                                             </div>
                                             <div class="container">
-                                                <i class="bi bi-trash3"></i>
+                                                <i class="bi bi-trash3"  @click="resetCategoryEditMenu"></i>
                                             </div>
                                         </div>
                                         <FsLightbox :toggler="toggler" :sources="[editForm.image]" />
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div class="upload-image">
-                                        <i class="bi bi-upload"></i>
+                                    <div class="dropdown">
+                                    <button class="upload-image" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <img src="~@/assets/img/icons/cat_1.png" width="32px"> <i
+                                            class="bi bi-upload"></i>
                                         <p>Upload</p>
                                         <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                    </button>
+                                    <div class="dropdown-menu icon-menu">
+                                        <div class="image-list" v-if="icons.length">
+                                            <div v-for="(icon, index) in icons" :key="index" class="icon-item">
+                                                <img :src="icon" alt="Icon" @click="selectEditImage(icon)" />
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <p>No icons found.</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="video-area">
-                                <label for="video" class="form-label">Video</label>
-                                <div v-if="editForm.video"></div>
-                                <div v-else>
-                                    <div class="upload-image">
-                                        <i class="bi bi-upload"></i>
-                                        <p>Upload</p>
-                                    </div>
                                 </div>
                             </div>
+              
                         </div>
                         <div class="mb-3">
                             <label for="visible" class="form-label">Visible</label>
@@ -159,25 +164,40 @@
                                                 </div>
                                             </div>
                                             <div class="container">
-                                                <i class="bi bi-trash3"></i>
+                                                <i class="bi bi-trash3" @click="resetEditMenu"></i>
                                             </div>
                                         </div>
                                         <FsLightbox :toggler="toggler" :sources="[this.editMenuForm.image]" />
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div class="upload-image">
-                                        <i class="bi bi-upload"></i>
+                                    <div class="dropdown">
+                                    <button class="upload-image" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <img src="~@/assets/img/icons/cat_1.png" width="32px"> <i
+                                            class="bi bi-upload"></i>
                                         <p>Upload</p>
                                         <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                    </button>
+                                    <div class="dropdown-menu icon-menu">
+                                        <div class="image-list" v-if="icons.length">
+                                            <div v-for="(icon, index) in icons" :key="index" class="icon-item">
+                                                <img :src="icon" alt="Icon" @click="selectEditMenuImage(icon)" />
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <p>No icons found.</p>
+                                        </div>
                                     </div>
+                                </div>
+                              
                                 </div>
                             </div>
 
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
@@ -204,30 +224,14 @@
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <i class="bi bi-trash3" @click="resetFile"></i>
+                                            <i class="bi bi-trash3" @click="resetEditProductFile"></i>
                                         </div>
                                     </div>
                                     <FsLightbox :toggler="toggler"
                                         :sources="[`https://panel.dinelim.ai/uploads/${editProductForm.image}`]" />
                                 </div>
                             </div>
-                            <div v-if="this.filePath">
-                                <div class="photo-area">
-                                    <div class="polaroid">
-                                        <div class="img-container" @click="toggler = !toggler">
-                                            <img :src="`https://panel.dinelim.ai/uploads/${this.filePath}`"
-                                                class="image" style="width:100%">
-                                            <div class="middle">
-                                                <div class="text"><i class="bi bi-eye me-2"></i>Preview</div>
-                                            </div>
-                                        </div>
-                                        <div class="container">
-                                            <i class="bi bi-trash3" @click="resetFile"></i>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                     
                             <div v-else>
                                 <label for="image" class="form-label">Image</label>
                                 <div class="file-upload">
@@ -237,7 +241,7 @@
                                         <div>Upload</div>
                                         <span>The file type can only be .jpg, .jpeg, and .png.</span>
                                     </label>
-                                    <input type="file" id="file-upload" @change="onFileChange"
+                                    <input type="file" id="file-upload" @change="onFileEditProductChange"
                                         accept="image/*,video/*" />
                                 </div>
 
@@ -245,8 +249,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="allergen" class="form-label">Content Warnings</label>
-                       
-                           
+
+
                             <a-select id="allergens" mode="multiple" :options="allergens" v-model.value="editAllergens"
                                 placeholder="Select allergens" style="width: 200px" @change="handleChange" />
 
@@ -359,14 +363,14 @@
                                             </div>
                                         </div>
                                         <div class="container">
-                                            <i class="bi bi-trash3"></i>
+                                            <i class="bi bi-trash3" @click="resetCreateProductFile"></i>
                                         </div>
                                     </div>
                                     <FsLightbox :toggler="toggler"
                                         :sources="[`https://panel.dinelim.ai/uploads/${createProductForm.image}`]" />
                                 </div>
                             </div>
-                            <div>
+                            <div v-else>
                                 <label for="image" class="form-label">Image</label>
                                 <div class="file-upload">
 
@@ -375,7 +379,7 @@
                                         <div>Upload</div>
                                         <span>The file type can only be .jpg, .jpeg, and .png.</span>
                                     </label>
-                                    <input type="file" id="file-upload" @change="onFileChange"
+                                    <input type="file" id="file-upload" @change="onFileCreateProductChange"
                                         accept="image/*,video/*" />
                                 </div>
 
@@ -506,18 +510,18 @@ export default {
     setup() {
         const editAllergens = ref([]);
 
-        
+
         const handleChange = (value) => {
-            editAllergens.value = value; 
+            editAllergens.value = value;
             console.log(`selected ${editAllergens.value}`);
         };
 
 
         return {
-      
+
             editAllergens,
             handleChange,
-          
+
         };
     },
     data() {
@@ -574,7 +578,7 @@ export default {
         }
     },
     methods: {
-        async onFileChange(e) {
+        async onFileEditProductChange(e) {
             this.file = e.target.files[0];
             console.log(this.file);
             const formData = new FormData();
@@ -590,17 +594,36 @@ export default {
                         },
                     }
                 );
-                this.filePath = response.data.filePath;
+                this.editProductForm.image = response.data.filePath;
+
+            } catch (error) {
+                console.error("File upload error:", error);
+            }
+        },
+        async onFileCreateProductChange(e) {
+            this.file = e.target.files[0];
+            console.log(this.file);
+            const formData = new FormData();
+            formData.append("file", this.file);
+
+            try {
+                const response = await axios.post(
+                    "https://panel.dinelim.ai/api/upload",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+                this.createProductForm.image = response.data.filePath;
 
             } catch (error) {
                 console.error("File upload error:", error);
             }
         },
         handleEditProductFormSubmit() {
-            console.log(this.editAllergens)
-            if (this.filePath) {
-                this.editProductForm.image = this.filePath;
-            }
+       
             this.editProductForm.allergens = this.editAllergens
             this.editProductForm.branch_id = this.branchId;
             console.log(this.editProductForm)
@@ -632,6 +655,18 @@ export default {
         resetFile() {
             this.filePath = null;
         },
+        resetEditProductFile(){
+            this.editProductForm.image = null;
+        },
+        resetCreateProductFile(){
+            this.createProductForm.image = null;
+        },
+        resetCategoryEditMenu() {
+            this.editForm.image = null;
+        },
+        resetEditMenu() {
+            this.editMenuForm.image = null;
+        },
         editProduct(product) {
 
             this.localMode = 'editProduct';
@@ -639,8 +674,11 @@ export default {
             this.editProductForm = product;
             const allergenIds = [...new Set(this.editProductForm.allergens.filter((item) => item.language_id == this.selectedLanguageId).map(allergen => allergen.allergen_id))];
             this.editAllergens = allergenIds;
-     
 
+
+        },
+        selectEditMenuImage(src) {
+            this.editMenuForm.image = src;
         },
         selectProductImage(src) {
             this.createProductForm.image = src;

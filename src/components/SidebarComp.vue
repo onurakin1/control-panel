@@ -12,7 +12,7 @@
     <hr />
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <router-link to="/" class="nav-link text-secondary">
+        <router-link to="/" class="nav-link text-secondary pointer">
           <span class="material-symbols-outlined"> browse </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("controlPanel")
@@ -20,7 +20,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/profile" class="nav-link text-secondary">
+        <router-link to="/profile" class="nav-link text-secondary pointer">
           <span class="material-symbols-outlined"> person </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("userInformation")
@@ -30,7 +30,7 @@
       </li>
 
       <li>
-        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link text-secondary">
+        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link text-secondary pointer">
           <span class="material-symbols-outlined"> ad_group </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("popupManagement")
@@ -39,7 +39,7 @@
       </li>
 
       <li>
-        <router-link to="/branch" class="nav-link text-secondary">
+        <router-link to="/branch" class="nav-link text-secondary pointer">
           <span class="material-symbols-outlined"> home_work </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("branchManagement")
@@ -47,7 +47,7 @@
         </router-link>
       </li>
       <li>
-        <a href="#" class="nav-link text-secondary">
+        <a href="#" class="nav-link text-secondary pointer">
           <span class="material-symbols-outlined"> tab </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("bannerManagement")
@@ -56,7 +56,7 @@
       </li>
 
       <li>
-        <div class="nav-link text-secondary collapsed" data-bs-original-title="Orders" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
+        <div class="nav-link text-secondary collapsed pointer" data-bs-original-title="Orders" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
           aria-expanded="false">
           <span class="material-symbols-outlined"> manufacturing </span>
           <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
@@ -66,7 +66,7 @@
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle list-unstyled fw-normal pb-1 small sidebar-collapse">
             <li>
-              <router-link to="/settings" class="link-dark rounded text-secondary">
+              <router-link to="/settings" class="link-dark rounded text-secondary pointer">
                 <span class="material-symbols-outlined">store</span>
                 <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("companySettings")
@@ -77,7 +77,7 @@
               <router-link :to="{
                 name: 'Template_Settings',
                 query: { id: tempStore.templateId },
-              }" class="link-dark rounded text-secondary mt-3">
+              }" class="link-dark rounded text-secondary mt-3 pointer">
                 <span class="material-symbols-outlined">tab_inactive</span>
                 <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
             $t("templateSettings")

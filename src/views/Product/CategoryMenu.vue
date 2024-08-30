@@ -16,7 +16,7 @@
       class="custom-card" @edit="editCategory(cat)" @view="viewCategory(cat)" />
 
 
-    <OffCanvas id="offcanvasRight" :title="'Add Menu'" :mode="mode" :newMenu="newCategory" :editMenu="editableMenu"
+    <OffCanvas id="offcanvasRight" :title="mode == 'createMenu' ? 'Add Menu' : mode == 'editMenu' ? 'Edit Menu' : '' " :mode="mode" :newMenu="newCategory" :editMenu="editableMenu"
       @createdMenu="addCategory" @updatedMenu="updateCategory" />
 
   </div>

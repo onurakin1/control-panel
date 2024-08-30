@@ -366,7 +366,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          toast.success("This is a success message!");
+          toast.success("Category updated!");
           this.$router.go();
         });
     },
