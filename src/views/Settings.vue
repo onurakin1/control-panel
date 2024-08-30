@@ -1,7 +1,7 @@
 <template>
     <div id="app">
     
-        <div class="mb-3" style="border: 1px solid #ddd; padding: 20px; max-width: 600px; width: 100%;">
+        <div class="mb-3" style="border: 1px solid #ddd; padding: 20px; max-width: 600px; width: 100%;background: #fff;border-radius: 8px;">
             <form @submit.prevent="submitForm">
                 <div class="mb-3">
                     <label for="company_name" class="form-label">Company Name</label>
@@ -35,7 +35,10 @@
                     </div>
                 </div>
                 <input type="hidden" v-model="form.user_id" />
-                <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Submit' }}</button>
+                <div class="d-flex justify-content-end">
+  <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Submit' }}</button>
+                </div>
+              
             </form>
         </div>
     </div>

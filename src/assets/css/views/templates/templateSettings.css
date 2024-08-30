@@ -109,7 +109,7 @@ input[type="file"] {
 .template-border .product-wizard-items {
     height:522px;
     overflow-y: scroll;
-    margin-top: calc(3vh - 16px);
+    margin-top: calc(3vh - 26px);
 }
 
 .template-wizard-border {

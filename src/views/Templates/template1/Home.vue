@@ -129,8 +129,8 @@
                                 :id="`pills-${item.name}-tab`" data-bs-toggle="pill"
                                 :data-bs-target="`#pills-${item.name}`" type="button" role="tab"
                                 :aria-controls="`pills-${item.name}`" :aria-selected="activeMenuTab === item.parent_id"
-                                @click="setMenuActiveTab(item.parent_id)"
-                                :style="activeMenuTab === item.parent_id ? activeMenuTabStyle : null">
+                                @click="setMenuActiveTab(item.parent_id)" @mouseover="hoveredMenuTab = item.parent_id"
+                                @mouseleave="hoveredMenuTab = null" :style="getButtonStyle(item.parent_id)">
                                 {{ item.name }}
                             </button>
                         </li>
@@ -148,8 +148,9 @@
                                 :data-bs-target="`#pills-${language.name}`" type="button" role="tab"
                                 :aria-controls="`pills-${language.name}`" aria-selected="true"
                                 @click="setActiveTab(language)"
-                                :style="activeTab === language.name ? activeTabStyle : color = mainBgColor">
-                                {{ formatLanguage(language.name) }}
+                                :style="activeTab == language.name ? activeTabStyle : color = mainBgColor">
+                                <!-- {{ formatLanguage(language.name) }} -->
+                                {{ language.name }}
                             </button>
                         </li>
 
@@ -238,7 +239,9 @@ export default {
             hovered: null,
             mode: 'home',
             activeTab: 'EN',
+            hoveredMenuTab: null,
             activeMenuTab: '',
+          
             selectedLanguageId: 0,
             activeProduct: '',
             menuCategories: [
@@ -619,12 +622,20 @@ export default {
                 ? `https://panel.dinelim.ai/uploads/${this.logoUrl}`
                 : 'https://panel.dinelim.ai/uploads/images/1724332912_no-image.jpg';
         },
-        activeMenuTabStyle() {
+        activeMenuTabStyle(){
             return {
                 background: this.mainBgColor,
-                color: '#fff'
-            };
+                color:'#fff'
+            }
         },
+        activeMenuTabHoverStyle(){
+            return {
+                Cursor:'pointer',
+                color:this.mainBgColor
+            
+            }
+        },
+
         activeTabStyle() {
             return {
                 background: 'none',
@@ -671,10 +682,12 @@ export default {
         formatLanguage(language) {
             return language.toUpperCase();
         },
+      
         setActiveTab(tab) {
             this.selectedLanguageId = tab.id;
             console.log(this.selectedLanguageId)
-            this.activeTab = tab;
+            this.activeTab = tab.name;
+            console.log(this.activeTab)
 
             this.setMenuActiveTab(this.activeMenuTab);
         },
@@ -688,6 +701,16 @@ export default {
             this.activeProduct = sortedMenuItems[0].category_id;
             this.setSideMenuActiveProducts(this.activeProduct);
 
+        },
+        getButtonStyle(parentId) {
+            console.log(parentId)
+            if (this.activeMenuTab === parentId) {
+                return this.activeMenuTabStyle; // Active style
+            } else if (this.hoveredMenuTab === parentId) {
+                return this.activeMenuTabHoverStyle; // Hover style
+            } else {
+                return {}; // Default style
+            }
         },
         setSideMenuActiveProducts(id) {
             this.activeProduct = id;
