@@ -1,6 +1,9 @@
 <template>
     <div class="auth-container d-flex flex-column justify-content-center align-items-center">
         <div class="auth-form">
+            <div class="d-flex justify-content-center">
+          <img src="https://panel.dinelim.ai/uploads/images/1723724999_Limonist-Meta.png" style="max-width: 300px;" />
+        </div>
             <h2>Create an account</h2>
             <form @submit.prevent="register">
 

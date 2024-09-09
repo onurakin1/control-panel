@@ -12,6 +12,7 @@ import TemplateList from '@/views/Templates/TemplateList.vue';
 import WizardTemplate from '@/views/Templates/Wizard/WizardTemplate.vue';
 import Register from '@/views/Auth/Register.vue';
 import Login from '@/views/Auth/Login.vue';
+import UploadCategory from '@/views/Product/UploadCategory.vue';
 
 const routes = [
   {
@@ -41,6 +42,17 @@ const routes = [
       requiresAuth: true, 
       breadcrumb: [
         { name: 'Company Settings' }
+      ]
+    },
+  },
+  {
+    path: '/upload-category',
+    name: 'UploadCategory',
+    component: UploadCategory,
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Upload Category' }
       ]
     },
   },
