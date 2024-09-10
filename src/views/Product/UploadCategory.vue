@@ -1,13 +1,10 @@
 <template>
   <div class="container my-4 p-4 bg-white border rounded shadow-sm">
-    <form ref="mainFormCategory" class="d-flex flex-column flex-md-row align-items-center gap-3 excel-file">
-      
-
-        <input type="file"  name="select-category-files" class="form-control" @change="handleFileUpload" />
-
+    <form ref="mainFormCategory" @submit.prevent="saveExcel" class="d-flex flex-column flex-md-row align-items-center gap-3 excel-file">
+      <input type="file" name="select-category-files" class="form-control" @change="handleFileUpload" />
       <label class="btn btn-primary">
         Upload File
-        <input type="submit" style="display: none;" @click.prevent="saveExcel" />
+        <input type="submit" style="display: none;" />
       </label>
     </form>
     <div class="mt-3">
@@ -21,6 +18,7 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
+import { toast } from "vue3-toastify";
 import { useAuthStore } from '@/stores/authStore';
 
 export default {
@@ -30,14 +28,22 @@ export default {
     const file = ref(null);
 
     const saveExcel = async () => {
-      const formData = new FormData(mainFormCategory.value);
-      formData.append('file', file.value);
+      const formData = new FormData();
+      if (file.value) {
+        formData.append('file', file.value);
+      } else {
+        toast.error("Please select a file");
+        return;
+      }
 
       try {
         const response = await axios.post('https://panel.dinelim.ai/api/import-category', formData);
-        console.log(response);
+        if (response.status === 200) {
+          toast.success("Categories and Products imported successfully");
+        }
       } catch (error) {
-        console.error('Hata:', error);
+        console.error('Error:', error);
+        toast.error("You have uploaded before or an error occurred");
       }
     };
 
@@ -46,7 +52,7 @@ export default {
     };
 
     const exportExcel = () => {
-      window.location.href = 'https://panel.dinelim.ai/api/export-category-products';
+      window.location.href = 'http://127.0.0.1:8000/api/export-category-products';
     };
 
     return {

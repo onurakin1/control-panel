@@ -628,7 +628,7 @@ export default {
             this.editProductForm.allergens = this.editAllergens
             this.editProductForm.branch_id = this.branchId;
             console.log(this.editProductForm)
-            axios.put(`https://panel.dinelim.ai/api/product/${this.editProductForm.product_id}`, this.editProductForm)
+            axios.put(`https://panel.dinelim.ai/api/product/${this.editProductForm.id}`, this.editProductForm)
                 .then(response => {
                     console.log(response)
                     toast.success('Product updated successfully!');

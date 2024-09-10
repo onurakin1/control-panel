@@ -63,7 +63,7 @@
                     aria-controls="offcanvasRight">
                     <i class="bi bi-pencil-square me-2 ms-2"></i>Edit
                   </li>
-                  <li @click="deleteCategory(category.category_id)">
+                  <li @click="deleteCategory(category.id)">
                     <i class="bi bi-trash3 me-2 ms-2"></i>Delete
                   </li>
                 </ul>
@@ -105,7 +105,7 @@
                     <i class="bi bi-pencil-square me-2 ms-2"></i>Edit
                   </li>
 
-                  <li @click="deleteCategory(childCategory.category_id)">
+                  <li @click="deleteCategory(childCategory.id)">
                     <i class="bi bi-trash3 me-2 ms-2"></i>Delete
                   </li>
                 </ul>
@@ -555,6 +555,8 @@ export default {
           this.categories = this.categories.filter(
             (category) => category.category_id !== categoryId
           );
+          toast.success("Category deleted!");
+          this.$router.go();
         })
         .catch((error) => {
           console.error("Error deleting category:", error);
