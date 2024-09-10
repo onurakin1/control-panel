@@ -79,7 +79,7 @@ export default {
   methods: {
     fetchData() {
       const id = this.$route.params.id;
-      axios.get(`http://127.0.0.1:8000/api/category/${id}`)
+      axios.get(`https://panel.dinelim.ai/api/category/${id}`)
         .then(response => {
           const categoryStore = useCategoryStore(); 
           categoryStore.setCategories(response.data); 

@@ -194,7 +194,7 @@ export default {
                 'Accept': 'application/json',
             };
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/group-branch', { headers });
+                const response = await axios.get('https://panel.dinelim.ai/api/group-branch', { headers });
                 this.groupBranches = response.data;
             } catch (error) {
                 console.error(error);

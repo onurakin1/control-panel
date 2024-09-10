@@ -34,7 +34,7 @@ export default {
       formData.append('file', file.value);
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/import-category', formData);
+        const response = await axios.post('https://panel.dinelim.ai/api/import-category', formData);
         console.log(response);
       } catch (error) {
         console.error('Hata:', error);
@@ -46,7 +46,7 @@ export default {
     };
 
     const exportExcel = () => {
-      window.location.href = 'http://127.0.0.1:8000/api/export-category-products';
+      window.location.href = 'https://panel.dinelim.ai/api/export-category-products';
     };
 
     return {
