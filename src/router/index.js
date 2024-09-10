@@ -46,13 +46,13 @@ const routes = [
     },
   },
   {
-    path: '/upload-category',
-    name: 'UploadCategory',
+    path: '/import-file',
+    name: 'ImportFile',
     component: UploadCategory,
     meta: {
       requiresAuth: true, 
       breadcrumb: [
-        { name: 'Upload Category' }
+        { name: 'Import File' }
       ]
     },
   },

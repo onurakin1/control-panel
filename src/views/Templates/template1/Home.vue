@@ -103,7 +103,7 @@
 
         <div class="d-flex" style="gap:20px;" :style="{ backgroundColor: secondaryBgColor }">
             <div class="d-flex flex-column flex-shrink-0 text-white sidebar-size" id="sidebar"
-                style="width: 100px;overflow: scroll;" :style="{ backgroundColor: mainBgColor }">
+                style="width: 100px;overflow: scroll;scrollbar-width: none" :style="{ backgroundColor: mainBgColor }">
                 <ul class="nav nav-pills flex-column mb-auto wizard-nav">
                     <li v-for="(item, index) in this.sortedSideMenuItems" :key="index" class="nav-item">
                         <div class="nav-link text-white menu-item" @click="setSideMenuActiveProducts(item.category_id)">

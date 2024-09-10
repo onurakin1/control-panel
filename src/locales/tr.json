@@ -43,5 +43,6 @@
   "templatePreview": "Template Görüntüle",
   "DontHaveAnAccount?": "Hesabınız yok mu?",
   "DoYouHaveAnAccount?": "Hesabınız var mı?",
-  "CreateAnAccount": "Hesap oluştur"
+  "CreateAnAccount": "Hesap oluştur",
+  "fileImport": "Dosya Yükle"
 }

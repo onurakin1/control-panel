@@ -92,7 +92,7 @@
             <span><b>Select Languages:</b></span>
 
             <a-select id="languages" mode="multiple" :options="languages" v-model:value="selectedLanguagesInternal"
-              placeholder="Select items" style="width: 200px" />
+              placeholder="Select languages" style="width: 200px" />
 
           </div>
           <div class="d-flex justify-content-end">

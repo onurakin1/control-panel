@@ -23,11 +23,13 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import CardComponent from '@/components/MenuCardComp.vue';
 import OffCanvas from '@/components/OffCanvas.vue';
 import { useCategoryStore } from '@/stores/categoryStore';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'App',
@@ -35,30 +37,49 @@ export default {
     CardComponent,
     OffCanvas
   },
-  data() {
+  setup() {
+
+    const { locale } = useI18n();
+
+    const selectedLanguageId = computed(() => {
+      if (locale.value === 'en') {
+        return 0;
+      } else if (locale.value === 'tr') {
+        return 1;
+      }
+      return 0; // default or fallback
+    });
+
     return {
 
+      selectedLanguageId
+    };
+  },
+  data() {
+    return {
       draggedCategory: null,
       dragOverCategory: null,
       icon: "bi bi-menu-button-wide",
       editableMenu: {},
-      sendCategory:{},
+      sendCategory: {},
       mode: 'createMenu',
       newCategory: {
         branch_id: 0,
         image: '',
         name: '',
         language_id: 0
-      }
+      },
+
     };
   },
   mounted() {
     this.fetchData();
+
   },
   methods: {
     fetchData() {
       const id = this.$route.params.id;
-      axios.get(`https://panel.dinelim.ai/api/category/${id}`)
+      axios.get(`http://127.0.0.1:8000/api/category/${id}`)
         .then(response => {
           const categoryStore = useCategoryStore(); 
           categoryStore.setCategories(response.data); 
@@ -68,31 +89,21 @@ export default {
         });
     },
     updateCategory(category) {
-      console.log(category)
       this.sendCategory = category;
 
-      axios
-        .put(
-           `https://panel.dinelim.ai/api/category/${category.id}`,
-          this.sendCategory
-        )
-        .then((response) => {
-          console.log(response);
+      axios.put(`https://panel.dinelim.ai/api/category/${category.id}`, this.sendCategory)
+  
           toast.success('Category updated successfully!');
           this.$router.go();
-        });
+  
     },
     addCategory(category) {
-      console.log(category)
       const categoryStore = useCategoryStore(); 
       category.branch_id = this.$route.params.id;
       axios.post('https://panel.dinelim.ai/api/category', category)
         .then(response => {
           categoryStore.addCategory(response.data);
-
           this.newCategory = { title: '', language_id: 0 };
-
-
         })
         .catch(error => {
           console.error('There was an error adding the category!', error);
@@ -103,12 +114,10 @@ export default {
     },
     editCategory(category) {
       this.mode = 'editMenu';
-      this.editableMenu = category
-      console.log(this.editableMenu)
+      this.editableMenu = category;
     },
     viewCategory(category) {
       this.$router.push({ name: 'CategoryMenuDetails', params: { id: category.parent_id } });
-
     },
     dragStart(event, category) {
       this.draggedCategory = category;
@@ -134,16 +143,19 @@ export default {
     },
 
   },
+
   computed: {
     categories() {
-      const categoryStore = useCategoryStore(); 
-      console.log(categoryStore.getCategories)
-      return categoryStore.getCategories.filter((menuItem) => menuItem.language_id == 0);
+      const categoryStore = useCategoryStore();
+
+      return categoryStore.getCategories.filter(
+        (menuItem) => menuItem.language_id == this.selectedLanguageId
+      );
     }
   }
-
-}
+};
 </script>
+
 
 <style>
 .custom-row {

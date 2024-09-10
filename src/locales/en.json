@@ -43,5 +43,6 @@
   "templatePreview": "Template Preview",
   "DontHaveAnAccount?": "Don't have an account?",
   "DoYouHaveAnAccount?": "Do you have an account?",
-  "CreateAnAccount": "Create an account"
+  "CreateAnAccount": "Create an account",
+  "fileImport" : "File Import"
 }

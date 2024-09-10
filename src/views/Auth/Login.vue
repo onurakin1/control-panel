@@ -17,8 +17,7 @@
                         placeholder="Password" required />
                 </div>
                 <button type="submit" class="login-ai-btn mt-3">
-                    <a-spin :spinning="loading" :indicator="indicator"></a-spin>
-                    <div v-if="loading" class="spinner-overlay"></div>
+                  
                     <span class="text">Login</span>
                 </button>
                 <div class="mt-3 redirect-area">

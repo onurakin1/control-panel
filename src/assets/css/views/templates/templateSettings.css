@@ -110,6 +110,7 @@ input[type="file"] {
     height:522px;
     overflow-y: scroll;
     margin-top: calc(3vh - 26px);
+    scrollbar-width: none;
 }
 
 .template-wizard-border {

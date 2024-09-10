@@ -334,18 +334,20 @@ export default {
       });
     },
     getAllergens() {
-      axios.get(`https://panel.dinelim.ai/api/allergen`).then((response) => {
+      axios.get(`http://127.0.0.1:8000/api/allergen`).then((response) => {
         this.allergens = response.data;
       });
     },
     viewProducts(categoryId) {
+      console.log(categoryId)
       this.mode = "list";
       axios
-        .get(`https://panel.dinelim.ai/api/product/${categoryId}`)
+        .get(`http://127.0.0.1:8000/api/product/${categoryId}`)
         .then((response) => {
           this.products = response.data.filter(
             (product) =>
-              product.branch_group_id == this.branchStore.selectedBranchId
+              product.branch_id == this.branchStore.selectedBranchId &&
+              product.language_id == this.selectedLanguageId
           );
         })
         .catch((error) => {
@@ -564,7 +566,7 @@ export default {
     this.getAllergens();
     this.fetchCategoryLoading = true;
     axios
-      .get(`https://panel.dinelim.ai/api/product-category/${id}`)
+      .get(`http://127.0.0.1:8000/api/product-category/${id}`)
       .then((response) => {
         this.categories = response.data.map((category) => ({
           ...category,

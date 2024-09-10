@@ -3,10 +3,6 @@
     <h3>
       <div>{{ $t('controlPanel') }}</div>
     </h3>
-
-
-
-
     <div class="row">
       <div v-for="(card, index) in cards" :key="index" :class="cardClass">
         <router-link :to="card.link"  class="card control-panel shadow-sm mb-4">
@@ -66,6 +62,13 @@ export default {
           description:
             "You can access Hit's products from here...",
             link:"/"
+        },
+        {
+          iconClass: "bi bi-file-earmark-arrow-up-fill",
+          title: "fileImport",
+          description:
+            "You can import categories and products here...",
+            link:"/import-file"
         },
       ],
     };

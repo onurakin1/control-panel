@@ -46,7 +46,7 @@ export default {
     };
 
     const exportExcel = () => {
-      window.location.href = 'http://127.0.0.1:8000/api/export-users';
+      window.location.href = 'http://127.0.0.1:8000/api/export-category-products';
     };
 
     return {

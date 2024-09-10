@@ -398,7 +398,7 @@
                         <div class="mb-3">
                             <label for="allergen" class="form-label">Content Warnings</label>
                             <a-select id="allergens" mode="multiple" :options="allergens"
-                                v-model.value="createProductForm.allergen_id" placeholder="Select items"
+                                v-model.value="createProductForm.allergen_id" placeholder="Select content warnings"
                                 style="width: 200px" />
 
                         </div>
@@ -414,6 +414,7 @@
                     </form>
                 </div>
                 <div v-else-if="this.localMode === 'list'">
+           
                     <div v-if="products.length > 0">
                         <div v-for="product in products" :key="product.id" class="blog-card">
                             <div class="meta">

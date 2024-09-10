@@ -15,7 +15,7 @@
                         <div class="mb-3 wizard-form-item">
                             <label for="languages" class="form-label">Select Languages:</label><br />
                             <a-select id="languages" mode="multiple" :options="options"
-                                v-model:value="form.selectedLanguages" placeholder="Select items"
+                                v-model:value="form.selectedLanguages" placeholder="Select languages"
                                 style="width: 200px" />
                         </div>
 
