@@ -13,6 +13,7 @@ import WizardTemplate from '@/views/Templates/Wizard/WizardTemplate.vue';
 import Register from '@/views/Auth/Register.vue';
 import Login from '@/views/Auth/Login.vue';
 import UploadCategory from '@/views/Product/UploadCategory.vue';
+import UploadMultipleImage from '@/views/images/UploadMultipleImage.vue';
 
 const routes = [
   {
@@ -53,6 +54,17 @@ const routes = [
       requiresAuth: true, 
       breadcrumb: [
         { name: 'Import File' }
+      ]
+    },
+  },
+  {
+    path: '/upload-multiple-image',
+    name: 'UploadMultipleImage',
+    component: UploadMultipleImage,
+    meta: {
+      requiresAuth: true, 
+      breadcrumb: [
+        { name: 'Upload Multiple Image' }
       ]
     },
   },
