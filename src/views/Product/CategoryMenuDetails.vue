@@ -36,7 +36,7 @@
             }">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img :src="category.image" :alt="category.name" height="30" class="filtered-image me-2" />
+                <img :src="'https://panel.dinelim.ai/uploads/images/'+category.image" :alt="category.name" height="30" class="me-2" />
                 {{ category.name }}
               </div>
 
@@ -82,7 +82,7 @@
               @drop="dropChild($event, childCategory, category)">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img :src="childCategory.image" :alt="childCategory.name" height="30" class="filtered-image me-2" />
+                <img :src="'https://panel.dinelim.ai/uploads/images/'+childCategory.image" :alt="childCategory.name" height="30" class="me-2" />
                 {{ childCategory.name }}
               </div>
               <div class="btn-group">
@@ -459,11 +459,12 @@ export default {
       this.dragOverCategory = null;
     },
     drop(event, category) {
+      console.log(category)
       const draggedIndex = this.categories.findIndex(
-        (c) => c.category_id === this.draggedCategory.category_id
+        (c) => c.id == this.draggedCategory.id
       );
       const droppedIndex = this.categories.findIndex(
-        (c) => c.category_id === category.category_id
+        (c) => c.id == category.id
       );
 
 

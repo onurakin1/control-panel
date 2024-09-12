@@ -8,7 +8,14 @@
       </button>
 
     </div>
+    <div class="d-flex justify-content-end ">
+      <div class="export-excel" @click="exportExcel">
+        <span class="material-symbols-outlined">
+          export_notes
+        </span> Export
+      </div>
 
+    </div>
     <CardComponent v-for="cat in categories"
       :class="{ 'drag-over': cat === dragOverCategory, 'dragged': cat === draggedCategory }" draggable="true"
       @dragstart="dragStart($event, cat)" @dragover.prevent="dragOver($event, cat)" @dragleave="dragLeave"
@@ -16,8 +23,9 @@
       class="custom-card" @edit="editCategory(cat)" @view="viewCategory(cat)" />
 
 
-    <OffCanvas id="offcanvasRight" :title="mode == 'createMenu' ? 'Add Menu' : mode == 'editMenu' ? 'Edit Menu' : '' " :mode="mode" :newMenu="newCategory" :editMenu="editableMenu"
-      @createdMenu="addCategory" @updatedMenu="updateCategory" />
+    <OffCanvas id="offcanvasRight" :title="mode == 'createMenu' ? 'Add Menu' : mode == 'editMenu' ? 'Edit Menu' : ''"
+      :mode="mode" :newMenu="newCategory" :editMenu="editableMenu" @createdMenu="addCategory"
+      @updatedMenu="updateCategory" />
 
   </div>
 </template>
@@ -49,9 +57,11 @@ export default {
       }
       return 0; // default or fallback
     });
-
+    const exportExcel = () => {
+      window.location.href = 'https://panel.dinelim.ai/api/export-category-products';
+    };
     return {
-
+      exportExcel,
       selectedLanguageId
     };
   },
@@ -81,8 +91,8 @@ export default {
       const id = this.$route.params.id;
       axios.get(`https://panel.dinelim.ai/api/category/${id}`)
         .then(response => {
-          const categoryStore = useCategoryStore(); 
-          categoryStore.setCategories(response.data); 
+          const categoryStore = useCategoryStore();
+          categoryStore.setCategories(response.data);
         })
         .catch(error => {
           console.error('There was an error fetching the data!', error);
@@ -92,13 +102,13 @@ export default {
       this.sendCategory = category;
 
       axios.put(`https://panel.dinelim.ai/api/category/${category.id}`, this.sendCategory)
-  
-          toast.success('Category updated successfully!');
-          this.$router.go();
-  
+
+      toast.success('Category updated successfully!');
+      this.$router.go();
+
     },
     addCategory(category) {
-      const categoryStore = useCategoryStore(); 
+      const categoryStore = useCategoryStore();
       category.branch_id = this.$route.params.id;
       axios.post('https://panel.dinelim.ai/api/category', category)
         .then(response => {
@@ -129,8 +139,8 @@ export default {
       this.dragOverCategory = null;
     },
     drop(event, category) {
-      const categoryStore = useCategoryStore(); 
-      const categories = categoryStore.getCategories; 
+      const categoryStore = useCategoryStore();
+      const categories = categoryStore.getCategories;
 
       const draggedIndex = categories.findIndex(c => c.id === this.draggedCategory.id);
       const droppedIndex = categories.findIndex(c => c.id === category.id);

@@ -419,7 +419,7 @@
                         <div v-for="product in products" :key="product.id" class="blog-card">
                             <div class="meta">
                                 <div class="photo"
-                                    :style="{ backgroundImage: `url(https://panel.dinelim.ai/uploads/${product.image})` }">
+                                    :style="{ backgroundImage: `url(https://panel.dinelim.ai/uploads/images/${product.image})` }">
                                 </div>
                                 <ul class="details">
 
@@ -519,10 +519,8 @@ export default {
 
 
         return {
-
             editAllergens,
             handleChange,
-
         };
     },
     data() {

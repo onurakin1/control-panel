@@ -168,3 +168,13 @@
     background-color: #298e46;
     box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 }
+.export-excel{
+    display: flex;
+    color: #1d6f42;
+    border: 1px solid #1d6f42;
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
