@@ -36,7 +36,8 @@
             }">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img :src="'https://panel.dinelim.ai/uploads/images/'+category.image" :alt="category.name" height="30" class="me-2" />
+                <img :src="'https://panel.dinelim.ai/uploads/images/' + category.image" :alt="category.name" height="30"
+                  class="me-2" />
                 {{ category.name }}
               </div>
 
@@ -70,6 +71,9 @@
               </div>
             </div>
           </div>
+          <div>
+
+          </div>
           <div v-if="category.child.length" class="collapse" :id="'collapse_' + category.category_id">
             <div v-for="childCategory in sortedChildCategories(category.child)" :key="childCategory.category_id"
               class="mb-1 mt-1 box-sub-menu" :class="{
@@ -82,7 +86,8 @@
               @drop="dropChild($event, childCategory, category)">
               <div>
                 <i class="bi bi-grip-horizontal me-3"></i>
-                <img :src="'https://panel.dinelim.ai/uploads/images/'+childCategory.image" :alt="childCategory.name" height="30" class="me-2" />
+                <img :src="'https://panel.dinelim.ai/uploads/images/' + childCategory.image" :alt="childCategory.name"
+                  height="30" class="me-2" />
                 {{ childCategory.name }}
               </div>
               <div class="btn-group">
@@ -167,7 +172,8 @@
           : 'Product List'
       " :products="products" :mode="mode" :category="editableCategory" :newCategory="newCategory"
       :allergens="sortedAllergens" :newProduct="newProduct" :categories="categories" @updatedCategory="updateCategory"
-      @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId" :selectedLanguageId="selectedLanguageId" />
+      @createdCategory="addCategory" @createdProduct="addProductToCategory" :selectedBranchId="selectedBranchId"
+      :selectedLanguageId="selectedLanguageId" />
   </div>
 </template>
 
@@ -293,14 +299,14 @@ export default {
         .sort((a, b) => a.sort_order - b.sort_order)
         .filter((item) => item.language_id == this.selectedLanguageId);
     },
-    sortedAllergens(){
+    sortedAllergens() {
       return [...this.allergens]
-      .filter((item) => item.language_id == this.selectedLanguageId)
-      .map(allergen => ({
-        value: allergen.allergen_id,
-      label: allergen.name
+        .filter((item) => item.language_id == this.selectedLanguageId)
+        .map(allergen => ({
+          value: allergen.allergen_id,
+          label: allergen.name
 
-    }));
+        }));
     },
     selectedBranchId() {
       return this.branchStore.selectedBranchId;
@@ -334,7 +340,7 @@ export default {
       });
     },
     getAllergens() {
-      axios.get(`https://panel.dinelim.ai/api/allergen`).then((response) => {
+      axios.get(`http://127.0.0.1:8000/api/allergen`).then((response) => {
         this.allergens = response.data;
       });
     },
@@ -342,7 +348,7 @@ export default {
       console.log(categoryId)
       this.mode = "list";
       axios
-        .get(`https://panel.dinelim.ai/api/product/${categoryId}`)
+        .get(`http://127.0.0.1:8000/api/product/${categoryId}`)
         .then((response) => {
           this.products = response.data.filter(
             (product) =>
@@ -459,20 +465,20 @@ export default {
       this.dragOverCategory = null;
     },
     drop(event, category) {
-      console.log(category)
+
       const draggedIndex = this.categories.findIndex(
-        (c) => c.id == this.draggedCategory.id
+        (c) => c.category_id == this.draggedCategory.category_id
       );
       const droppedIndex = this.categories.findIndex(
-        (c) => c.id == category.id
+        (c) => c.category_id == category.category_id
       );
 
 
-      this.categories.splice(draggedIndex, 1); 
-      this.categories.splice(droppedIndex, 0, this.draggedCategory); 
+      this.categories.splice(draggedIndex, 1);
+      this.categories.splice(droppedIndex, 0, this.draggedCategory);
 
 
-      const categorySortMap = new Map(); 
+      const categorySortMap = new Map();
       let currentSortOrder = 1;
 
       this.categories.forEach((cat) => {
@@ -483,17 +489,18 @@ export default {
         cat.sort_order = categorySortMap.get(cat.category_id);
       });
 
-  
+
       axios
-        .put(`https://panel.dinelim.ai/api/product-category/update`, this.categories)
+        .put(`http://127.0.0.1:8000/api/product-category/update`, this.categories)
         .then((response) => {
+
+          this.categories.filter((word) => word.language_id == this.selectedLanguageId);
           console.log(response);
         })
         .catch((error) => {
           console.error("API request failed:", error);
         });
 
-      console.log(this.categories);
       this.draggedCategory = null;
       this.dragOverCategory = null;
     },
@@ -509,30 +516,33 @@ export default {
       this.dragOverChildCategory = null;
     },
     dropChild(event, childCategory, parentCategory) {
-      if (
-        this.draggedParentCategory.category_id !== parentCategory.category_id
-      ) {
+      if (this.draggedParentCategory.category_id !== parentCategory.category_id) {
         // Handle cross-parent category dragging if needed
         return;
       }
 
       const draggedIndex = parentCategory.child.findIndex(
-        (c) => c.category_id === this.draggedChildCategory.category_id
+        (c) => c.category_id == this.draggedChildCategory.category_id
       );
-      const droppedIndex = parentCategory.child.findIndex(
-        (c) => c.category_id === childCategory.category_id
+      let droppedIndex = parentCategory.child.findIndex(
+        (c) => c.category_id == childCategory.category_id
       );
 
-      // Swap the child categories in the array
-      parentCategory.child.splice(draggedIndex, 1); // Remove dragged category
-      parentCategory.child.splice(droppedIndex, 0, this.draggedChildCategory); // Insert dragged category at dropped position
+      // Eğer draggedIndex, droppedIndex'ten küçükse, kaydırma işleminden dolayı droppedIndex'i bir azalt
+      if (draggedIndex < droppedIndex) {
+        droppedIndex--;
+      }
 
-      // Update sort_order based on array index
+      // Sürüklenen kategoriyi çıkar ve yeni konumuna ekle
+      const draggedCategory = parentCategory.child.splice(draggedIndex, 1)[0]; // Çıkarılan kategoriyi al
+      parentCategory.child.splice(droppedIndex, 0, draggedCategory); // Yeni konuma ekle
+
+      // Sort order'ı güncelle
       parentCategory.child.forEach((cat, index) => {
-        cat.sort_order = index + 1; // Set sort_order starting from 1
+        cat.sort_order = index + 1; // Sort order 1'den başlasın
       });
 
-      // Update the backend with the new order
+      // Backend'e güncelleme isteği gönder
       axios
         .put(
           `https://panel.dinelim.ai/api/product-category/update`,
@@ -545,10 +555,11 @@ export default {
           console.error("Error updating category order:", error);
         });
 
-      console.log(parentCategory.child);
+      // Sürüklenen ve bırakılan kategorileri sıfırla
       this.draggedChildCategory = null;
       this.dragOverChildCategory = null;
     },
+
     deleteCategory(categoryId) {
       axios
         .delete(`https://panel.dinelim.ai/api/product-category/${categoryId}`)
@@ -569,17 +580,18 @@ export default {
     this.getAllergens();
     this.fetchCategoryLoading = true;
     axios
-      .get(`https://panel.dinelim.ai/api/product-category/${id}`)
+      .get(`http://127.0.0.1:8000/api/product-category/${id}`)
       .then((response) => {
         this.categories = response.data.map((category) => ({
           ...category,
           showChildren: false,
         }));
         this.fetchCategoryLoading = false;
-        console.log( this.categories)
+        console.log(this.categories)
         // Filter categories based on selectedBranchId and assign the result back to this.categories
         this.categories = this.categories.filter(
-          (item) => item.branch_id == this.branchStore.selectedBranchId
+          (item) => item.branch_id == this.branchStore.selectedBranchId &&
+            item.language_id == this.selectedLanguageId
         );
       })
       .catch((error) => {
