@@ -12,15 +12,45 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-5">
-                        <div class="mb-3 wizard-form-item">
-                            <label for="languages" class="form-label">Select Languages:</label><br />
+                        <div class="mb-5 wizard-form-item">
+                            <label for="logo" class="wizard-form-item-text">Banner</label>
+                            <div class="wizard-form-item-left" v-if="form.banner != 'images/1724355186_home_bg.jpg'">
+                                <div class="photo-area">
+                                    <div class="polaroid">
+                                        <div class="img-container" @click="toggler = !toggler">
+                                            <img :src="'https://panel.dinelim.ai/uploads/' + form.banner" class="image"
+                                                style="width:100%" />
+                                        </div>
+                                        <div class="container">
+                                            <i class="bi bi-trash3" @click="resetBanner"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <a-spin :spinning="loading">
+                                    <div class="file-upload-banner">
+                                        <label for="file-upload-banner" class="custom-file-upload">
+                                            <i class="bi bi-upload"></i>
+                                            <div>Upload</div>
+                                            <span>The file type can only be .jpg, .jpeg, and .png.</span>
+                                        </label>
+                                        <input type="file" id="file-upload-banner" @change="onFileChangeBanner"
+                                            accept=".jpg, .jpeg, .png" />
+
+                                    </div>
+                                </a-spin>
+                            </div>
+                        </div>
+                        <div class="mb-5 wizard-form-item">
+                            <label for="languages" class="wizard-form-item-text">Select Languages:</label><br />
                             <a-select id="languages" mode="multiple" :options="options"
                                 v-model:value="form.selectedLanguages" placeholder="Select languages"
                                 style="width: 200px" />
                         </div>
 
-                        <div class="mb-3 wizard-form-item">
-                            <label for="logo" class="form-label">Logo</label>
+                        <div class="mb-5 wizard-form-item">
+
                             <div v-if="form.logo">
                                 <div class="photo-area">
                                     <div class="polaroid">
@@ -50,29 +80,34 @@
                                     </div>
                                 </a-spin>
                             </div>
-                        </div>
-                        <div class="mb-3 wizard-form-item">
-                            <label for="logo" class="form-label">Company Name</label><br />
-                            <a-space direction="vertical" style="width: 52%">
-                                <a-input v-model:value="form.company_name" placeholder="Company Name" />
-                            </a-space>
-                        </div>
-                        <div class="layout-items mb-3">
-                            <span>Select Menu Layout:</span><br />
-                            <span class="d-flex justify-content-between">
-                                <div @click="setLayout('two')" :class="{ active: form.layout === 'two' }">
-                                    <i class="bi bi-grid-1x2"></i> Two Column
+                            <div>
+                                <div class="mb-2 wizard-form-item align-items-center">
+                                    <span class="wizard-form-item-text">Background Color</span>
+                                    <ColorPicker :selectedColor="form.secondaryBgColor"
+                                        @color-changed="handleSecondaryBgColorChange" class="wizard-form-item-left" />
                                 </div>
-                                <div @click="setLayout('three')" :class="{ active: form.layout === 'three' }">
-                                    <i class="bi bi-grid-3x3-gap"></i> Three Column
+                                <div class="mb-2 wizard-form-item align-items-center">
+                                    <span class="wizard-form-item-text">Accent Color</span>
+                                    <ColorPicker :selectedColor="form.selectedBgColor"
+                                        @color-changed="handleBgColorChange" class="wizard-form-item-left" />
                                 </div>
-                            </span>
+                                <div class="mb-2 wizard-form-item align-items-center">
+                                    <span class="wizard-form-item-text">Text Color</span>
+                                    <ColorPicker :selectedColor="form.textColor" @color-changed="handleTextColorChange"
+                                        class="wizard-form-item-left" />
+                                </div>
+                            </div>
                         </div>
+
+
+
                     </div>
                     <div class="col-md-7">
                         <div class="template-wizard-border">
                             <Template1 :selectedLanguage="form.selectedLanguages" :mediaUrl="form.banner"
-                                :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="form.layout" />
+                                :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="'two'"
+                                :fontSize="'0.8rem'" :mainBgColor="form.selectedBgColor"
+                                :secondaryBgColor="form.secondaryBgColor" :textColor="form.textColor" />
                         </div>
                     </div>
                 </div>
@@ -94,61 +129,33 @@
                 <div class="row mt-2">
                     <div class="col-md-5">
                         <div class="mb-3 wizard-form-item">
-                            <label for="logo" class="form-label">Banner</label>
-                            <div class="wizard-form-item-left" v-if="form.banner != 'images/1724355186_home_bg.jpg'">
-                                <div class="photo-area">
-                                    <div class="polaroid">
-                                        <div class="img-container" @click="toggler = !toggler">
-                                            <img :src="'https://panel.dinelim.ai/uploads/' + form.banner" class="image"
-                                                style="width:100%" />
-                                        </div>
-                                        <div class="container">
-                                            <i class="bi bi-trash3" @click="resetBanner"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="wizard-form-item-left" v-else>
-                                <a-spin :spinning="loading">
-                                    <div class="file-upload-banner">
-                                        <label for="file-upload-banner" class="custom-file-upload">
-                                            <i class="bi bi-upload"></i>
-                                            <div>Upload</div>
-                                            <span>The file type can only be .jpg, .jpeg, and .png.</span>
-                                        </label>
-                                        <input type="file" id="file-upload-banner" @change="onFileChangeBanner"
-                                            accept=".jpg, .jpeg, .png" />
-                                        <div v-if="loading" class="spinner-overlay">
-                                            <Spin size="large" />
-                                        </div>
-                                    </div>
-                                </a-spin>
-                            </div>
+                            <label for="logo" class="wizard-form-item-text">Company Name</label><br />
+                            <a-space direction="vertical" style="width: 52%">
+                                <a-input v-model:value="form.company_name" placeholder="Company Name" />
+                            </a-space>
                         </div>
-                        <div class="mb-3">
-                            <span>Select Template Color</span>
-                            <div class="mb-2 wizard-form-item align-items-center">
-                                <span>Background Color</span>
-                                <ColorPicker :selectedColor="form.secondaryBgColor"
-                                    @color-changed="handleSecondaryBgColorChange" class="wizard-form-item-left" />
+                        <div class="layout-items mb-3">
+                            <span class="wizard-form-item-text">Select Menu Layout:</span><br />
+                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-outline-secondary" @click="setLayout('two')"
+                                    :class="{ active: form.layout === 'two' }"><img
+                                        src="@/assets/img/icons/two-columns.png" width="24px" /></button>
+                                <button type="button" class="btn btn-outline-secondary" @click="setLayout('three')"
+                                    :class="{ active: form.layout === 'three' }"><img
+                                        src="@/assets/img/icons/three-columns.png" width="24px" /></button>
+
                             </div>
-                            <div class="mb-2 wizard-form-item align-items-center">
-                                <span>Accent Color</span>
-                                <ColorPicker :selectedColor="form.selectedBgColor"
-                                    @color-changed="handleBgColorChange" class="wizard-form-item-left"/>
-                            </div>
-                            <div class="mb-2 wizard-form-item align-items-center">
-                                <span>Text Color</span>
-                                <ColorPicker :selectedColor="form.textColor" @color-changed="handleTextColorChange" class="wizard-form-item-left"/>
-                            </div>
+
+
                         </div>
+
                     </div>
                     <div class="col-md-7">
                         <div class="template-wizard-border">
                             <Template1 :selectedLanguage="form.selectedLanguages" :mediaUrl="form.banner"
-                                :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :layout="form.layout"
-                                :mainBgColor="form.selectedBgColor" :secondaryBgColor="form.secondaryBgColor"
-                                :textColor="form.textColor" />
+                                :logoUrl="form.logo" :logoSize="'80px'" :iconSize="'80px'" :fontSize="'0.8rem'"
+                                :layout="form.layout" :mainBgColor="form.selectedBgColor"
+                                :secondaryBgColor="form.secondaryBgColor" :textColor="form.textColor" />
                         </div>
                     </div>
                 </div>
@@ -164,7 +171,7 @@
 <script>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import { Spin } from 'ant-design-vue';
+
 import { useRouter } from 'vue-router';
 import "@/assets/css/views/templates/wizard.css";
 import Template1 from "../template1/Home.vue";
@@ -179,8 +186,8 @@ export default {
     name: 'WizardComponent',
     components: {
         Template1,
-        ColorPicker,
-        Spin
+        ColorPicker
+
     },
     setup() {
         const step = ref(1);
@@ -286,9 +293,9 @@ export default {
                     { name: 'secondaryBgColor', value: form.value.secondaryBgColor },
                     { name: 'textColor', value: form.value.textColor }
                 ];
-                if(form.value.logo == null || form.value.company_name == null){
+                if (form.value.logo == null || form.value.company_name == null) {
                     toast.warn("Company name cannot be null")
-                    
+
                 }
                 const payload = {
                     banner: form.value.banner,
@@ -341,3 +348,20 @@ export default {
     }
 };
 </script>
+
+<style>
+.layout-btn {
+    background-color: DodgerBlue;
+    /* Blue background */
+    border: none;
+    /* Remove borders */
+    color: white;
+    /* White text */
+    padding: 12px 16px;
+    /* Some padding */
+    font-size: 16px;
+    /* Set a font size */
+    cursor: pointer;
+    /* Mouse pointer on hover */
+}
+</style>

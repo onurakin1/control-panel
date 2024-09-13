@@ -4,7 +4,9 @@
       <div class="template-setting-area col-md-9">
 
         <div class="template-setting-form">
-          <div class="mb-5">
+   
+          <div class="template-setting-main">
+            <div class="mb-2">
             <a-spin :spinning="loading">
               <div class="file-template-upload" v-if="mediaUrlInternal === 'home_bg.jpg'">
                 <span><b>Upload Banner</b></span>
@@ -21,7 +23,8 @@
                 <div class="polaroid">
                   <div class="img-container" @click="toggler = !toggler">
                     <template v-if="isImage(mediaUrlInternal)">
-                      <img :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" class="image" style="width:100%">
+                      <img :src="'https://panel.dinelim.ai/uploads/' + mediaUrlInternal" class="image"
+                        style="width:100%">
                     </template>
                     <template v-else-if="isVideo(mediaUrlInternal)">
                       <video controls style="width:100%">
@@ -29,7 +32,7 @@
                         Your browser does not support the video tag.
                       </video>
                     </template>
-            
+
 
                   </div>
                   <div class="container">
@@ -40,43 +43,37 @@
             </div>
 
           </div>
-          <div class="template-setting-main">
-
             <div class="color-select">
               <span><b>Select Template Color</b></span>
-              <div class="color-select-item">
+              <div class="color-select-item mb-3">
                 <span>Background Color</span>
                 <ColorPicker :selectedColor="secondaryBgColor" @color-changed="handleSecondaryBgColorChange" />
               </div>
-              <div class="color-select-item">
+              <div class="color-select-item mb-3">
                 <span>Accent Color</span>
                 <ColorPicker :selectedColor="selectedBgColor" @color-changed="handleBgColorChange" />
               </div>
-              <div class="color-select-item">
+              <div class="color-select-item mb-3">
                 <span>Text Color</span>
                 <ColorPicker @color-changed="handleTextColorChange" />
               </div>
             </div>
+
           </div>
           <div class="layout-items">
             <span><b>Select Menu Layout:</b></span>
-            <span class="d-flex justify-content-between">
-              <button @click="setLayout('two')" :class="{ active: layoutInternal === 'two' }">
-                <i class="bi bi-grid-1x2"></i> Two Column
-              </button>
-              <button @click="setLayout('three')" :class="{ active: layoutInternal === 'three' }">
-                <i class="bi bi-grid-3x3-gap"></i> Three Column
-              </button>
-            </span>
+            <div class="btn-group me-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-outline-secondary" @click="setLayout('two')"
+                :class="{ active: layoutInternal === 'two' }"><img src="@/assets/img/icons/two-columns.png"
+                  width="24px" /></button>
+              <button type="button" class="btn btn-outline-secondary" @click="setLayout('three')"
+                :class="{ active: layoutInternal === 'three' }"><img src="@/assets/img/icons/three-columns.png"
+                  width="24px" /></button>
+
+            </div>
+
           </div>
-          <div class="layout-items">
-            <span><b>Select Font Size:</b></span>
-            <select v-model="fontSize" class="form-select" style="width: 100px" aria-label="Default select example">
-              <option value="14px" selected>14px</option>
-              <option value="16px">16px</option>
-              <option value="18px">18px</option>
-            </select>
-          </div>
+   
           <div class="layout-items">
             <span><b>Select Icon Size:</b></span>
             <select v-model="iconSizeInternal" class="form-select" style="width: 100px"

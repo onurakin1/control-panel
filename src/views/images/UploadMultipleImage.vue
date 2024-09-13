@@ -27,7 +27,7 @@
     <div class="images-preview">
         <div class="file-names-row">
             <div v-for="(image, index) in uploadedImages" :key="index" class="image-item">
-                <img :src="image" alt="Uploaded Image" class="image" />
+                <img :src="image" alt="Uploaded Image" class="multiple-image" />
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@ export default {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 20px;
+
 }
 
 .custom-file-template-upload:hover {
@@ -176,7 +176,7 @@ export default {
   height: 100px;
 }
 
-.image {
+.multiple-image {
     max-width: 110px; /* Görüntü genişliği */
     max-height: 110px; /* Görüntü yüksekliği */
     object-fit: cover; /* Görüntüyü kutuya sığdır */

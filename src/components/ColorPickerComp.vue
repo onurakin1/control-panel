@@ -1,7 +1,6 @@
 <template>
   <div class="color-picker">
     <input type="color" v-model="color" @input="updateColor" />
-    <span class="ms-2">{{ color }}</span>
   </div>
 </template>
 
@@ -31,10 +30,8 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    margin-top: 10px;
-    width: 110px;
+
   }
   .color-text{
     font-weight: 500;

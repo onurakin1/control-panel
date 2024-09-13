@@ -17,14 +17,18 @@
 .wizard-form-item{
     display: flex;
     justify-content: space-between;
-}
-.wizard-form-item-left{
-    margin: 0 20px;
+    gap: 10px;
 }
 
+.wizard-form-item-text{
+    font-size: 0.8rem;
+}
 .layout-items .d-flex div {
     margin: 5px;
-    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
@@ -33,6 +37,9 @@
 }
 
 .layout-items .d-flex div.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #007bff;
     color: #fff;
     border-color: #007bff;

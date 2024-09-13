@@ -103,7 +103,7 @@
 
         <div class="d-flex" style="gap:20px;" :style="{ backgroundColor: secondaryBgColor }">
             <div class="d-flex flex-column flex-shrink-0 text-white sidebar-size" id="sidebar"
-                style="width: 100px;overflow: scroll;scrollbar-width: none" :style="{ backgroundColor: mainBgColor }">
+                style="width: 80px;overflow: scroll;scrollbar-width: none" :style="{ backgroundColor: mainBgColor }">
                 <ul class="nav nav-pills flex-column mb-auto wizard-nav">
                     <li v-for="(item, index) in this.sortedSideMenuItems" :key="index" class="nav-item">
                         <div class="nav-link text-white menu-item" @click="setSideMenuActiveProducts(item.category_id)">
@@ -148,7 +148,7 @@
                                 :data-bs-target="`#pills-${language.name}`" type="button" role="tab"
                                 :aria-controls="`pills-${language.name}`" aria-selected="true"
                                 @click="setActiveTab(language)"
-                                :style="activeTab == language.name ? activeTabStyle : color = mainBgColor">
+                                :style="[activeTab == language.name ? activeTabStyle : { color: mainBgColor }, { fontSize: fontSize }]">
                                 <!-- {{ formatLanguage(language.name) }} -->
                                 {{ language.name }}
                             </button>
@@ -166,9 +166,9 @@
                                     <div class="menu-card" :style="{ backgroundColor: mainBgColor }">
                                         <img :src="item.image" :alt="item.name" class="card-img" />
                                         <div class="container">
-                                            <h4><b :style="{ color: textColor, fontSize: fontSize }">{{ item.name
-                                                    }}</b></h4>
-                                            <p :style="{ color: textColor }">{{ item.price }}</p>
+                                            <h6><b :style="{ color: textColor, fontSize: fontSize }">{{ item.name
+                                                    }}</b></h6>
+                                            <p :style="{ color: textColor, fontSize: fontSize }">{{ item.price }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -625,19 +625,21 @@ export default {
         activeMenuTabStyle(){
             return {
                 background: this.mainBgColor,
-                color:'#fff'
+                color:'#fff',
+                fontSize: this.fontSize
             }
         },
         activeMenuTabHoverStyle(){
             return {
                 Cursor:'pointer',
-                color:this.mainBgColor
-            
+                color:this.mainBgColor,
+                fontSize: this.fontSize
             }
         },
 
         activeTabStyle() {
             return {
+                fontSize: this.fontSize,
                 background: 'none',
                 color: this.mainBgColor,
                 borderRadius: '0%',

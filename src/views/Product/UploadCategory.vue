@@ -54,7 +54,7 @@ export default {
       loading.value = true;
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/import-category', formData);
+        const response = await axios.post('https://panel.dinelim.ai/api/import-category', formData);
         if (response.status === 200) {
           toast.success("Categories and Products imported successfully");
           router.push('/upload-multiple-image');

@@ -114,8 +114,7 @@ input[type="file"] {
 }
 
 .template-wizard-border {
-    width: 100%;
-    max-width: 410px;
+   width: 420px;
     height: 569px;
     overflow: hidden;
     border: 20px solid #000;
@@ -128,9 +127,10 @@ input[type="file"] {
 }
 
 .template-wizard-border .product-wizard-items {
-    height: 422px;
+    height: 396px;
     overflow-y: scroll;
-    margin-top: calc(3vh - 16px);
+    margin-top: calc(3vh - 30px);
+    scrollbar-width: none;
 }
 .color-select-item {
     display: flex;
@@ -150,25 +150,7 @@ input[type="file"] {
     justify-content: space-between;
 }
 
-.layout-items button {
-    padding: 10px 15px;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-}
 
-.layout-items button.active {
-    background-color: #505095;
-    color: white;
-}
-
-.layout-items button i {
-    margin-right: 8px;
-}
 .save-button{
     background-color: #008CBA; /* Green */
     border: none;
