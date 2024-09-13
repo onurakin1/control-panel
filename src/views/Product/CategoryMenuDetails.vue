@@ -340,7 +340,7 @@ export default {
       });
     },
     getAllergens() {
-      axios.get(`http://127.0.0.1:8000/api/allergen`).then((response) => {
+      axios.get(`https://panel.dinelim.ai/api/allergen`).then((response) => {
         this.allergens = response.data;
       });
     },
@@ -348,7 +348,7 @@ export default {
       console.log(categoryId)
       this.mode = "list";
       axios
-        .get(`http://127.0.0.1:8000/api/product/${categoryId}`)
+        .get(`https://panel.dinelim.ai/api/product/${categoryId}`)
         .then((response) => {
           this.products = response.data.filter(
             (product) =>
@@ -491,7 +491,7 @@ export default {
 
 
       axios
-        .put(`http://127.0.0.1:8000/api/product-category/update`, this.categories)
+        .put(`https://panel.dinelim.ai/api/product-category/update`, this.categories)
         .then((response) => {
 
           this.categories.filter((word) => word.language_id == this.selectedLanguageId);
@@ -580,7 +580,7 @@ export default {
     this.getAllergens();
     this.fetchCategoryLoading = true;
     axios
-      .get(`http://127.0.0.1:8000/api/product-category/${id}`)
+      .get(`https://panel.dinelim.ai/api/product-category/${id}`)
       .then((response) => {
         this.categories = response.data.map((category) => ({
           ...category,

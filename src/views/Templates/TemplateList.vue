@@ -23,7 +23,7 @@
           @click="selectTemplate(template.name)">
           <Template1 :disabled="true" :mainBgColor="selectedBgColorDefault" :secondaryBgColor="secondaryBgColorDefault"
             :textColor="textColorDefault" :logoSize="'40px'" :iconSize="IconSizeDefault" :layout="layoutDefault"
-            :logoUrl="compStore.company" :mediaUrl="mediaUrlDefault" :fontSize="fontSizeDefault" />
+            :logoUrl="compStore.company" :mediaUrl="mediaUrlDefault" :fontSize="fontSizeDefault" style="pointer-events: none;"/>
           <div class="checkbox" v-if="selectedTemplate === template.name">
             <i class="bi bi-check-circle-fill"></i>
           </div>

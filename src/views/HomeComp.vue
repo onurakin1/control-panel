@@ -35,13 +35,7 @@ export default {
             "You can update your user information here...",
             link:"/settings"
         },
-        {
-          iconClass: "bi bi-list-task",
-          title: "pooldatamanagement",
-          description:
-            "You can manage categories and products from here...",
-            link:"/"
-        },
+      
         {
           iconClass: "bi-bar-chart-fill",
           title: "branchManagement",

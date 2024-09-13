@@ -112,7 +112,7 @@
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <div class="template-border">
+            <div class="template-border" >
               <component :is="template" :mainBgColor="selectedBgColorInternal"
                 :secondaryBgColor="secondaryBgColorInternal" :selectedLanguage="selectedLanguagesInternal"
                 :textColor="textColorInternal" :logoSize="'80px'" :iconSize="'80px'" :layout="layoutInternal"

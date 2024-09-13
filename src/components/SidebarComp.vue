@@ -46,14 +46,7 @@
           }}</span>
         </router-link>
       </li>
-      <li>
-        <a href="#" class="nav-link text-secondary pointer">
-          <span class="material-symbols-outlined"> tab </span>
-          <span class="ms-2 nav-text" :class="{ 'd-none': isCollapsed }">{{
-            $t("bannerManagement")
-          }}</span>
-        </a>
-      </li>
+
 
       <li>
         <div class="nav-link text-secondary collapsed pointer" data-bs-original-title="Orders" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
